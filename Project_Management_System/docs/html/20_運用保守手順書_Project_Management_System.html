@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>運用保守手順書 - Project Management System</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/mermaid.min.js"></script>
+</head>
+<body id="top">
+<nav class="doc-nav no-print">
+  <div class="nav-row nav-row-adjacent">
+    <a class="nav-adjacent" href="19_リリース手順書_Project_Management_System.html">← 19 リリース手順書</a>
+    <a class="nav-index" href="index.html">目次</a>
+    <span class="nav-adjacent nav-disabled">(末尾) →</span>
+  </div>
+  <div class="nav-row nav-row-chips"><a class="nav-chip" href="00_開発計画書_Project_Management_System.html" title="開発計画書">00</a><a class="nav-chip" href="01_企画書_Project_Management_System.html" title="企画書">01</a><a class="nav-chip" href="02_要件定義書_Project_Management_System.html" title="要件定義書">02</a><a class="nav-chip" href="03_ユースケース_Project_Management_System.html" title="ユースケース">03</a><a class="nav-chip" href="04_業務フロー_Project_Management_System.html" title="業務フロー">04</a><a class="nav-chip" href="05_画面遷移図_Project_Management_System.html" title="画面遷移図">05</a><a class="nav-chip" href="06_画面設計_Project_Management_System.html" title="画面設計">06</a><a class="nav-chip" href="07_機能一覧_Project_Management_System.html" title="機能一覧">07</a><a class="nav-chip" href="08_ER図_Project_Management_System.html" title="ER図">08</a><a class="nav-chip" href="09_テーブル定義_Project_Management_System.html" title="テーブル定義">09</a><a class="nav-chip" href="10_API設計_Project_Management_System.html" title="API設計">10</a><a class="nav-chip" href="11_基本設計書_Project_Management_System.html" title="基本設計書">11</a><a class="nav-chip" href="12_詳細設計書_Project_Management_System.html" title="詳細設計書">12</a><a class="nav-chip" href="13_インフラ設計_Project_Management_System.html" title="インフラ設計">13</a><a class="nav-chip" href="14_セキュリティ設計_Project_Management_System.html" title="セキュリティ設計">14</a><a class="nav-chip" href="15_単体試験仕様書_Project_Management_System.html" title="単体試験仕様書">15</a><a class="nav-chip" href="16_結合試験仕様書_Project_Management_System.html" title="結合試験仕様書">16</a><a class="nav-chip" href="17_システム試験仕様書_Project_Management_System.html" title="システム試験仕様書">17</a><a class="nav-chip" href="18_UAT_Project_Management_System.html" title="UAT">18</a><a class="nav-chip" href="19_リリース手順書_Project_Management_System.html" title="リリース手順書">19</a><a class="nav-chip nav-chip-current" href="20_運用保守手順書_Project_Management_System.html" title="運用保守手順書">20</a></div>
+</nav>
+<table class="doc-header-bar">
+  <tr>
+    <td class="hb-type" rowspan="2">運用保守手順書</td>
+    <td class="hb-sys" rowspan="2">Project Management System</td>
+    <td class="hb-label">文書番号</td>
+    <td class="hb-val">PMS-020</td>
+    <td class="hb-label">バージョン</td>
+    <td class="hb-val">1.0</td>
+  </tr>
+  <tr>
+    <td class="hb-label">作成日</td>
+    <td class="hb-val">2026/07/19</td>
+    <td class="hb-label">作成者</td>
+    <td class="hb-val">Nguyen Minh Tri</td>
+  </tr>
+</table>
+<div class="doc-body">
+<h1 class="doc-title">運用保守手順書</h1><p>Project Management System（プロジェクト管理システム）</p><div class="section-title">■ 文書管理情報</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>システム名</td><td>Project Management System</td></tr><tr><td>文書名</td><td>運用保守手順書</td></tr><tr><td>文書番号</td><td>PMS-020</td></tr><tr><td>作成者</td><td>Nguyen Minh Tri</td></tr><tr><td>作成日</td><td>2026/07/19</td></tr><tr><td>バージョン</td><td>1.0</td></tr><tr><td>ステータス</td><td>Draft</td></tr></tbody></table><div class="section-title">■ 改訂履歴</div><table><thead><tr><th>Version</th><th>日付</th><th>作成者</th><th>内容</th></tr></thead><tbody><tr><td>0.0</td><td>2026/07/17</td><td>Nguyen Minh Tri</td><td>スケルトン作成</td></tr><tr><td>1.0</td><td>2026/07/19</td><td>Nguyen Minh Tri</td><td>初版作成。11/12/13/14/16/19章が本書へ委ねていた運用手順（S3孤児棚卸・Reverb障害復旧・監査ログ調査・Admin無効化）を集約。執筆中に発見した論点は<code><a href="14_セキュリティ設計_Project_Management_System.html">14_セキュリティ設計.md</a></code> v1.1へ還元済み</td></tr></tbody></table><div class="section-title">■ 目次</div><ol><li>本書の目的</li><li>運用方針</li><li>日次運用タスク</li><li>週次・月次運用タスク</li><li>監視・アラート対応</li><li>権限・認可関連の障害対応（重点）</li><li>カンバン・通知関連の障害対応（重点）</li><li>ファイル・S3関連の運用（孤児オブジェクト棚卸）</li><li>Reverb障害対応（bonus）</li><li>バックアップ・リストア手順</li><li>セキュリティ運用</li><li>定期メンテナンス（Maintenance Window）</li><li>変更管理・エスカレーション</li><li>トレーサビリティ</li><li>まとめ</li></ol><div class="section-title">■ 1. 本書の目的</div><p>本書はProject Management Systemの日常運用・障害対応の手順を定義する。Project 02（EC）が決済・在庫を重点としたのに対し、本プロジェクトは<strong>権限（IDOR）・カンバンの整合・S3孤児オブジェクト・Reverb（bonus）</strong>を重点的に定義する。設計フェーズを通じて<code><a href="20_運用保守手順書_Project_Management_System.html">20_運用保守手順書.md</a></code>へ委ねられていた項目（11章14.2節のS3孤児棚卸、13章のバッチ監視、14章のAudit調査、19章のロールバック後始末）はすべて本書に集約する。</p><div class="section-title">■ 2. 運用方針</div><table><thead><tr><th>方針ID</th><th>方針</th><th>内容</th></tr></thead><tbody><tr><td>OPS-POL-001</td><td>ログ起点の調査</td><td>障害発生時はauditチャンネル（<code><a href="14_セキュリティ設計_Project_Management_System.html">14_セキュリティ設計.md</a></code> 11章）とアプリケーションログを起点に原因を特定する。</td></tr><tr><td>OPS-POL-002</td><td>越権影響の最優先確認</td><td>権限関連の障害報告は、まず「他プロジェクトのデータが見えた/操作できたか」を最優先で確認する（金銭被害に相当する最重要区分）。</td></tr><tr><td>OPS-POL-003</td><td>bonus切り離し</td><td>Reverb障害はコア機能（DB通知・ポーリング）に影響しないことを前提に、優先度を落として対応する（<code><a href="00_開発計画書_Project_Management_System.html">00_開発計画書.md</a></code>のリスク対策方針）。</td></tr></tbody></table><div class="section-title">■ 3. 日次運用タスク</div><pre class="ascii"><code>□ /api/health 死活確認
+□ auditログでログイン失敗（E001）の当日件数を確認（総当たり攻撃の兆候がないか、14 4.6節のレートリミットが機能しているか）
+□ notifications の task_due_soon が当日分作成されているか確認（SendDueSoonNotificationsの稼働確認）
+□ Reverbコンテナの稼働状態確認（bonus、停止していてもコアは継続するが早期発見のため）</code></pre><div class="section-title">■ 4. 週次・月次運用タスク</div><pre class="ascii"><code>週次:
+□ RDSディスク使用率確認
+□ S3ストレージ使用量確認（BR-FIL-001のサイズ制限が効いていても、件数増加でのコスト増を監視 — 01_企画書 15章コストリスク）
+□ S3孤児オブジェクトの棚卸（8章参照）
+
+月次:
+□ アーカイブ済みプロジェクト数の確認（長期放置プロジェクトの把握、Admin強制アーカイブの要否判断）
+□ 無効化ユーザー一覧の棚卸（不要な無効化アカウントが残っていないか）
+□ composer audit / npm audit の手動実行（CIの検知漏れがないか、13_インフラ設計 16章と別に月次でも確認）</code></pre><div class="section-title">■ 5. 監視・アラート対応</div><table><thead><tr><th>監視対象</th><th>内容</th></tr></thead><tbody><tr><td>CPU / Memory / Disk</td><td>Project 01/02と同一</td></tr><tr><td>ログイン失敗率</td><td>E001の直近1時間の件数を将来的にCloudWatchアラート化（<code><a href="14_セキュリティ設計_Project_Management_System.html">14_セキュリティ設計.md</a></code> 4.6節のレートリミットと二段構え）</td></tr><tr><td>バッチ実行</td><td>schedulerログで毎時のSendDueSoonNotifications実行を確認（欠落は6章参照）</td></tr><tr><td>Reverb接続数・切断</td><td>bonusスコープ。ログベースの事後確認で足りる（<code><a href="13_インフラ設計_Project_Management_System.html">13_インフラ設計.md</a></code> 15章）</td></tr><tr><td>S3ストレージ使用量</td><td>急激な増加はアップロード制限（BR-FIL-001）の回避試行を疑う</td></tr></tbody></table><p>将来的にCloudWatch/Slack通知への拡張を想定する（<code><a href="13_インフラ設計_Project_Management_System.html">13_インフラ設計.md</a></code> 15章）。</p><div class="section-title">■ 6. 権限・認可関連の障害対応（重点）</div><div class="subsection-title">6.1 IDOR疑い（他プロジェクトのデータが見えた/操作できたとの報告）</div><pre class="ascii"><code>1. 報告された画面・APIエンドポイントを特定する
+2. 当該APIがスコープ付きルートバインディング（12_詳細設計書 8章）配下にあるか確認する
+   → 配下にない新規APIの場合、バインディング未実装がバグの直接原因である可能性が高い
+3. auditログで実際に発行されたリクエストのuser_id・対象project_idを確認する
+4. 15_単体試験仕様書 8章の該当セル（UT-PRM-xx）を再実行し、Fail箇所を特定する
+5. 修正後、8章の権限マトリクス全セル（80セル）を再実行してから緊急リリースする（部分修正が
+   他のセルを壊していないことの確認 — 権限まわりの修正は必ず全数再試験、部分試験で済ませない）</code></pre><div class="subsection-title">6.2 最後のOwner消失・Owner不在プロジェクトの発生</div><pre class="ascii"><code>1. project_membersでrole=ownerが0件のプロジェクトをクエリで特定する
+   （BR-PRJ-002のロック（12_詳細設計書 11章）が機能していれば理論上発生しない。発生していれば
+    MemberService::changeRole/removeOrLeaveのロック漏れをバグとして最優先で調査）
+2. 発生していた場合、当該プロジェクトの最古のメンバー（project_membersのcreated_at最小）を
+   一時的にAdminがDB操作でOwnerへ復帰させる（API経由の復旧手段がないための例外対応。実施内容は
+   auditログに手動で追記する）
+3. 原因コードを緊急修正し、15_単体試験仕様書 UT-MBR-009（Concurrency試験）を再実行してから
+   リリースする</code></pre><div class="subsection-title">6.3 Admin無効化後もログインできてしまう（14 v1.1 4.4節の実装漏れ疑い）</div><pre class="ascii"><code>1. 該当ユーザーのpersonal_access_tokensが無効化操作時に削除されているか確認する
+2. 削除されていない場合、UserService（Admin無効化処理）がトークン削除を欠落させている実装バグとして扱う
+   （14_セキュリティ設計.md 4.4節で確定済みの仕様 — 「無効化=即時失効」からの逸脱）
+3. 応急対応として該当ユーザーのトークンを手動でDBから削除する
+4. 16_結合試験仕様書 IT-SCN-005を再実行してから修正をリリースする</code></pre><div class="section-title">■ 7. カンバン・通知関連の障害対応（重点）</div><div class="subsection-title">7.1 カンバンのposition重複・順序崩れ</div><pre class="ascii"><code>1. 対象プロジェクト×ステータス列のtasksをposition昇順で取得し、重複・逆転を確認する
+   （12_詳細設計書 5.6のFOR UPDATE直列化が機能していれば理論上発生しない）
+2. 発生していた場合、該当列を1024刻みで手動リナンバリングする（09_テーブル定義 11章-1と同じロジック:
+   ORDER BY position, id で暫定順序を確定し、上から1024,2048,...を振り直す）
+3. 原因が同時アクセスであれば、15_単体試験仕様書 UT-MOV-006を再実行して直列化を再確認する</code></pre><div class="subsection-title">7.2 通知が来ない・二重に来る</div><pre class="ascii"><code>1. 「来ない」場合:
+   a. notify()の3条件（recipient非null・本人以外・NotificationService呼び出し自体の到達）を
+      アプリログで確認する（12_詳細設計書 5.12）
+   b. Reverb経由の場合はbonus障害の可能性が高い — 9章の手順でReverbを確認し、コア（ポーリング）
+      側は正常か切り分ける
+2. 「二重に来る」場合:
+   a. task_due_soonであればSendDueSoonNotificationsの重複防止チェック（09_テーブル定義 11章-2）の
+      INDEX(task_id, type)が外れていないか確認する
+   b. task_assigned/task_commentedであれば、afterCommitの二重登録（12_詳細設計書 5.12-4）が
+      疑われるため、該当Serviceのトランザクション境界を確認する</code></pre><div class="section-title">■ 8. ファイル・S3関連の運用（孤児オブジェクト棚卸）</div><p><code><a href="11_基本設計書_Project_Management_System.html">11_基本設計書.md</a></code> 14.2節・<code><a href="13_インフラ設計_Project_Management_System.html">13_インフラ設計.md</a></code> 12章・<code><a href="16_結合試験仕様書_Project_Management_System.html">16_結合試験仕様書.md</a></code> IT-S3-007が本節へ委ねた運用手順。DBが正・S3孤児許容の設計上、<strong>孤児オブジェクトの発生自体は異常ではない</strong>（アップロード失敗時のロールバック、削除時のS3側エラー等で発生しうる正常な副産物）。</p><pre class="ascii"><code>1. 週次でS3バケット（pms-task-files-prod）のオブジェクト一覧を取得する
+2. task_filesテーブルのs3_key全件と突き合わせ、DBに存在しないS3キーを抽出する
+3. 抽出されたオブジェクトが直近7日以内に作成されたものは対象外とする
+   （アップロード処理の完了待ち・削除処理のタイムラグの可能性があるため）
+4. 7日以上前のものを孤児オブジェクトと確定し、削除する（または調査用に一時退避してから削除）
+5. 孤児化件数が急激に増加している場合、11_基本設計書14.2節のDB↔S3順序処理でエラーが
+   頻発している兆候のため、アプリログのS3操作失敗ログを調査する</code></pre><div class="section-title">■ 9. Reverb障害対応（bonus）</div><p><code><a href="19_リリース手順書_Project_Management_System.html">19_リリース手順書.md</a></code> 8章が本節へ委ねた復旧手順。OPS-POL-003に従い、コア機能への影響がないことを前提に対応する。</p><pre class="ascii"><code>1. docker compose ps でreverbコンテナの状態を確認する
+2. 停止していた場合、docker compose up -d reverb で再起動する
+3. 再起動後、Nginx経由のwss接続が確立するか確認する（16_結合試験仕様書 IT-WS-007相当の手動確認）
+4. SPA側は自動的にポーリング（30秒間隔）へ縮退しているため、復旧まではユーザー影響を「通知の
+   反映が最大30秒遅れる」程度に抑えられていることを確認する（BR-NTF-006 — 復旧を急ぐ必要はない）
+5. 頻発する場合、EC2のメモリ・CPU余力を確認する（t3.micro上での複数コンテナ同居によるリソース
+   逼迫が疑われる — 13_インフラ設計 19章のコスト制約とのトレードオフ、将来的なインスタンス
+   タイプ見直しの判断材料とする）</code></pre><div class="section-title">■ 10. バックアップ・リストア手順</div><table><thead><tr><th>対象</th><th>方針</th></tr></thead><tbody><tr><td>RDS</td><td>自動バックアップ（保持7日間、Project 01/02と同一）。NFR-006（RPO最大1日）に対応</td></tr><tr><td>S3</td><td>バージョニングを有効化し、誤削除からの復旧を可能にする</td></tr><tr><td>コード</td><td>GitHubリポジトリで管理</td></tr></tbody></table><p>詳細は<code><a href="13_インフラ設計_Project_Management_System.html">13_インフラ設計.md</a></code> 12章を参照。リストア実施時は<code><a href="19_リリース手順書_Project_Management_System.html">19_リリース手順書.md</a></code> 10章のロールバック手順と合わせて実施する。</p><div class="section-title">■ 11. セキュリティ運用</div><p><code><a href="14_セキュリティ設計_Project_Management_System.html">14_セキュリティ設計.md</a></code> 11章（監査ログ）・12章（脆弱性管理）を参照。加えて以下を運用ルールとする。</p><pre class="ascii"><code>□ composer audit / npm audit のHigh以上検出時は月次待ちにせず即座に対応する（4章の月次確認は補完的位置づけ）
+□ Admin無効化操作は必ずauditログに記録され、記録内容にパスワード・トークンが含まれないことを
+  四半期に1回サンプル確認する（14_セキュリティ設計 11章）
+□ REVERB_APP_SECRET・AWSキーのローテーションは年1回を目安に実施する</code></pre><div class="section-title">■ 12. 定期メンテナンス（Maintenance Window）</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>対象作業</td><td>DBマイグレーション（破壊的変更）、依存パッケージの大型アップデート、AWSインフラ構成変更（<code><a href="19_リリース手順書_Project_Management_System.html">19_リリース手順書.md</a></code> 6章のマイグレーション手順を伴う場合）</td></tr><tr><td>実施可否の判断基準</td><td><code><a href="19_リリース手順書_Project_Management_System.html">19_リリース手順書.md</a></code> 4章のリリース前チェックリストで「マイグレーションあり」に該当する場合は本節の手順に従う。追加のみ・後方互換のあるマイグレーションはメンテナンスウィンドウ不要</td></tr><tr><td>実施時間帯</td><td>個人開発かつ商用トラフィックがまだ存在しないため固定の時間帯は定めない。将来一般公開後は深夜帯に設定する想定</td></tr><tr><td>事前通知</td><td>商用ローンチ後を想定した方針: SPAログイン画面へのバナー表示 + 実施予定日時をリリースノートに記載。現状（学習用途・利用者なし）は本手順を省略してよい</td></tr><tr><td>実施中の状態</td><td><code><a href="19_リリース手順書_Project_Management_System.html">19_リリース手順書.md</a></code> 5章のデプロイ手順に従う。Reverb再起動を伴う場合、9章のとおりSPAはポーリングへ自動縮退するため事前の特別対応は不要</td></tr><tr><td>ロールバック</td><td>メンテナンス作業中に問題が発生した場合は<code><a href="19_リリース手順書_Project_Management_System.html">19_リリース手順書.md</a></code> 10章の手順に従う</td></tr><tr><td>実施記録</td><td>実施日時・作業内容・所要時間を本節末尾または別途運用ログに追記する（現状は未実施のため記録なし）</td></tr></tbody></table><div class="section-title">■ 13. 変更管理・エスカレーション</div><p>個人開発プロジェクトのため、変更管理・承認フローは簡略化する。ただし<strong>権限・認可に関わる変更</strong>（Policy・スコープ付きバインディング・Middleware）は、必ず<code><a href="15_単体試験仕様書_Project_Management_System.html">15_単体試験仕様書.md</a></code> 8章の権限マトリクス80セル<strong>全数</strong>を再実行してからリリースする（6.1節と同一方針 — 部分試験での見切りリリースを禁止する）。</p><div class="section-title">■ 14. トレーサビリティ</div><table><thead><tr><th>上流が本書へ委ねた項目</th><th>本書の章</th></tr></thead><tbody><tr><td>11_基本設計書 14.2節（S3孤児棚卸）</td><td>8章</td></tr><tr><td>13_インフラ設計 12章（バックアップ）</td><td>10章</td></tr><tr><td>13_インフラ設計 15章（監視のCloudWatch拡張）</td><td>5章</td></tr><tr><td>14_セキュリティ設計 11章（監査ログ運用）</td><td>11章</td></tr><tr><td>16_結合試験仕様書 IT-S3-007（孤児対象）</td><td>8章</td></tr><tr><td>16_結合試験仕様書 IT-SCN-005（Admin無効化のトークン挙動、14 v1.1で確定済み）</td><td>6.3節</td></tr><tr><td>19_リリース手順書 8章（Reverb復旧）</td><td>9章</td></tr><tr><td>19_リリース手順書 10章（ロールバック後のS3孤児）</td><td>8章</td></tr></tbody></table><div class="section-title">■ 15. まとめ</div><p>本書はProject 02（決済・在庫中心）と対照的に、<strong>権限（IDOR）・カンバン整合・S3孤児・bonus隔離</strong>の4点を運用の重点とした。6章の障害対応はいずれも「発生した場合は設計上のロック・スコープ・トランザクション境界のどこかが破れている」ことを意味するため、応急対応で終わらせず必ず該当する単体/結合試験を再実行してからリリースする方針を徹底する。これにより21文書構成（PMS-000〜020）の設計フェーズを完了する。</p>
+</div>
+<div class="doc-footer">DOC-ID: PMS-020 ・ Project Management System ・ Draft</div>
+<div class="no-print"><a class="nav-back-top" href="#top">▲ ページ先頭へ</a></div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+</body>
+</html>

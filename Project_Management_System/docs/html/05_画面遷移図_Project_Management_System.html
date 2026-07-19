@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>画面遷移図 - Project Management System</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/mermaid.min.js"></script>
+</head>
+<body id="top">
+<nav class="doc-nav no-print">
+  <div class="nav-row nav-row-adjacent">
+    <a class="nav-adjacent" href="04_業務フロー_Project_Management_System.html">← 04 業務フロー</a>
+    <a class="nav-index" href="index.html">目次</a>
+    <a class="nav-adjacent" href="06_画面設計_Project_Management_System.html">06 画面設計 →</a>
+  </div>
+  <div class="nav-row nav-row-chips"><a class="nav-chip" href="00_開発計画書_Project_Management_System.html" title="開発計画書">00</a><a class="nav-chip" href="01_企画書_Project_Management_System.html" title="企画書">01</a><a class="nav-chip" href="02_要件定義書_Project_Management_System.html" title="要件定義書">02</a><a class="nav-chip" href="03_ユースケース_Project_Management_System.html" title="ユースケース">03</a><a class="nav-chip" href="04_業務フロー_Project_Management_System.html" title="業務フロー">04</a><a class="nav-chip nav-chip-current" href="05_画面遷移図_Project_Management_System.html" title="画面遷移図">05</a><a class="nav-chip" href="06_画面設計_Project_Management_System.html" title="画面設計">06</a><a class="nav-chip" href="07_機能一覧_Project_Management_System.html" title="機能一覧">07</a><a class="nav-chip" href="08_ER図_Project_Management_System.html" title="ER図">08</a><a class="nav-chip" href="09_テーブル定義_Project_Management_System.html" title="テーブル定義">09</a><a class="nav-chip" href="10_API設計_Project_Management_System.html" title="API設計">10</a><a class="nav-chip" href="11_基本設計書_Project_Management_System.html" title="基本設計書">11</a><a class="nav-chip" href="12_詳細設計書_Project_Management_System.html" title="詳細設計書">12</a><a class="nav-chip" href="13_インフラ設計_Project_Management_System.html" title="インフラ設計">13</a><a class="nav-chip" href="14_セキュリティ設計_Project_Management_System.html" title="セキュリティ設計">14</a><a class="nav-chip" href="15_単体試験仕様書_Project_Management_System.html" title="単体試験仕様書">15</a><a class="nav-chip" href="16_結合試験仕様書_Project_Management_System.html" title="結合試験仕様書">16</a><a class="nav-chip" href="17_システム試験仕様書_Project_Management_System.html" title="システム試験仕様書">17</a><a class="nav-chip" href="18_UAT_Project_Management_System.html" title="UAT">18</a><a class="nav-chip" href="19_リリース手順書_Project_Management_System.html" title="リリース手順書">19</a><a class="nav-chip" href="20_運用保守手順書_Project_Management_System.html" title="運用保守手順書">20</a></div>
+</nav>
+<table class="doc-header-bar">
+  <tr>
+    <td class="hb-type" rowspan="2">画面遷移図</td>
+    <td class="hb-sys" rowspan="2">Project Management System</td>
+    <td class="hb-label">文書番号</td>
+    <td class="hb-val">PMS-005</td>
+    <td class="hb-label">バージョン</td>
+    <td class="hb-val">1.0</td>
+  </tr>
+  <tr>
+    <td class="hb-label">作成日</td>
+    <td class="hb-val">2026/07/17</td>
+    <td class="hb-label">作成者</td>
+    <td class="hb-val">Nguyen Minh Tri</td>
+  </tr>
+</table>
+<div class="doc-body">
+<h1 class="doc-title">画面遷移図</h1><p>Project Management System（プロジェクト管理システム）</p><div class="section-title">■ 文書管理情報</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>システム名</td><td>Project Management System</td></tr><tr><td>文書名</td><td>画面遷移図</td></tr><tr><td>文書番号</td><td>PMS-005</td></tr><tr><td>作成者</td><td>Nguyen Minh Tri</td></tr><tr><td>作成日</td><td>2026/07/17</td></tr><tr><td>バージョン</td><td>1.0</td></tr><tr><td>ステータス</td><td>Draft</td></tr></tbody></table><div class="section-title">■ 改訂履歴</div><table><thead><tr><th>Version</th><th>日付</th><th>作成者</th><th>内容</th></tr></thead><tbody><tr><td>0.0</td><td>2026/07/17</td><td>Nguyen Minh Tri</td><td>スケルトン作成</td></tr><tr><td>1.0</td><td>2026/07/17</td><td>Nguyen Minh Tri</td><td>初版作成（SPA前提のルートパス列を追加。SCR-005のURL直リンク化 — 通知遷移先の要件 — を確定）</td></tr></tbody></table><div class="section-title">■ 目次</div><ol><li>本書の目的</li><li>画面ID一覧（ルートパス付き）</li><li>認証済みユーザー向け画面遷移図</li><li>Admin向け画面遷移図</li><li>Role別ナビゲーション</li><li>条件付き遷移（ナビゲーションガード）</li><li>まとめ</li></ol><div class="section-title">■ 1. 本書の目的</div><p>Project Management Systemの全12画面について、画面ID・SPAルートパス・遷移条件を定義する。本システムはVue 3 SPAのため、「画面遷移」はVue Routerのルート遷移として実装される。ページ・モーダル・パネルの別と、ナビゲーションガード（6章）の適用条件を本書で確定する。</p><div class="section-title">■ 2. 画面ID一覧（ルートパス付き）</div><table><thead><tr><th>画面ID</th><th>画面名</th><th>対象ユーザー</th><th>形態</th><th>ルートパス</th></tr></thead><tbody><tr><td>SCR-001</td><td>ログイン画面</td><td>全ユーザー</td><td>ページ</td><td><code>/login</code></td></tr><tr><td>SCR-002</td><td>会員登録画面</td><td>未認証ユーザー</td><td>ページ</td><td><code>/register</code></td></tr><tr><td>SCR-003</td><td>プロジェクト一覧（ホーム）</td><td>認証済みユーザー</td><td>ページ</td><td><code>/projects</code></td></tr><tr><td>SCR-004</td><td>カンバンボード</td><td>Owner / Member</td><td>ページ</td><td><code>/projects/:projectId/board</code></td></tr><tr><td>SCR-005</td><td>タスク詳細</td><td>Owner / Member</td><td>パネル（<strong>URL直リンク可</strong>）</td><td><code>/projects/:projectId/tasks/:taskId</code></td></tr><tr><td>SCR-006</td><td>タスク作成</td><td>Owner / Member</td><td>モーダル（独自ルートなし）</td><td>-（SCR-004上で開く）</td></tr><tr><td>SCR-007</td><td>メンバー管理</td><td>Owner（閲覧はMember可）</td><td>ページ</td><td><code>/projects/:projectId/members</code></td></tr><tr><td>SCR-008</td><td>プロジェクト設定</td><td>Owner</td><td>ページ</td><td><code>/projects/:projectId/settings</code></td></tr><tr><td>SCR-009</td><td>通知一覧</td><td>認証済みユーザー</td><td>ドロップダウン + ページ</td><td><code>/notifications</code></td></tr><tr><td>SCR-010</td><td>マイページ</td><td>認証済みユーザー</td><td>ページ</td><td><code>/mypage</code></td></tr><tr><td>SCR-011</td><td>ユーザー管理（Admin）</td><td>Admin</td><td>ページ</td><td><code>/admin/users</code></td></tr><tr><td>SCR-012</td><td>プロジェクト管理（Admin）</td><td>Admin</td><td>ページ</td><td><code>/admin/projects</code></td></tr></tbody></table><p><strong>設計判断（SCR-005のURL直リンク化）</strong>: タスク詳細はカンバン上のパネルとして表示するが、<strong>独自のルートパスを持つ</strong>。理由: 通知（UC-015）の遷移先として「特定タスクへ直接飛べるURL」が必須であり、チャット等へのリンク共有（メンバー間）にも使えるため。パネルUIとURLの両立はVue Routerのネストされたルートで実現する（<code><a href="12_詳細設計書_Project_Management_System.html">12_詳細設計書.md</a></code>）。逆にSCR-006（タスク作成）は一時的な入力状態でありURL化しない。</p><div class="section-title">■ 3. 認証済みユーザー向け画面遷移図</div><div class="mermaid">
+flowchart TD
+    SCR001["SCR-001 ログイン"]
+    SCR002["SCR-002 会員登録"]
+    SCR003["SCR-003 プロジェクト一覧"]
+    SCR004["SCR-004 カンバンボード"]
+    SCR005["SCR-005 タスク詳細"]
+    SCR006["SCR-006 タスク作成（モーダル）"]
+    SCR007["SCR-007 メンバー管理"]
+    SCR008["SCR-008 プロジェクト設定"]
+    SCR009["SCR-009 通知一覧"]
+    SCR010["SCR-010 マイページ"]
+
+    SCR001 --&gt;|未登録| SCR002
+    SCR002 --&gt;|登録完了（自動ログイン）| SCR003
+    SCR001 --&gt;|ログイン成功（未認証時の直リンクはログイン後に元のURLへ復帰）| SCR003
+
+    SCR003 --&gt;|プロジェクト選択| SCR004
+    SCR003 --&gt;|新規プロジェクト作成 → 作成後| SCR004
+
+    SCR004 --&gt;|タスクカード選択| SCR005
+    SCR004 --&gt;|タスク作成ボタン| SCR006
+    SCR006 --&gt;|作成完了| SCR004
+    SCR005 --&gt;|閉じる| SCR004
+
+    SCR004 --&gt;|メンバータブ| SCR007
+    SCR004 --&gt;|設定タブ（Ownerのみ表示）| SCR008
+    SCR007 &lt;--&gt; SCR008
+
+    SCR009 --&gt;|通知選択| SCR005
+    SCR003 --&gt; SCR010
+
+    SCR004 --&gt; SCR003
+    SCR007 --&gt; SCR004
+    SCR008 --&gt; SCR004
+</div><p>ヘッダー（共通レイアウト、<code><a href="06_画面設計_Project_Management_System.html">06_画面設計.md</a></code> 3章）の通知アイコン・マイページメニューは全認証済み画面からSCR-009/SCR-010へ遷移できる（図では代表としてSCR-003からの線のみ記載）。</p><div class="section-title">■ 4. Admin向け画面遷移図</div><div class="mermaid">
+flowchart TD
+    SCR001["SCR-001 ログイン"]
+    SCR011["SCR-011 ユーザー管理"]
+    SCR012["SCR-012 プロジェクト管理"]
+    SCR010["SCR-010 マイページ"]
+
+    SCR001 --&gt;|Adminログイン成功| SCR011
+    SCR011 &lt;--&gt; SCR012
+    SCR011 --&gt; SCR010
+    SCR012 --&gt; SCR010
+</div><p>Adminは業務画面（SCR-003〜009）のナビゲーションを持たない（BR-PRM-004: 運用限定。プロジェクトIDを直接指定してもE007 — <code><a href="03_ユースケース_Project_Management_System.html">03_ユースケース.md</a></code> UC-005 2-b）。</p><div class="section-title">■ 5. Role別ナビゲーション</div><table><thead><tr><th>メニュー</th><th>未認証</th><th>認証済みユーザー</th><th>Admin</th></tr></thead><tbody><tr><td>ログイン / 会員登録</td><td>〇</td><td>-（ログアウト後に表示）</td><td>-</td></tr><tr><td>プロジェクト一覧</td><td>×</td><td>〇</td><td>×</td></tr><tr><td>カンバン / タスク / メンバー / 設定</td><td>×</td><td>〇（参加プロジェクトのみ。設定タブはOwnerのみ表示）</td><td>×</td></tr><tr><td>通知</td><td>×</td><td>〇</td><td>〇（自分宛のみ。運用上ほぼ空）</td></tr><tr><td>マイページ</td><td>×</td><td>〇</td><td>〇</td></tr><tr><td>ユーザー管理 / プロジェクト管理</td><td>×</td><td>×</td><td>〇</td></tr></tbody></table><p><strong>注</strong>: 「設定タブはOwnerのみ表示」はUI上の配慮であり、権限の実体はAPI側のPolicy判定（BR-PRM-003）。URLを直接叩いたMemberにはE002を返し、フロントは権限エラー画面を表示する（6章 G-04）。</p><div class="section-title">■ 6. 条件付き遷移（ナビゲーションガード）</div><p>SPAのため、遷移条件はVue Routerのナビゲーションガード + API応答エラーの2段階で守る。ガードIDは<code><a href="12_詳細設計書_Project_Management_System.html">12_詳細設計書.md</a></code>（フロントエンド設計）で実装と対応付ける。</p><table><thead><tr><th>ガードID</th><th>対象ルート</th><th>条件</th><th>不成立時の挙動</th></tr></thead><tbody><tr><td>G-01</td><td><code>/login</code> <code>/register</code>以外の全ルート</td><td>認証済み（トークン保持）であること</td><td><code>/login</code>へリダイレクト。ログイン成功後、元のURLへ復帰（クエリ<code>redirect</code>）</td></tr><tr><td>G-02</td><td><code>/login</code> <code>/register</code></td><td>未認証であること</td><td>認証済みなら<code>/projects</code>（Adminは<code>/admin/users</code>）へリダイレクト</td></tr><tr><td>G-03</td><td><code>/projects/:projectId/*</code></td><td>当該プロジェクトのメンバーであること（INC-002）</td><td>API応答E007を受け、<code>/projects</code>へ戻し「プロジェクトが見つかりません」を表示（存在秘匿、BR-PRM-006）</td></tr><tr><td>G-04</td><td><code>/projects/:projectId/settings</code></td><td>Ownerであること</td><td>API応答E002を受け、権限エラー表示（対象の存在は隠さない — メンバーではあるため）</td></tr><tr><td>G-05</td><td><code>/admin/*</code></td><td><code>users.role=admin</code>であること</td><td>E002。一般ユーザーには管理メニュー自体を表示しない</td></tr><tr><td>G-06</td><td>書込操作全般（遷移ではなく操作ガード）</td><td>プロジェクトが<code>status=active</code>であること</td><td>E006を受け、「アーカイブ済みのため読取専用です」バナーを表示（BR-PRJ-003）</td></tr><tr><td>G-07</td><td><code>/projects/:projectId/tasks/:taskId</code></td><td>タスクが存在すること</td><td>削除済み・不存在はE007を受け、ボードへ戻し「タスクが見つかりません」を表示（UC-015 3-a: 通知からの遷移で発生し得る）</td></tr></tbody></table><div class="section-title">■ 7. まとめ</div><p>全12画面のうち、業務の中心はSCR-004（カンバンボード）であり、タスク詳細・作成・メンバー・設定はすべてボードを起点に放射状に配置した（OOUI: プロジェクトという対象を選んでから操作する構造）。SPA特有の設計判断として、①SCR-005のURL直リンク化（通知遷移の要件）、②ガードを「フロントのルートガード + APIのPolicy判定」の二重防御とし、権限の実体は常にAPI側に置くこと、の2点を確定した。</p>
+</div>
+<div class="doc-footer">DOC-ID: PMS-005 ・ Project Management System ・ Draft</div>
+<div class="no-print"><a class="nav-back-top" href="#top">▲ ページ先頭へ</a></div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+</body>
+</html>
