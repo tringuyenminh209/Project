@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>システム試験仕様書 - EC Site</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/mermaid.min.js"></script>
+</head>
+<body id="top">
+<nav class="doc-nav no-print">
+  <div class="nav-row nav-row-adjacent">
+    <a class="nav-adjacent" href="16_結合試験仕様書_EC_Site.html">← 16 結合試験仕様書</a>
+    <a class="nav-index" href="index.html">目次</a>
+    <a class="nav-adjacent" href="18_UAT_EC_Site.html">18 UAT仕様書 →</a>
+  </div>
+  <div class="nav-row nav-row-chips"><a class="nav-chip" href="00_開発計画書_EC_Site.html" title="📋 開発計画書">00</a><a class="nav-chip" href="01_企画書_EC_Site.html" title="企画書">01</a><a class="nav-chip" href="02_要件定義書_EC_Site.html" title="要件定義書">02</a><a class="nav-chip" href="03_ユースケース_EC_Site.html" title="ユースケース">03</a><a class="nav-chip" href="04_業務フロー_EC_Site.html" title="業務フロー">04</a><a class="nav-chip" href="05_画面遷移図_EC_Site.html" title="画面遷移図">05</a><a class="nav-chip" href="06_画面設計_EC_Site.html" title="画面設計">06</a><a class="nav-chip" href="07_機能一覧_EC_Site.html" title="機能一覧">07</a><a class="nav-chip" href="08_ER図_EC_Site.html" title="ER図">08</a><a class="nav-chip" href="09_テーブル定義_EC_Site.html" title="テーブル定義">09</a><a class="nav-chip" href="10_API設計_EC_Site.html" title="API設計">10</a><a class="nav-chip" href="11_基本設計書_EC_Site.html" title="基本設計書">11</a><a class="nav-chip" href="12_詳細設計書_EC_Site.html" title="詳細設計書">12</a><a class="nav-chip" href="13_インフラ設計_EC_Site.html" title="インフラ設計">13</a><a class="nav-chip" href="14_セキュリティ設計_EC_Site.html" title="セキュリティ設計">14</a><a class="nav-chip" href="15_単体試験仕様書_EC_Site.html" title="単体試験仕様書">15</a><a class="nav-chip" href="16_結合試験仕様書_EC_Site.html" title="結合試験仕様書">16</a><a class="nav-chip nav-chip-current" href="17_システム試験仕様書_EC_Site.html" title="システム試験仕様書">17</a><a class="nav-chip" href="18_UAT_EC_Site.html" title="UAT仕様書">18</a><a class="nav-chip" href="19_リリース手順書_EC_Site.html" title="リリース手順書">19</a><a class="nav-chip" href="20_運用保守手順書_EC_Site.html" title="運用保守手順書">20</a></div>
+</nav>
+<table class="doc-header-bar">
+  <tr>
+    <td class="hb-type" rowspan="2">システム試験仕様書</td>
+    <td class="hb-sys" rowspan="2">EC Site</td>
+    <td class="hb-label">文書番号</td>
+    <td class="hb-val">EC-017</td>
+    <td class="hb-label">バージョン</td>
+    <td class="hb-val">1.0</td>
+  </tr>
+  <tr>
+    <td class="hb-label">作成日</td>
+    <td class="hb-val">2026/07/13</td>
+    <td class="hb-label">作成者</td>
+    <td class="hb-val">Nguyen Minh Tri</td>
+  </tr>
+</table>
+<div class="doc-body">
+<h1 class="doc-title">システム試験仕様書</h1><p>EC Site（ECサイト構築プロジェクト）</p><div class="section-title">■ 文書管理情報</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>システム名</td><td>EC Site</td></tr><tr><td>文書名</td><td>システム試験仕様書</td></tr><tr><td>文書番号</td><td>EC-017</td></tr><tr><td>作成者</td><td>Nguyen Minh Tri</td></tr><tr><td>作成日</td><td>2026/07/13</td></tr><tr><td>バージョン</td><td>1.0</td></tr><tr><td>ステータス</td><td>Draft</td></tr></tbody></table><div class="section-title">■ 改訂履歴</div><table><thead><tr><th>Version</th><th>日付</th><th>作成者</th><th>内容</th></tr></thead><tbody><tr><td>1.0</td><td>2026/07/13</td><td>Nguyen Minh Tri</td><td>初版作成</td></tr></tbody></table><div class="section-title">■ 目次</div><ol><li>本書の目的</li><li>試験方針</li><li>試験環境</li><li>E2Eシナリオ試験</li><li>ロール別シナリオ試験</li><li>障害回復試験</li><li>性能試験（簡易）</li><li>障害一覧表</li><li>トレーサビリティ</li><li>まとめ</li></ol><div class="section-title">■ 1. 本書の目的</div><p>実際のブラウザ操作に近い形で、Login〜購入〜配送〜レビューまでの一連の業務フローが期待通り動作することをシステム全体として確認する。</p><div class="section-title">■ 2. 試験方針</div><table><thead><tr><th>方針ID</th><th>方針</th><th>内容</th></tr></thead><tbody><tr><td>ST-POL-001</td><td>E2E</td><td>実際の画面操作の連鎖で確認する。</td></tr><tr><td>ST-POL-002</td><td>Role Based</td><td>Guest / Customer / Adminそれぞれの視点でシナリオを作成する。</td></tr><tr><td>ST-POL-003</td><td>Recovery</td><td>決済失敗・在庫切れ等の異常系からの復旧動線を確認する。</td></tr></tbody></table><div class="section-title">■ 3. 試験環境</div><p>Docker Compose環境（Local）またはAWS Development環境。Stripe Sandbox、S3（またはMinIO代替）を使用する。</p><div class="section-title">■ 4. E2Eシナリオ試験</div><div class="subsection-title">ST-SCN-001 Guest→購入完了</div><pre class="ascii"><code>1. Guestとして商品一覧を閲覧する
+2. 商品詳細でバリエーションを選択しカートに追加を試みる → ログイン画面へ誘導される
+3. 会員登録する
+4. 再度カートに追加する
+5. カート画面で数量を確認し注文手続きへ進む
+6. 配送先を新規登録し、クーポンコードを適用する
+7. 注文を確定する
+8. Stripeテストカード（成功用）で決済する
+9. 注文完了画面が表示され、注文番号が発行される
+10. 注文履歴で該当注文がpaidステータスで確認できる
+期待結果: 全ステップが例外なく完了し、在庫が正しく減算されている</code></pre><div class="subsection-title">ST-SCN-002 Admin出荷〜Customer受け取り確認</div><pre class="ascii"><code>1. Adminでログインし、ST-SCN-001の注文を確認する
+2. ステータスをshippedに変更し、配送業者・追跡番号を登録する
+3. ステータスをdeliveredに変更する
+4. Customerで再ログインし、注文詳細で配送状況を確認する
+5. 対象商品のレビューを投稿する
+期待結果: 配送状況が正しく反映され、レビュー投稿が成功する</code></pre><div class="subsection-title">ST-SCN-003 決済失敗からの復旧</div><pre class="ascii"><code>1. Customerが注文確定まで進む
+2. Stripeテストカード（拒否用）で決済を試みる → 失敗メッセージが表示される
+3. 注文はpendingのまま在庫が確保され続けていることを確認する
+4. 再度Stripeテストカード（成功用）で決済する
+期待結果: 再決済が成功し、orders.statusがpaidになる</code></pre><div class="subsection-title">ST-SCN-004 在庫切れによる購入不可</div><pre class="ascii"><code>1. Adminで対象商品の在庫を0に調整する
+2. Customerが同一商品をカートに追加しようとする
+期待結果: E004が表示され、カートに追加できない</code></pre><div class="section-title">■ 5. ロール別シナリオ試験</div><table><thead><tr><th>ロール</th><th>シナリオ</th><th>確認内容</th></tr></thead><tbody><tr><td>Guest</td><td>商品閲覧・検索</td><td>ログインなしで商品一覧・詳細が閲覧できる</td></tr><tr><td>Customer</td><td>購入導線一式</td><td>ST-SCN-001〜004</td></tr><tr><td>Admin</td><td>商品/在庫/注文/クーポン管理</td><td>全Admin画面が操作でき、変更がCustomer画面に反映される</td></tr></tbody></table><div class="section-title">■ 6. 障害回復試験</div><table><thead><tr><th>Test ID</th><th>シナリオ</th><th>確認内容</th></tr></thead><tbody><tr><td>ST-REC-001</td><td>注文確定後にWebhookが届かない（Stripe側障害を想定）</td><td>30分経過後にバッチが自動キャンセルし、在庫が復旧する</td></tr><tr><td>ST-REC-002</td><td>同一Webhookイベントが2回配信される</td><td>二重処理されず、在庫・注文状態が一貫している</td></tr></tbody></table><div class="section-title">■ 7. 性能試験（簡易）</div><table><thead><tr><th>Test ID</th><th>シナリオ</th><th>期待結果</th></tr></thead><tbody><tr><td>ST-PERF-001</td><td>商品一覧APIへ100同時リクエスト</td><td>応答時間が<code><a href="02_要件定義書_EC_Site.html">02_要件定義書.md</a></code>NFR-001（2秒以内）を満たす</td></tr><tr><td>ST-PERF-002</td><td>同一バリエーションへ100並列注文確定</td><td>在庫がマイナスにならず、在庫数分のみ成功する（NFR-004）</td></tr></tbody></table><p>詳細な負荷試験は<code>24_性能試験仕様書</code>相当の作業として、本プロジェクトのスコープでは簡易確認に留める。</p><div class="section-title">■ 8. 障害一覧表</div><table><thead><tr><th>No</th><th>発見者</th><th>発見日</th><th>内容</th><th>重要度</th><th>対応者</th><th>対応状況</th><th>修正日</th></tr></thead><tbody><tr><td>-</td><td>-</td><td>-</td><td>（実装・試験実施後に記入）</td><td>-</td><td>-</td><td>-</td><td>-</td></tr></tbody></table><div class="section-title">■ 9. トレーサビリティ</div><p><code><a href="03_ユースケース_EC_Site.html">03_ユースケース.md</a></code>の基本/代替フロー → 本書のST-SCN-IDの順に一意に追跡できる。</p><div class="section-title">■ 10. まとめ</div><p>ST-SCN-001（購入完了までのE2E）とST-PERF-002（同時注文時の在庫整合性）が、本プロジェクトの完成度を測る最終確認ポイントである。</p>
+</div>
+<div class="doc-footer">DOC-ID: EC-017 ・ EC Site ・ Draft</div>
+<div class="no-print"><a class="nav-back-top" href="#top">▲ ページ先頭へ</a></div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+</body>
+</html>

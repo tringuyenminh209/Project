@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>06 クーポン - EC Site 実装ガイド</title>
+<link rel="stylesheet" href="assets/guide.css">
+</head>
+<body>
+<div class="page">
+<nav class="guide-nav">
+  <a class="nav-home" href="index.html">🏠 TOP</a>
+  <a href="05_在庫二段階制御.html">← Chương 05: Tồn kho 2 giai đoạn</a>
+  <a href="07_Stripe決済_Webhook.html">Chương 07: Thanh toán Stripe →</a>
+  <a class="nav-doc-link" href="../docs/html/12_詳細設計書_EC_Site.html">📘 12_詳細設計書 5.3/5.4節</a>
+</nav>
+
+<h1>Chương 06 — Coupon</h1>
+<p class="lead">Chương này lấp 2 mảnh đã gác lại ở Chương 04: bước <code>5.2-6</code> (kiểm tra coupon) và <code>5.2-11</code> (đếm lượt dùng) của <code>OrderService::place</code>. Nội dung gồm: <code>CouponService::validate</code> (5.3節, BR-CPN-001) + <code>calculateDiscount</code> (5.4節, BR-CPN-002), API preview <strong>API-014</strong>, và tích hợp vào luồng đặt hàng. Điểm học chính: coupon dùng lại <em>y nguyên</em> tư duy tồn kho — "tạm giữ khi chốt đơn → hoàn lại khi huỷ" (BR-CPN-003), và cũng có race condition cần khoá y như tồn kho.</p>
+
+<div class="box box-warn">
+<div class="box-title">⚠️ Điều kiện vào chương</div>
+<p>Đã hoàn thành Chương 04 (bảng <code>coupons</code> đã tạo trong migration, model Coupon đã có) và Chương 05 (batch huỷ đơn — phần <strong>hoàn lượt dùng</strong> <code>used_count -= 1</code> đã được cài sẵn ở đó, chương này sẽ kiểm chứng nó chạy thật).</p>
+</div>
+
+<div class="box box-why">
+<div class="box-title">💡 Coupon là "tồn kho thứ hai" — cùng pattern tạm giữ → chốt/hoàn (BR-CPN-003)</div>
+<p><code>usage_limit</code> là tài nguyên hữu hạn giống <code>quantity_available</code>: chốt đơn (pending) thì <code>used_count += 1</code> ngay — không đợi thanh toán xong; đơn huỷ/hết hạn 30 phút thì batch hoàn <code>used_count -= 1</code> (đã viết ở Chương 05). Nếu đợi đến lúc thanh toán mới đếm, 2 khách cùng cầm 1 mã "còn 1 lượt" sẽ đều qua cửa kiểm tra. Và cũng vì là tài nguyên tranh chấp, <strong>lúc chốt đơn phải <code>lockForUpdate</code> dòng coupon rồi mới kiểm tra</strong> — thứ tự khoá cố định "inventories (variant_id tăng dần) → coupons" để mọi transaction xếp hàng cùng chiều, không deadlock (cùng lý do với 5.2-4).</p>
+</div>
+
+<div class="box box-why">
+<div class="box-title">💡 Vì sao mọi lý do từ chối đều trả chung E005?</div>
+<p>5.3節 quy định 4 cửa kiểm tra (tồn tại/active → thời hạn → tiền tối thiểu → lượt dùng) nhưng tất cả đều ném cùng một E005 với cùng một message. Nếu message phân biệt "mã không tồn tại" với "mã hết hạn", kẻ dò mã hàng loạt sẽ biết mã nào có thật để tập trung thử — cùng triết lý với E001 không nói rõ sai email hay sai mật khẩu (Chương 01).</p>
+</div>
+
+<div class="box box-why">
+<div class="box-title">💡 Vì sao API-014 tin <code>subtotal</code> do client gửi lên?</div>
+<p>Request của API-014 chứa <code>subtotal</code> từ client — nghe có vẻ dễ gian lận, nhưng API này <strong>chỉ là preview hiển thị</strong> (6.14節: "used_countはまだ更新しない"). Con số có thẩm quyền được tính lại hoàn toàn ở server trong <code>OrderService::place</code> từ giá variant thật (client không gửi được giỏ hàng lên — 6.15節 改ざん防止), và coupon được validate lại lần nữa dưới khoá tại đó. Gian lận preview chỉ lừa được... chính màn hình của kẻ gian lận.</p>
+</div>
+
+<div class="box box-why">
+<div class="box-title">💡 Vì sao giảm giá tính trên subtotal (chưa thuế) và phải chặn trần?</div>
+<p>BR-CPN-002: giảm giá áp lên <code>subtotal</code> (tax-exclusive) — thuế vẫn tính đủ trên giá gốc từng dòng (BR-TAX-004), không giảm nghĩa vụ thuế. <code>percent</code> cắt lẻ bằng <code>floor</code> (nhất quán với thuế). Và 5.4-3 chặn <code>min(discount, subtotal)</code>: coupon cố định 500円 áp cho đơn 300円 mà không chặn thì <code>grand_total</code> âm — mà cột này là <code>INT UNSIGNED</code>, INSERT sẽ nổ ngay tầng DB.</p>
+</div>
+
+<h2>■ Phạm vi chương này</h2>
+<table>
+<thead><tr><th>Phần</th><th>Nội dung</th><th>Trạng thái</th></tr></thead>
+<tbody>
+<tr><td>Exception E005</td><td><code>CouponNotApplicableException</code></td><td>Code mẫu đầy đủ</td></tr>
+<tr><td><code>scopeValid</code> cho model Coupon</td><td>Bổ sung theo 12_詳細設計書 6章</td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>CouponService</td><td><code>validate</code> (5.3節, có tuỳ chọn lock) + <code>calculateDiscount</code> (5.4節)</td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>API-014 Kiểm tra coupon (preview)</td><td>POST <code>/coupons/validate</code>, không đụng <code>used_count</code></td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>Tích hợp vào <code>OrderService::place</code></td><td>Bước 5.2-6/7/8/11 — hết "gác lại" từ Chương 04</td><td>Code mẫu đầy đủ (dạng diff)</td></tr>
+<tr><td>API-031 Quản lý coupon (Admin)</td><td>GET/POST/PUT/PATCH <code>/admin/coupons</code></td><td>📝 課題</td></tr>
+<tr><td>Seeder coupon + dữ liệu test</td><td>WELCOME500/SUMMER10 (09 9.3節) + EXPIRED/MAXED (15 5.3節)</td><td>📝 課題</td></tr>
+</tbody>
+</table>
+
+<div class="step-heading"><div class="step-number">1</div><div class="step-title">Exception E005 & <code>scopeValid</code></div></div>
+
+<div class="code-block">
+<div class="code-filename">app/Exceptions/CouponNotApplicableException.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Exceptions/CouponNotApplicableException.php
+// 10_API設計.md 7章 E005: クーポン適用条件不成立（409） / 12_詳細設計書.md 11章
+// どの条件（期限切れ/上限到達/金額不足/存在しない）で落ちたかはあえて区別しない —
+// メッセージを分けるとクーポンコードの探索（総当たり）に情報を与えてしまうため
+
+namespace App\Exceptions;
+
+class CouponNotApplicableException extends ApiException
+{
+    protected string $errorCode = 'E005';
+    protected int $httpStatus = 409;
+
+    public function __construct()
+    {
+        // 06_画面設計.md 7章の標準文言
+        parent::__construct('クーポンを適用できません（条件をご確認ください）。');
+    }
+}</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">app/Models/Coupon.php（追記分）<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Models/Coupon.php への追記（Chương 04で作成済みのモデルに追加する）
+// 12_詳細設計書.md 6章: Coupon — scopeValid（有効期間・上限）
+
+//    // Admin一覧の「現在有効なもののみ」フィルタ等、集合クエリ用のスコープ。
+//    // 単一クーポンの適用判定はCouponService::validate（5.3節の逐次チェック）が担う。
+//    // 条件を変更するときは必ず両方を同時に直すこと（判定のズレは即業務バグになる）
+//    public function scopeValid($query)
+//    {
+//        return $query-&gt;where('status', 'active')
+//            -&gt;whereDate('valid_from', '&lt;=', today())
+//            -&gt;whereDate('valid_to', '&gt;=', today())
+//            -&gt;where(function ($q) {
+//                $q-&gt;whereNull('usage_limit')
+//                  -&gt;orWhereColumn('used_count', '&lt;', 'usage_limit');
+//            });
+//    }</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">2</div><div class="step-title">CouponService — validate（5.3節）&amp; calculateDiscount（5.4節）</div></div>
+<p>4 cửa kiểm tra của <code>validate</code> viết tuần tự đúng thứ tự 5.3節 (đọc pseudocode trước). Tham số <code>$lockForUpdate</code> phân đôi 2 ngữ cảnh dùng: preview (API-014, không khoá) và chốt đơn (khoá — box-why số 1).</p>
+
+<div class="code-block">
+<div class="code-filename">app/Services/CouponService.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Services/CouponService.php
+// 12_詳細設計書.md 5.3節（validate） / 5.4節（calculateDiscount）
+
+namespace App\Services;
+
+use App\Exceptions\CouponNotApplicableException;
+use App\Models\Coupon;
+
+class CouponService
+{
+    // 5.3節: BR-CPN-001。不成立理由が何であれ同一のE005を返す
+    public function validate(string $code, int $subtotal, bool $lockForUpdate = false): Coupon
+    {
+        $query = Coupon::where('code', $code);
+        if ($lockForUpdate) {
+            // 注文確定時のみロックする。usage_limit残り1枚を並行注文が奪い合うと
+            // validate通過→両方used_count+1で上限超過が起きるため、行ロックの上で判定する
+            //（在庫と同じ発想。ロック順は「inventories(variant_id昇順)→coupons」の固定順とし、
+            //  全注文が同じ順序で取得することでデッドロックを防ぐ — 5.2節-4と同じ理屈）
+            $query-&gt;lockForUpdate();
+        }
+        $coupon = $query-&gt;first();
+
+        // 5.3-1: 存在しない / status=inactive
+        if (!$coupon || $coupon-&gt;status !== 'active') {
+            throw new CouponNotApplicableException();
+        }
+
+        // 5.3-2: 有効期間外（valid_from〜valid_to、両端含む）
+        $today = today();
+        if ($today-&gt;lt($coupon-&gt;valid_from) || $today-&gt;gt($coupon-&gt;valid_to)) {
+            throw new CouponNotApplicableException();
+        }
+
+        // 5.3-3: 最低購入金額未満（判定は税抜subtotalに対して行う、BR-CPN-002）
+        if ($subtotal &lt; $coupon-&gt;min_purchase_amount) {
+            throw new CouponNotApplicableException();
+        }
+
+        // 5.3-4: 利用上限到達（usage_limit=NULLは無制限、TBL-015）
+        if (!is_null($coupon-&gt;usage_limit) &amp;&amp; $coupon-&gt;used_count &gt;= $coupon-&gt;usage_limit) {
+            throw new CouponNotApplicableException();
+        }
+
+        return $coupon;
+    }
+
+    // 5.4節: BR-CPN-002
+    public function calculateDiscount(int $subtotal, Coupon $coupon): int
+    {
+        // 5.4-1/2: fixed=固定額 / percent=floor(subtotal × value / 100)（円未満切り捨て）
+        $discount = $coupon-&gt;discount_type === 'fixed'
+            ? $coupon-&gt;discount_value
+            : intdiv($subtotal * $coupon-&gt;discount_value, 100); // 整数演算（Chương 04の税計算と同じ理由でfloatを避ける）
+
+        // 5.4-3: 割引はsubtotalを超えない — grand_total（UNSIGNED列）の負数化を防ぐ
+        return min($discount, $subtotal);
+    }
+}</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">3</div><div class="step-title">API-014 — Preview coupon</div></div>
+
+<div class="code-block">
+<div class="code-filename">app/Http/Requests/Coupon/ValidateCouponRequest.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Http/Requests/Coupon/ValidateCouponRequest.php
+// 10_API設計.md 6.14節(API-014) / 02_要件定義書.md 12章（coupons.code: Max 30）
+// ※12_詳細設計書 7章のFormRequest一覧に本Requestは載っていないが、
+//   API-POL-007（入力はFormRequestで検証）に従い作成する
+
+namespace App\Http\Requests\Coupon;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class ValidateCouponRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'code' =&gt; ['required', 'string', 'max:30'],
+            'subtotal' =&gt; ['required', 'integer', 'min:0'],
+        ];
+    }
+}</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">app/Http/Controllers/CouponController.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Http/Controllers/CouponController.php
+// 12_詳細設計書.md 4章: CouponController — validateCode (API-014)
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\Coupon\ValidateCouponRequest;
+use App\Services\CouponService;
+use Illuminate\Http\JsonResponse;
+
+class CouponController extends Controller
+{
+    public function __construct(private CouponService $couponService)
+    {
+    }
+
+    // POST /coupons/validate (API-014) — 注文確定前のプレビュー専用。
+    // used_countはここでは一切更新しない（実際の消費はAPI-015、6.14節）
+    public function validateCode(ValidateCouponRequest $request): JsonResponse
+    {
+        $data = $request-&gt;validated();
+
+        $coupon = $this-&gt;couponService-&gt;validate($data['code'], $data['subtotal']);
+        $discountAmount = $this-&gt;couponService-&gt;calculateDiscount($data['subtotal'], $coupon);
+
+        // Response shapeは10_API設計.md 6.14節に厳密対応
+        return response()-&gt;json([
+            'success' =&gt; true,
+            'message' =&gt; 'OK',
+            'data' =&gt; [
+                'coupon_id' =&gt; $coupon-&gt;id,
+                'discount_type' =&gt; $coupon-&gt;discount_type,
+                'discount_value' =&gt; $coupon-&gt;discount_value,
+                'discount_amount' =&gt; $discountAmount,
+            ],
+        ]);
+    }
+}</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">4</div><div class="step-title">Tích hợp vào OrderService::place（5.2-6/11）</div></div>
+<p>Đây là lần đầu guide đưa code dạng <strong>diff</strong>: block dưới chỉ ghi chỗ <em>thay đổi</em> so với Chương 04, phần "（変更なし）" giữ nguyên code cũ. Tự xác định vị trí chèn bằng số bước 5.2-n trong comment — cách đọc này giống đọc pull request thực tế.</p>
+
+<div class="code-block">
+<div class="code-filename">app/Http/Requests/Order/PlaceOrderRequest.php（更新版・全文）<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Http/Requests/Order/PlaceOrderRequest.php（Chương 04版からの更新 — coupon_code追加）
+// 12_詳細設計書.md 7章 + 02_要件定義書.md 12章（coupons.code Max 30）
+
+namespace App\Http\Requests\Order;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class PlaceOrderRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'address_id' =&gt; ['required', 'integer', 'exists:addresses,id'],
+            // BR-CPN-004: 1注文に適用できるクーポンは最大1件 — 配列ではなく単一のcodeのみ受け取る
+            'coupon_code' =&gt; ['nullable', 'string', 'max:30'],
+        ];
+    }
+}</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">app/Services/OrderService.php（変更箇所のみ）<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Services/OrderService.php — Chương 04版からの変更箇所のみ（5.2-6/7/8/11のクーポン統合）
+// 変更しない部分は「...（変更なし）...」と表記。挿入位置はコメントの5.2-nステップ番号で特定すること。
+
+namespace App\Services;
+
+use App\Models\Coupon; // ← use追加
+// ...（他のuseは変更なし）...
+
+class OrderService
+{
+    // ← コンストラクタ追加（CouponServiceを注入）
+    public function __construct(private CouponService $couponService)
+    {
+    }
+
+    public function place(int $userId, array $data): Order
+    {
+        // ...（5.2-1 カート取得、5.2-2 住所所有チェック — 変更なし）...
+
+        // ← クロージャへcoupon_codeを引き渡す（use句に$dataを追加するか、事前に変数へ取り出す）
+        $couponCode = $data['coupon_code'] ?? null;
+
+        return DB::transaction(function () use ($userId, $cart, $address, $couponCode) {
+
+            // ...（5.2-4 variant_id昇順ロック、5.2-5 在庫チェック、
+            //      5.2-7 $subtotal/$taxTotal集計ループ — 変更なし）...
+
+            // 5.2-6: クーポン検証（E005ならトランザクション全体をロールバック）
+            // ロック順は「inventories（variant_id昇順）→ coupons」の固定順。
+            // 全注文が同じ順序で取得するためデッドロックしない（5.2-4と同じ理屈）
+            $coupon = null;
+            if ($couponCode) {
+                $coupon = $this-&gt;couponService-&gt;validate($couponCode, $subtotal, lockForUpdate: true);
+            }
+
+            // 5.2-7続き: discount_totalが常に0だった箇所をクーポン割引に置き換える
+            $shippingFee = 0;
+            $discountTotal = $coupon
+                ? $this-&gt;couponService-&gt;calculateDiscount($subtotal, $coupon)
+                : 0;
+            $grandTotal = $subtotal + $taxTotal + $shippingFee - $discountTotal;
+
+            // 5.2-8: Order::createの2項目を変更（他のカラムは変更なし）
+            $order = Order::create([
+                // ...（変更なし）...
+                'discount_total' =&gt; $discountTotal,   // ← 0固定だった箇所
+                'coupon_id' =&gt; $coupon?-&gt;id,          // ← null固定だった箇所
+                // ...（変更なし）...
+            ]);
+
+            // ...（注文番号採番、5.2-9 スナップショット、5.2-10 在庫確保 — 変更なし）...
+
+            // 5.2-11: クーポン利用数をカウントアップ（BR-CPN-003 仮押さえ）。
+            // 解放側（キャンセル・期限切れでused_count -= 1）はChương 05のバッチが既に実装済み
+            if ($coupon) {
+                $coupon-&gt;increment('used_count');
+            }
+
+            // ...（5.2-12 カートconverted、戻り値 — 変更なし）...
+        });
+    }
+}</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">routes/api.php（追記分）<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// routes/api.php（Chương 06で追記する分）
+
+use App\Http\Controllers\CouponController;
+use Illuminate\Support\Facades\Route;
+
+Route::middleware('auth:sanctum')-&gt;group(function () {
+    Route::post('/coupons/validate', [CouponController::class, 'validateCode']); // API-014（Customer）
+});
+
+// 課題: Admin側のクーポン管理（12_詳細設計書 4章: Admin\CouponController — index/store/update/setStatus）
+// Route::middleware(['auth:sanctum', 'role:admin'])-&gt;prefix('admin')-&gt;group(function () {
+//     GET/POST /admin/coupons, PUT /admin/coupons/{id}, PATCH /admin/coupons/{id}/status (API-031)
+// });</pre>
+</div>
+
+<div class="box box-check">
+<div class="box-title">✅ チェックポイント（UT-CPN-001〜005対応）</div>
+<ul>
+<li>☐ <code>POST /coupons/validate</code> với <code>SUMMER10</code> + <code>subtotal=8500</code> → <code>discount_amount=850</code>, và <code>used_count</code> <strong>không đổi</strong> (UT-CPN-001, preview thuần)</li>
+<li>☐ Mã hết hạn (EXPIRED) → 409 <code>E005</code> (UT-CPN-002); mã đạt trần lượt dùng (MAXED) → 409 <code>E005</code> (UT-CPN-003); mã không tồn tại → cũng <code>E005</code> cùng message (không lộ thông tin)</li>
+<li>☐ Đặt hàng kèm <code>coupon_code=SUMMER10</code> → <code>orders.coupon_id</code> được set, <code>discount_total=850</code>, <code>grand_total = subtotal + tax_total − 850</code>, <code>used_count+1</code> (UT-CPN-004). Đơn 8500円 tái hiện đúng ví dụ response 6.15節: tax 850 − discount 850 → grand đúng bằng subtotal (trùng hợp có chủ đích trong doc)</li>
+<li>☐ Đặt hàng với coupon <em>không thoả điều kiện</em> → 409 <code>E005</code>, rollback toàn phần: không có orders/order_items, tồn kho nguyên, <code>used_count</code> nguyên</li>
+<li>☐ Đơn pending có coupon, lùi <code>created_at</code> 31 phút → chạy <code>orders:cancel-expired</code> → <code>used_count −1</code> (UT-CPN-005 — kiểm chứng code hoàn trả viết sẵn ở Chương 05)</li>
+<li>☐ WELCOME500 (fixed 500円) với đơn subtotal 300円 → <code>discount_total=300</code> (bị chặn trần), <code>grand_total</code> không âm, INSERT không nổ UNSIGNED</li>
+<li>☐ Percent với số lẻ: subtotal 8505円 × 10% = 850.5 → <code>floor</code> → 850</li>
+</ul>
+</div>
+
+<div class="step-heading"><div class="step-number">5</div><div class="step-title">📝 課題</div></div>
+<div class="box box-task">
+<div class="box-title">📝 Tự làm — không có code mẫu</div>
+<table>
+<thead><tr><th>Tính năng</th><th>API/tham chiếu dùng</th><th>Điểm cần chú ý</th></tr></thead>
+<tbody>
+<tr><td>Quản lý coupon (Admin)</td><td>API-031 (<code>10_API設計.md</code> 6.31節): GET/POST <code>/admin/coupons</code>, PUT <code>/admin/coupons/{id}</code>, PATCH <code>/admin/coupons/{id}/status</code>. Controller: Admin\CouponController — index/store/update/setStatus (12_詳細設計書 4章)</td><td>Validation theo 02_要件定義書 12章 + TBL-015: <code>code</code> required/unique/max:30 (PUT nhớ <code>ignore($id)</code>), <code>discount_type</code> in:fixed,percent, <code>discount_value</code> — nếu percent thì 1〜100 (TBL-015 説明欄; dùng <code>Rule::when</code> hoặc validate trong Service), <code>valid_from &lt;= valid_to</code> (<code>after_or_equal</code>), <code>usage_limit</code> nullable/min:1. GET của Admin trả cả inactive. Phát hành/sửa coupon phải ghi application log (API-POL-006, REQ-027).</td></tr>
+<tr><td>Seeder coupon</td><td><code>09_テーブル定義.md</code> 9.3節: WELCOME500 (fixed/500), SUMMER10 (percent/10) + <code>15_単体試験仕様書.md</code> 5.3節: EXPIRED (hết hạn), MAXED (<code>used_count=usage_limit</code>)</td><td>4 mã này là bộ dữ liệu chạy checkpoint phía trên — đặt valid_from/valid_to của EXPIRED về quá khứ thật (vd 2025), MAXED để <code>usage_limit=1, used_count=1</code>.</td></tr>
+<tr><td>Test race lượt dùng cuối</td><td>Tương tự UT-INV-001 (Chương 05 課題)</td><td>Coupon <code>usage_limit=1</code> còn đúng 1 lượt, 2 request đặt hàng song song cùng mã → đúng 1 đơn thành công, đơn kia E005, <code>used_count</code> kết cục = 1 (không phải 2). Nếu bỏ <code>lockForUpdate</code> trong validate rồi chạy lại sẽ thấy chênh — làm thử cả 2 chiều để "sờ" được giá trị của khoá.</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box box-doc">
+<div class="box-title">📘 Tài liệu đã dùng trong chương này</div>
+<p><code>02_要件定義書.md</code> REQ-011/025, BR-CPN-001〜004, 12章 (validation) · <code>09_テーブル定義.md</code> TBL-015, 9.3節 (seed) · <code>10_API設計.md</code> API-014/031 (6.14/6.31節), API-POL-006/007 · <code>12_詳細設計書.md</code> 4章, 5.2-6/11, 5.3/5.4節, 6章 (scopeValid) · <code>15_単体試験仕様書.md</code> UT-CPN-001〜005, 5.3節 (TD-CPN)</p>
+</div>
+
+<div class="footer-nav">
+<a href="05_在庫二段階制御.html">← Chương 05</a>
+<a href="07_Stripe決済_Webhook.html">Chương 07: Thanh toán Stripe →</a>
+</div>
+</div>
+</body>
+</html>

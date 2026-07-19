@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>業務フロー - EC Site</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/mermaid.min.js"></script>
+</head>
+<body id="top">
+<nav class="doc-nav no-print">
+  <div class="nav-row nav-row-adjacent">
+    <a class="nav-adjacent" href="03_ユースケース_EC_Site.html">← 03 ユースケース</a>
+    <a class="nav-index" href="index.html">目次</a>
+    <a class="nav-adjacent" href="05_画面遷移図_EC_Site.html">05 画面遷移図 →</a>
+  </div>
+  <div class="nav-row nav-row-chips"><a class="nav-chip" href="00_開発計画書_EC_Site.html" title="📋 開発計画書">00</a><a class="nav-chip" href="01_企画書_EC_Site.html" title="企画書">01</a><a class="nav-chip" href="02_要件定義書_EC_Site.html" title="要件定義書">02</a><a class="nav-chip" href="03_ユースケース_EC_Site.html" title="ユースケース">03</a><a class="nav-chip nav-chip-current" href="04_業務フロー_EC_Site.html" title="業務フロー">04</a><a class="nav-chip" href="05_画面遷移図_EC_Site.html" title="画面遷移図">05</a><a class="nav-chip" href="06_画面設計_EC_Site.html" title="画面設計">06</a><a class="nav-chip" href="07_機能一覧_EC_Site.html" title="機能一覧">07</a><a class="nav-chip" href="08_ER図_EC_Site.html" title="ER図">08</a><a class="nav-chip" href="09_テーブル定義_EC_Site.html" title="テーブル定義">09</a><a class="nav-chip" href="10_API設計_EC_Site.html" title="API設計">10</a><a class="nav-chip" href="11_基本設計書_EC_Site.html" title="基本設計書">11</a><a class="nav-chip" href="12_詳細設計書_EC_Site.html" title="詳細設計書">12</a><a class="nav-chip" href="13_インフラ設計_EC_Site.html" title="インフラ設計">13</a><a class="nav-chip" href="14_セキュリティ設計_EC_Site.html" title="セキュリティ設計">14</a><a class="nav-chip" href="15_単体試験仕様書_EC_Site.html" title="単体試験仕様書">15</a><a class="nav-chip" href="16_結合試験仕様書_EC_Site.html" title="結合試験仕様書">16</a><a class="nav-chip" href="17_システム試験仕様書_EC_Site.html" title="システム試験仕様書">17</a><a class="nav-chip" href="18_UAT_EC_Site.html" title="UAT仕様書">18</a><a class="nav-chip" href="19_リリース手順書_EC_Site.html" title="リリース手順書">19</a><a class="nav-chip" href="20_運用保守手順書_EC_Site.html" title="運用保守手順書">20</a></div>
+</nav>
+<table class="doc-header-bar">
+  <tr>
+    <td class="hb-type" rowspan="2">業務フロー</td>
+    <td class="hb-sys" rowspan="2">EC Site</td>
+    <td class="hb-label">文書番号</td>
+    <td class="hb-val">EC-004</td>
+    <td class="hb-label">バージョン</td>
+    <td class="hb-val">1.0</td>
+  </tr>
+  <tr>
+    <td class="hb-label">作成日</td>
+    <td class="hb-val">2026/07/13</td>
+    <td class="hb-label">作成者</td>
+    <td class="hb-val">Nguyen Minh Tri</td>
+  </tr>
+</table>
+<div class="doc-body">
+<h1 class="doc-title">業務フロー</h1><p>EC Site（ECサイト構築プロジェクト）</p><div class="section-title">■ 文書管理情報</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>システム名</td><td>EC Site</td></tr><tr><td>文書名</td><td>業務フロー</td></tr><tr><td>文書番号</td><td>EC-004</td></tr><tr><td>作成者</td><td>Nguyen Minh Tri</td></tr><tr><td>作成日</td><td>2026/07/13</td></tr><tr><td>バージョン</td><td>1.0</td></tr><tr><td>ステータス</td><td>Draft</td></tr></tbody></table><div class="section-title">■ 改訂履歴</div><table><thead><tr><th>Version</th><th>日付</th><th>作成者</th><th>内容</th></tr></thead><tbody><tr><td>1.0</td><td>2026/07/13</td><td>Nguyen Minh Tri</td><td>初版作成</td></tr></tbody></table><div class="section-title">■ 目次</div><ol><li>本書の目的</li><li>業務概要</li><li>AS-IS 業務フロー</li><li>TO-BE 業務フロー</li><li>注文・決済業務フロー</li><li>在庫業務フロー</li><li>クーポン業務フロー</li><li>レビュー業務フロー</li><li>マスタ・注文管理業務フロー（Admin）</li><li>例外フロー</li><li>業務ルール対応</li><li>ユースケース対応</li><li>まとめ</li></ol><div class="section-title">■ 1. 本書の目的</div><p><code><a href="03_ユースケース_EC_Site.html">03_ユースケース.md</a></code>で定義した各ユースケースを、アクター間の受け渡し（スイムレーン）と時系列で可視化する。特に UC-008（注文する）は Customer・System・Stripe（外部）の3者が関わるため、本書で最も詳細に記述する。</p><div class="section-title">■ 2. 業務概要</div><p>想定事業者は自社在庫を持つ小規模〜中規模の物販事業者（アパレル・雑貨等、サイズ/色のバリエーションを持つ商品を扱う）。受注から出荷までを本システム一つで完結させ、Excel等の手作業運用から脱却することを目的とする。</p><div class="section-title">■ 3. AS-IS 業務フロー（想定：システム化以前）</div><div class="mermaid">
+flowchart TD
+    A["顧客が電話/メールで注文"] --&gt; B["店員が在庫をExcelで手動確認"]
+    B --&gt; C{"在庫あり?"}
+    C --&gt;|No| D["欠品連絡"]
+    C --&gt;|Yes| E["Excelの在庫数を手動で減算"]
+    E --&gt; F["請求書を手動作成し銀行振込を案内"]
+    F --&gt; G["入金を目視確認"]
+    G --&gt; H["手動で発送、伝票番号をメール連絡"]
+</div><div class="subsection-title">3.1 AS-IS 課題</div><ul><li>在庫確認と減算が手動のため、複数注文が重なると在庫のマイナス（二重販売）が発生しやすい</li><li>振込確認に時間がかかり、注文から発送までのリードタイムが長い</li><li>過去の注文時点の価格が記録されず、問い合わせ対応時に「いくらで売ったか」を追跡しづらい</li></ul><div class="section-title">■ 4. TO-BE 業務フロー（本システム導入後）</div><div class="mermaid">
+flowchart TD
+    A["顧客がサイトで商品を選択・カートに追加"] --&gt; B["注文確定（在庫を自動確保）"]
+    B --&gt; C["Stripeでオンライン決済"]
+    C --&gt; D["Webhookで決済結果を自動反映"]
+    D --&gt; E["在庫を自動で引き当て確定"]
+    E --&gt; F["Adminが出荷登録"]
+    F --&gt; G["顧客がサイト上で配送状況を確認"]
+</div><div class="subsection-title">4.1 TO-BE 改善点</div><table><thead><tr><th>項目</th><th>AS-IS</th><th>TO-BE</th></tr></thead><tbody><tr><td>在庫確認・減算</td><td>手動（Excel）</td><td>System が注文確定時に自動確保（BR-INV-003）</td></tr><tr><td>決済確認</td><td>目視での振込確認</td><td>Stripe Webhookによる自動反映（BR-PAY-001）</td></tr><tr><td>価格の記録</td><td>請求書控えのみ、検索性が低い</td><td><code>order_items</code>にスナップショットとして構造化保存（BR-ORD-002）</td></tr><tr><td>二重販売防止</td><td>手動確認のため防げない場合がある</td><td><code>SELECT ... FOR UPDATE</code>による排他制御（BR-INV-007）</td></tr></tbody></table><div class="section-title">■ 5. 注文・決済業務フロー</div><div class="subsection-title">5.1 注文確定〜決済完了（正常系）</div><div class="mermaid">
+flowchart TD
+    subgraph Customer
+        A["カート内容を確認"]
+        B["配送先・クーポンを入力"]
+        C["注文確定を押す"]
+        G["カード情報を入力し決済実行"]
+        K["注文完了画面を確認"]
+    end
+    subgraph System
+        D["在庫を確保（reserve）"]
+        E["order_itemsへ価格・税率をスナップショット"]
+        F["ordersをpendingで作成、PaymentIntent発行"]
+        I["Webhook受信"]
+        J["ordersをpaidに更新、在庫を引き当て確定（commit）"]
+    end
+    subgraph Stripe
+        H["カード与信・売上確定処理"]
+    end
+
+    A --&gt; B --&gt; C --&gt; D --&gt; E --&gt; F --&gt; G --&gt; H --&gt; I --&gt; J --&gt; K
+</div><div class="subsection-title">5.2 決済失敗時のフロー</div><div class="mermaid">
+flowchart TD
+    A["Customerが決済を実行"] --&gt; B["Stripeが与信エラーを返す"]
+    B --&gt; C["payments.status = failed"]
+    C --&gt; D["orders.status は pending を維持（BR-PAY-002）"]
+    D --&gt; E{"30分以内に再決済する?"}
+    E --&gt;|Yes| F["再度Stripe決済フローへ"]
+    E --&gt;|No| G["System（UC-018）が自動キャンセル、在庫・クーポンを解放"]
+</div><div class="subsection-title">5.3 注文・決済業務ルール</div><table><thead><tr><th>ルール</th><th>内容</th></tr></thead><tbody><tr><td>BR-ORD-001</td><td>注文ステータスは pending→paid→shipped→delivered、または pending/paid→cancelled のみ。</td></tr><tr><td>BR-PAY-001</td><td>ステータス更新はStripe Webhook受信を起点とする。</td></tr><tr><td>BR-INV-006</td><td>在庫確保の有効期限は30分。超過分はSystemが自動解放する。</td></tr></tbody></table><div class="section-title">■ 6. 在庫業務フロー</div><div class="mermaid">
+flowchart TD
+    A["カート追加"] --&gt;|"在庫は変更しない（表示上の警告のみ）"| B["注文確定"]
+    B --&gt;|"quantity_available -= N\nquantity_reserved += N"| C["決済待ち（pending）"]
+    C --&gt;|"決済成功"| D["quantity_reserved -= N\n（引き当て確定）"]
+    C --&gt;|"決済失敗/期限切れ/キャンセル"| E["quantity_reserved -= N\nquantity_available += N\n（解放）"]
+    D --&gt; F["inventory_logs: purchase_deduct"]
+    E --&gt; G["inventory_logs: release"]
+</div><p>在庫は <code>products</code> / <code>product_variants</code> に直接持たせず <code>inventories</code> テーブルで一元管理する（BR-INV-001）。この「確保→確定/解放」の2段階制御が、同時アクセス下での二重販売を防ぐ本システムの中核設計である。</p><div class="section-title">■ 7. クーポン業務フロー</div><div class="mermaid">
+flowchart TD
+    A["Customerがクーポンコードを入力"] --&gt; B{"有効期間内?"}
+    B --&gt;|No| E005a["E005 適用エラー"]
+    B --&gt;|Yes| C{"最低購入金額以上?"}
+    C --&gt;|No| E005b["E005 適用エラー"]
+    C --&gt;|Yes| D{"利用上限未達?"}
+    D --&gt;|No| E005c["E005 適用エラー"]
+    D --&gt;|Yes| E["割引額を計算し注文合計に反映"]
+    E --&gt; F["注文確定時にused_count += 1"]
+    F --&gt; G{"後にキャンセル?"}
+    G --&gt;|Yes| H["used_count -= 1"]
+    G --&gt;|No| I["確定のまま"]
+</div><div class="section-title">■ 8. レビュー業務フロー</div><div class="mermaid">
+flowchart TD
+    A["Customerが注文履歴を開く"] --&gt; B{"対象商品の注文がdelivered?"}
+    B --&gt;|No| C["レビューボタン非表示"]
+    B --&gt;|Yes| D["評価・コメントを入力"]
+    D --&gt; E{"同一order_itemに既存レビューあり?"}
+    E --&gt;|Yes| F["重複投稿エラー"]
+    E --&gt;|No| G["reviewsに保存"]
+</div><div class="section-title">■ 9. マスタ・注文管理業務フロー（Admin）</div><div class="subsection-title">9.1 商品登録フロー</div><div class="mermaid">
+flowchart TD
+    A["Adminが商品基本情報を登録"] --&gt; B["カテゴリ・税区分を設定"]
+    B --&gt; C["バリエーション（サイズ/色/価格）を登録"]
+    C --&gt; D["初期在庫数を設定"]
+    D --&gt; E["商品画像をS3へアップロード"]
+    E --&gt; F["商品を公開状態(active)にする"]
+</div><div class="subsection-title">9.2 出荷登録フロー</div><div class="mermaid">
+flowchart TD
+    A["Adminが注文一覧からpaid注文を選択"] --&gt; B["配送業者・追跡番号を入力"]
+    B --&gt; C["shipmentsを作成"]
+    C --&gt; D["orders.statusをshippedに更新"]
+    D --&gt; E["audit logに記録"]
+</div><div class="subsection-title">9.3 マスタ管理方針</div><p>商品・カテゴリともに <strong>論理無効化を優先</strong>し、物理削除は行わない（Project 01の ER-003 方針を踏襲）。理由: 過去の<code>order_items</code>は商品名等をスナップショットしているため直接の参照制約は生じないが、レポート・レビュー画面での参照整合性を保つため。</p><div class="section-title">■ 10. 例外フロー</div><table><thead><tr><th>例外</th><th>発生ユースケース</th><th>エラーコード</th></tr></thead><tbody><tr><td>未ログインでカート/注文操作</td><td>UC-006, UC-008</td><td>E010</td></tr><tr><td>Admin以外が管理画面へアクセス</td><td>UC-012〜UC-016</td><td>E002</td></tr><tr><td>入力値不正</td><td>UC-001, UC-002, UC-006〜008, UC-012〜015</td><td>E003</td></tr><tr><td>在庫不足</td><td>UC-006, UC-008</td><td>E004</td></tr><tr><td>クーポン条件不成立</td><td>UC-008</td><td>E005</td></tr><tr><td>注文ステータス不正遷移</td><td>UC-014</td><td>E006</td></tr><tr><td>対象データ未検出</td><td>全体</td><td>E007</td></tr><tr><td>決済失敗</td><td>UC-008</td><td>E008</td></tr><tr><td>Webhook署名検証失敗</td><td>System</td><td>E009</td></tr></tbody></table><div class="section-title">■ 11. 業務ルール対応</div><table><thead><tr><th>フロー</th><th>対応ルールID</th></tr></thead><tbody><tr><td>注文確定</td><td>BR-ORD-001〜003, BR-TAX-001〜004</td></tr><tr><td>在庫確保/引き当て/解放</td><td>BR-INV-001〜008</td></tr><tr><td>クーポン適用</td><td>BR-CPN-001〜004</td></tr><tr><td>決済</td><td>BR-PAY-001〜003</td></tr><tr><td>レビュー</td><td>BR-REV-001〜002</td></tr></tbody></table><div class="section-title">■ 12. ユースケース対応</div><p><code><a href="03_ユースケース_EC_Site.html">03_ユースケース.md</a></code> 8章と同一。UC-006, UC-008, UC-013, UC-014, UC-018 が本書の主要対象である。</p><div class="section-title">■ 13. まとめ</div><p>本書は「在庫確保→決済確定→引き当て確定」という時間差のある一連の業務を、Customer・System・Stripeの3者スイムレーンで可視化した。この時間差（BR-INV-006の30分猶予）こそが、単純なCRUDでは表現できないEC特有の業務設計であり、詳細設計書（12章）でのトランザクション境界の判断根拠となる。</p>
+</div>
+<div class="doc-footer">DOC-ID: EC-004 ・ EC Site ・ Draft</div>
+<div class="no-print"><a class="nav-back-top" href="#top">▲ ページ先頭へ</a></div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+</body>
+</html>

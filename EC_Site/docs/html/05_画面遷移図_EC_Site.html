@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>画面遷移図 - EC Site</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/mermaid.min.js"></script>
+</head>
+<body id="top">
+<nav class="doc-nav no-print">
+  <div class="nav-row nav-row-adjacent">
+    <a class="nav-adjacent" href="04_業務フロー_EC_Site.html">← 04 業務フロー</a>
+    <a class="nav-index" href="index.html">目次</a>
+    <a class="nav-adjacent" href="06_画面設計_EC_Site.html">06 画面設計 →</a>
+  </div>
+  <div class="nav-row nav-row-chips"><a class="nav-chip" href="00_開発計画書_EC_Site.html" title="開発計画書">00</a><a class="nav-chip" href="01_企画書_EC_Site.html" title="企画書">01</a><a class="nav-chip" href="02_要件定義書_EC_Site.html" title="要件定義書">02</a><a class="nav-chip" href="03_ユースケース_EC_Site.html" title="ユースケース">03</a><a class="nav-chip" href="04_業務フロー_EC_Site.html" title="業務フロー">04</a><a class="nav-chip nav-chip-current" href="05_画面遷移図_EC_Site.html" title="画面遷移図">05</a><a class="nav-chip" href="06_画面設計_EC_Site.html" title="画面設計">06</a><a class="nav-chip" href="07_機能一覧_EC_Site.html" title="機能一覧">07</a><a class="nav-chip" href="08_ER図_EC_Site.html" title="ER図">08</a><a class="nav-chip" href="09_テーブル定義_EC_Site.html" title="テーブル定義">09</a><a class="nav-chip" href="10_API設計_EC_Site.html" title="API設計">10</a><a class="nav-chip" href="11_基本設計書_EC_Site.html" title="基本設計書">11</a><a class="nav-chip" href="12_詳細設計書_EC_Site.html" title="詳細設計書">12</a><a class="nav-chip" href="13_インフラ設計_EC_Site.html" title="インフラ設計">13</a><a class="nav-chip" href="14_セキュリティ設計_EC_Site.html" title="セキュリティ設計">14</a><a class="nav-chip" href="15_単体試験仕様書_EC_Site.html" title="単体試験仕様書">15</a><a class="nav-chip" href="16_結合試験仕様書_EC_Site.html" title="結合試験仕様書">16</a><a class="nav-chip" href="17_システム試験仕様書_EC_Site.html" title="システム試験仕様書">17</a><a class="nav-chip" href="18_UAT_EC_Site.html" title="UAT仕様書">18</a><a class="nav-chip" href="19_リリース手順書_EC_Site.html" title="リリース手順書">19</a><a class="nav-chip" href="20_運用保守手順書_EC_Site.html" title="運用保守手順書">20</a></div>
+</nav>
+<table class="doc-header-bar">
+  <tr>
+    <td class="hb-type" rowspan="2">画面遷移図</td>
+    <td class="hb-sys" rowspan="2">EC Site</td>
+    <td class="hb-label">文書番号</td>
+    <td class="hb-val">EC-005</td>
+    <td class="hb-label">バージョン</td>
+    <td class="hb-val">1.1</td>
+  </tr>
+  <tr>
+    <td class="hb-label">作成日</td>
+    <td class="hb-val">2026/07/13</td>
+    <td class="hb-label">作成者</td>
+    <td class="hb-val">Nguyen Minh Tri</td>
+  </tr>
+</table>
+<div class="doc-body">
+<h1 class="doc-title">画面遷移図</h1><p>EC Site（ECサイト構築プロジェクト）</p><div class="section-title">■ 文書管理情報</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>システム名</td><td>EC Site</td></tr><tr><td>文書名</td><td>画面遷移図</td></tr><tr><td>文書番号</td><td>EC-005</td></tr><tr><td>作成者</td><td>Nguyen Minh Tri</td></tr><tr><td>作成日</td><td>2026/07/13</td></tr><tr><td>バージョン</td><td>1.1</td></tr><tr><td>ステータス</td><td>Draft</td></tr></tbody></table><div class="section-title">■ 改訂履歴</div><table><thead><tr><th>Version</th><th>日付</th><th>作成者</th><th>内容</th></tr></thead><tbody><tr><td>1.0</td><td>2026/07/13</td><td>Nguyen Minh Tri</td><td>初版作成</td></tr><tr><td>1.1</td><td>2026/07/17</td><td>Nguyen Minh Tri</td><td>3章のProgressive Login遷移の起点をSCR-003→SCR-004に修正（購入操作＝カート追加はSCR-004で発生、06_画面設計 5.1/5.4節と整合）、ログイン成功エッジに「元の画面へ戻る」注記を追加、5章に商品閲覧メニューのAdmin列×の意味に関する注記を追加。</td></tr></tbody></table><div class="section-title">■ 目次</div><ol><li>本書の目的</li><li>画面ID一覧</li><li>Customer向け画面遷移図</li><li>Admin向け画面遷移図</li><li>Role別ナビゲーション</li><li>条件付き遷移</li><li>まとめ</li></ol><div class="section-title">■ 1. 本書の目的</div><p>EC Siteの全20画面について、画面ID・遷移条件を定義する。Customer向け（購買導線）とAdmin向け（管理導線）は別UIとして分離する。</p><div class="section-title">■ 2. 画面ID一覧</div><table><thead><tr><th>画面ID</th><th>画面名</th><th>対象ユーザー</th></tr></thead><tbody><tr><td>SCR-001</td><td>ログイン画面</td><td>Customer / Admin</td></tr><tr><td>SCR-002</td><td>会員登録画面</td><td>Guest</td></tr><tr><td>SCR-003</td><td>商品一覧画面</td><td>Guest / Customer</td></tr><tr><td>SCR-004</td><td>商品詳細画面</td><td>Guest / Customer</td></tr><tr><td>SCR-005</td><td>カート画面</td><td>Customer</td></tr><tr><td>SCR-006</td><td>注文確認画面（配送先・クーポン）</td><td>Customer</td></tr><tr><td>SCR-007</td><td>決済画面</td><td>Customer</td></tr><tr><td>SCR-008</td><td>注文完了画面</td><td>Customer</td></tr><tr><td>SCR-009</td><td>注文履歴一覧画面</td><td>Customer</td></tr><tr><td>SCR-010</td><td>注文詳細画面</td><td>Customer</td></tr><tr><td>SCR-011</td><td>レビュー投稿画面</td><td>Customer</td></tr><tr><td>SCR-012</td><td>マイページ（会員情報・住所・パスワード）</td><td>Customer</td></tr><tr><td>SCR-013</td><td>管理者ダッシュボード</td><td>Admin</td></tr><tr><td>SCR-014</td><td>商品管理画面</td><td>Admin</td></tr><tr><td>SCR-015</td><td>カテゴリ管理画面</td><td>Admin</td></tr><tr><td>SCR-016</td><td>バリエーション・画像管理画面</td><td>Admin</td></tr><tr><td>SCR-017</td><td>在庫管理画面</td><td>Admin</td></tr><tr><td>SCR-018</td><td>注文管理画面</td><td>Admin</td></tr><tr><td>SCR-019</td><td>クーポン管理画面</td><td>Admin</td></tr><tr><td>SCR-020</td><td>レポート画面</td><td>Admin</td></tr></tbody></table><div class="section-title">■ 3. Customer向け画面遷移図</div><div class="mermaid">
+flowchart TD
+    SCR003["SCR-003 商品一覧"] --&gt; SCR004["SCR-004 商品詳細"]
+    SCR004 --&gt;|カートに追加| SCR005["SCR-005 カート"]
+    SCR004 --&gt;|未ログインでカート追加（Progressive Login）| SCR001["SCR-001 ログイン"]
+    SCR001 --&gt;|未登録| SCR002["SCR-002 会員登録"]
+    SCR002 --&gt;|登録完了| SCR003
+    SCR001 --&gt;|ログイン成功（Progressive Login経由時は元の画面へ戻る）| SCR003
+
+    SCR005 --&gt;|注文手続きへ| SCR006["SCR-006 注文確認"]
+    SCR006 --&gt;|確定| SCR007["SCR-007 決済"]
+    SCR007 --&gt;|決済成功| SCR008["SCR-008 注文完了"]
+    SCR008 --&gt; SCR009["SCR-009 注文履歴一覧"]
+
+    SCR009 --&gt; SCR010["SCR-010 注文詳細"]
+    SCR010 --&gt;|購入商品のレビュー| SCR011["SCR-011 レビュー投稿"]
+
+    SCR003 --&gt; SCR012["SCR-012 マイページ"]
+    SCR012 --&gt; SCR009
+</div><div class="section-title">■ 4. Admin向け画面遷移図</div><div class="mermaid">
+flowchart TD
+    SCR013["SCR-013 管理者ダッシュボード"] --&gt; SCR014["SCR-014 商品管理"]
+    SCR013 --&gt; SCR018["SCR-018 注文管理"]
+    SCR013 --&gt; SCR019["SCR-019 クーポン管理"]
+    SCR013 --&gt; SCR020["SCR-020 レポート"]
+
+    SCR014 --&gt; SCR015["SCR-015 カテゴリ管理"]
+    SCR014 --&gt; SCR016["SCR-016 バリエーション・画像管理"]
+    SCR014 --&gt; SCR017["SCR-017 在庫管理"]
+    SCR016 --&gt; SCR017
+
+    SCR018 --&gt;|出荷登録| SCR018
+</div><div class="section-title">■ 5. Role別ナビゲーション</div><table><thead><tr><th>メニュー</th><th>Guest</th><th>Customer</th><th>Admin</th></tr></thead><tbody><tr><td>商品一覧・詳細</td><td>〇</td><td>〇</td><td>×</td></tr><tr><td>カート・注文</td><td>×（ログイン要求）</td><td>〇</td><td>×</td></tr><tr><td>注文履歴</td><td>×</td><td>〇</td><td>×</td></tr><tr><td>マイページ</td><td>×</td><td>〇</td><td>×</td></tr><tr><td>管理者ダッシュボード</td><td>×</td><td>×</td><td>〇</td></tr><tr><td>商品/カテゴリ/在庫/クーポン管理</td><td>×</td><td>×</td><td>〇</td></tr><tr><td>注文管理・レポート</td><td>×</td><td>×</td><td>〇</td></tr></tbody></table><p><strong>注</strong>: 本表はナビゲーションメニューへの表示有無を示す。「商品一覧・詳細」のAdmin列が×なのはAdmin向けUI（<code><a href="06_画面設計_EC_Site.html">06_画面設計.md</a></code>3.3節のSidebar構成）に商品閲覧メニューを置かないという意味であり、公開画面（SCR-003/004）へのアクセス権限自体はAdminにもある（<code><a href="02_要件定義書_EC_Site.html">02_要件定義書.md</a></code>8章・<code><a href="07_機能一覧_EC_Site.html">07_機能一覧.md</a></code>4章はいずれも〇）。</p><div class="section-title">■ 6. 条件付き遷移</div><table><thead><tr><th>遷移元</th><th>遷移先</th><th>条件</th></tr></thead><tbody><tr><td>SCR-005 カート</td><td>SCR-006 注文確認</td><td>カートに1件以上の商品がある</td></tr><tr><td>SCR-006 注文確認</td><td>SCR-007 決済</td><td>在庫確保・クーポン適用が成功する（E004/E005が発生しない）</td></tr><tr><td>SCR-007 決済</td><td>SCR-008 注文完了</td><td>Stripe決済成功（Webhook経由でordersがpaidになる）</td></tr><tr><td>SCR-010 注文詳細</td><td>SCR-011 レビュー投稿</td><td>注文がdelivered状態であり、対象商品が未レビューである</td></tr><tr><td>SCR-018 注文管理</td><td>（ステータス変更）</td><td>現在のステータスから許可された遷移のみ（BR-ORD-001）</td></tr><tr><td>すべてのCustomer画面</td><td>SCR-001 ログイン</td><td>未認証でアクセス（E010）</td></tr><tr><td>すべてのAdmin画面</td><td>SCR-001 ログイン</td><td>未認証、またはAdmin権限なし（E002）</td></tr></tbody></table><div class="section-title">■ 7. まとめ</div><p>Customer導線は「閲覧（未ログイン可）→カート/注文（ログイン必須）」という段階的認証を採用し、Guestの離脱コストを下げる設計とした。Admin導線は全画面で認証・権限確認を前提とする。</p>
+</div>
+<div class="doc-footer">DOC-ID: EC-005 ・ EC Site ・ Draft</div>
+<div class="no-print"><a class="nav-back-top" href="#top">▲ ページ先頭へ</a></div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ER図 - EC Site</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/mermaid.min.js"></script>
+</head>
+<body id="top">
+<nav class="doc-nav no-print">
+  <div class="nav-row nav-row-adjacent">
+    <a class="nav-adjacent" href="07_機能一覧_EC_Site.html">← 07 機能一覧</a>
+    <a class="nav-index" href="index.html">目次</a>
+    <a class="nav-adjacent" href="09_テーブル定義_EC_Site.html">09 テーブル定義 →</a>
+  </div>
+  <div class="nav-row nav-row-chips"><a class="nav-chip" href="00_開発計画書_EC_Site.html" title="📋 開発計画書">00</a><a class="nav-chip" href="01_企画書_EC_Site.html" title="企画書">01</a><a class="nav-chip" href="02_要件定義書_EC_Site.html" title="要件定義書">02</a><a class="nav-chip" href="03_ユースケース_EC_Site.html" title="ユースケース">03</a><a class="nav-chip" href="04_業務フロー_EC_Site.html" title="業務フロー">04</a><a class="nav-chip" href="05_画面遷移図_EC_Site.html" title="画面遷移図">05</a><a class="nav-chip" href="06_画面設計_EC_Site.html" title="画面設計">06</a><a class="nav-chip" href="07_機能一覧_EC_Site.html" title="機能一覧">07</a><a class="nav-chip nav-chip-current" href="08_ER図_EC_Site.html" title="ER図">08</a><a class="nav-chip" href="09_テーブル定義_EC_Site.html" title="テーブル定義">09</a><a class="nav-chip" href="10_API設計_EC_Site.html" title="API設計">10</a><a class="nav-chip" href="11_基本設計書_EC_Site.html" title="基本設計書">11</a><a class="nav-chip" href="12_詳細設計書_EC_Site.html" title="詳細設計書">12</a><a class="nav-chip" href="13_インフラ設計_EC_Site.html" title="インフラ設計">13</a><a class="nav-chip" href="14_セキュリティ設計_EC_Site.html" title="セキュリティ設計">14</a><a class="nav-chip" href="15_単体試験仕様書_EC_Site.html" title="単体試験仕様書">15</a><a class="nav-chip" href="16_結合試験仕様書_EC_Site.html" title="結合試験仕様書">16</a><a class="nav-chip" href="17_システム試験仕様書_EC_Site.html" title="システム試験仕様書">17</a><a class="nav-chip" href="18_UAT_EC_Site.html" title="UAT仕様書">18</a><a class="nav-chip" href="19_リリース手順書_EC_Site.html" title="リリース手順書">19</a><a class="nav-chip" href="20_運用保守手順書_EC_Site.html" title="運用保守手順書">20</a></div>
+</nav>
+<table class="doc-header-bar">
+  <tr>
+    <td class="hb-type" rowspan="2">ER図</td>
+    <td class="hb-sys" rowspan="2">EC Site</td>
+    <td class="hb-label">文書番号</td>
+    <td class="hb-val">EC-008</td>
+    <td class="hb-label">バージョン</td>
+    <td class="hb-val">1.2</td>
+  </tr>
+  <tr>
+    <td class="hb-label">作成日</td>
+    <td class="hb-val">2026/07/13</td>
+    <td class="hb-label">作成者</td>
+    <td class="hb-val">Nguyen Minh Tri</td>
+  </tr>
+</table>
+<div class="doc-body">
+<h1 class="doc-title">ER図</h1><p>EC Site（ECサイト構築プロジェクト）</p><div class="section-title">■ 文書管理情報</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>システム名</td><td>EC Site</td></tr><tr><td>文書名</td><td>ER図</td></tr><tr><td>文書番号</td><td>EC-008</td></tr><tr><td>作成者</td><td>Nguyen Minh Tri</td></tr><tr><td>作成日</td><td>2026/07/13</td></tr><tr><td>バージョン</td><td>1.2</td></tr><tr><td>ステータス</td><td>Draft</td></tr></tbody></table><div class="section-title">■ 改訂履歴</div><table><thead><tr><th>Version</th><th>日付</th><th>作成者</th><th>内容</th></tr></thead><tbody><tr><td>1.0</td><td>2026/07/13</td><td>Nguyen Minh Tri</td><td>初版作成</td></tr><tr><td>1.1</td><td>2026/07/14</td><td>Nguyen Minh Tri</td><td>drawioファイルへの相対パス誤りを修正、11章の図面構成説明をswimlane形式1ページ構成に合わせて更新。</td></tr><tr><td>1.2</td><td>2026/07/15</td><td>Nguyen Minh Tri</td><td>drawio図面を全面再設計（v2）。6列レイアウト→FK依存レベル順の5列レイアウトに変更し、長距離リレーションの迂回配線を専用レーン化して線の重なり・テーブル本体との交差を解消。11章の説明を更新。</td></tr></tbody></table><div class="section-title">■ 目次</div><ol><li>本書の目的</li><li>ER設計方針</li><li>エンティティ一覧</li><li>ER図</li><li>リレーション定義</li><li>エンティティ詳細（主要カラム）</li><li>主キー・外部キー一覧</li><li>インデックス方針</li><li>データ削除・保持方針</li><li>正規化方針とあえて非正規化した点</li><li>drawio図面ファイル</li><li>トレーサビリティ</li><li>まとめ</li></ol><div class="section-title">■ 1. 本書の目的</div><p>本書は、EC Siteで利用するデータの論理構造とエンティティ間の関係を定義する。本書のエンティティ・リレーション・キー設計は、次工程の<code><a href="09_テーブル定義_EC_Site.html">09_テーブル定義.md</a></code>（物理設計）、<code><a href="10_API設計_EC_Site.html">10_API設計.md</a></code>、実装、テスト仕様書の基準とする。</p><div class="section-title">■ 2. ER設計方針</div><table><thead><tr><th>方針ID</th><th>方針</th><th>内容</th></tr></thead><tbody><tr><td>ER-001</td><td>Logical First</td><td>本書では論理ERを定義し、物理カラム型・詳細制約は<code><a href="09_テーブル定義_EC_Site.html">09_テーブル定義.md</a></code>で定義する。</td></tr><tr><td>ER-002</td><td>Traceability</td><td>エンティティは要件（REQ）、機能（FUNC）、業務ルール（BR）と対応させる。</td></tr><tr><td>ER-003</td><td>Soft Delete Priority</td><td>商品・カテゴリは物理削除より無効化（status）を優先する。過去の注文は<code>order_items</code>が独立してスナップショットを持つため、商品削除の影響を受けない。</td></tr><tr><td>ER-004</td><td>Snapshot Over Reference</td><td>金額・商品名・税率・配送先など「時間とともに変わりうる値」は、注文確定時点でコピー保存する（BR-ORD-002/003）。</td></tr><tr><td>ER-005</td><td>Auditability</td><td>在庫変動・重要操作は<code>inventory_logs</code>等に記録する。</td></tr><tr><td>ER-006</td><td>Normalization</td><td>初期設計では第3正規形を基本とし、パフォーマンス・履歴要件がある箇所のみ意図的に非正規化する（10章）。</td></tr></tbody></table><div class="section-title">■ 3. エンティティ一覧</div><p>テーブルIDは<code><a href="09_テーブル定義_EC_Site.html">09_テーブル定義.md</a></code>および<code>diagrams/er/ec_site_erd.drawio</code>のTBL-IDと一致させている。</p><table><thead><tr><th>テーブルID</th><th>エンティティ</th><th>論理名</th><th>概要</th><th>主な関連機能</th></tr></thead><tbody><tr><td>TBL-001</td><td>users</td><td>会員・管理者</td><td>ログインユーザー（Customer/Admin）を管理する。</td><td>FUNC-001〜004</td></tr><tr><td>TBL-002</td><td>addresses</td><td>配送先住所</td><td>会員の住所帳。注文時にスナップショットされる元データ。</td><td>FUNC-010</td></tr><tr><td>TBL-003</td><td>categories</td><td>商品カテゴリ</td><td>商品の分類。親子構造を持つ。</td><td>FUNC-022</td></tr><tr><td>TBL-004</td><td>products</td><td>商品</td><td>商品の基本情報・税区分を管理する。</td><td>FUNC-021</td></tr><tr><td>TBL-005</td><td>product_variants</td><td>商品バリエーション</td><td>サイズ・色などSKU単位の価格・状態を管理する。</td><td>FUNC-023</td></tr><tr><td>TBL-006</td><td>product_images</td><td>商品画像</td><td>商品に紐づく画像（S3）を管理する。</td><td>FUNC-024</td></tr><tr><td>TBL-007</td><td>inventories</td><td>在庫</td><td>バリエーション単位の利用可能数・確保数を管理する。</td><td>FUNC-016〜019</td></tr><tr><td>TBL-008</td><td>inventory_logs</td><td>在庫変動履歴</td><td>在庫の増減理由と履歴を記録する。</td><td>FUNC-016〜019</td></tr><tr><td>TBL-009</td><td>carts</td><td>カート</td><td>会員のカート（進行中/確定済み/放棄）を管理する。</td><td>FUNC-008</td></tr><tr><td>TBL-010</td><td>cart_items</td><td>カート明細</td><td>カート内の商品・数量を管理する。</td><td>FUNC-008 / 009</td></tr><tr><td>TBL-011</td><td>orders</td><td>注文</td><td>注文ヘッダ。ステータス・金額内訳・配送先スナップショットを持つ。</td><td>FUNC-012〜015</td></tr><tr><td>TBL-012</td><td>order_items</td><td>注文明細</td><td>注文時点の商品名・単価・税率のスナップショットを持つ。</td><td>FUNC-012</td></tr><tr><td>TBL-013</td><td>payments</td><td>決済</td><td>Stripe決済の状態・金額を管理する（1注文に複数回の試行を許容）。</td><td>FUNC-013</td></tr><tr><td>TBL-014</td><td>shipments</td><td>配送</td><td>出荷情報・配送状況を管理する。</td><td>FUNC-026</td></tr><tr><td>TBL-015</td><td>coupons</td><td>クーポン</td><td>割引条件・利用状況を管理する。</td><td>FUNC-011 / 027</td></tr><tr><td>TBL-016</td><td>reviews</td><td>レビュー</td><td>購入済み商品への評価・コメントを管理する。</td><td>FUNC-020</td></tr></tbody></table><div class="section-title">■ 4. ER図</div><div class="mermaid">
+erDiagram
+    users ||--o{ addresses : "has"
+    users ||--o{ carts : "owns"
+    users ||--o{ orders : "places"
+    users ||--o{ reviews : "writes"
+    users ||--o{ inventory_logs : "adjusts (nullable)"
+
+    categories ||--o{ categories : "parent of"
+    categories ||--o{ products : "classifies"
+
+    products ||--o{ product_variants : "has"
+    products ||--o{ product_images : "has"
+    products ||--o{ reviews : "receives"
+
+    product_variants ||--|| inventories : "tracked by"
+    product_variants ||--o{ inventory_logs : "logs"
+    product_variants ||--o{ cart_items : "added as"
+    product_variants ||--o{ order_items : "referenced by (snapshot source)"
+
+    carts ||--o{ cart_items : "contains"
+
+    orders ||--o{ order_items : "contains"
+    orders ||--o{ payments : "attempts"
+    orders ||--|| shipments : "ships as"
+    coupons ||--o{ orders : "applied to (nullable)"
+
+    order_items ||--o| reviews : "reviewed by (0..1)"
+
+    users {
+        bigint id PK
+        string name
+        string email UK
+        string password_hash
+        string phone
+        string role
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+
+    addresses {
+        bigint id PK
+        bigint user_id FK
+        string postal_code
+        string prefecture
+        string city
+        string address_line
+        string building
+        string recipient_name
+        string phone
+        boolean is_default
+        datetime created_at
+        datetime updated_at
+    }
+
+    categories {
+        bigint id PK
+        bigint parent_category_id FK
+        string name UK
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+
+    products {
+        bigint id PK
+        bigint category_id FK
+        string name
+        text description
+        string tax_category
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+
+    product_variants {
+        bigint id PK
+        bigint product_id FK
+        string sku UK
+        string size
+        string color
+        int price
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+
+    product_images {
+        bigint id PK
+        bigint product_id FK
+        string image_url
+        int display_order
+        boolean is_primary
+        datetime created_at
+        datetime updated_at
+    }
+
+    inventories {
+        bigint id PK
+        bigint variant_id FK
+        int quantity_available
+        int quantity_reserved
+        datetime updated_at
+    }
+
+    inventory_logs {
+        bigint id PK
+        bigint variant_id FK
+        string change_type
+        int quantity_change
+        int balance_after
+        string reference_type
+        bigint reference_id
+        bigint created_by FK
+        datetime created_at
+    }
+
+    carts {
+        bigint id PK
+        bigint user_id FK
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+
+    cart_items {
+        bigint id PK
+        bigint cart_id FK
+        bigint variant_id FK
+        int quantity
+        datetime created_at
+        datetime updated_at
+    }
+
+    orders {
+        bigint id PK
+        string order_number UK
+        bigint user_id FK
+        string status
+        int subtotal
+        int tax_total
+        int shipping_fee
+        int discount_total
+        int grand_total
+        bigint coupon_id FK
+        string shipping_postal_code
+        string shipping_prefecture
+        string shipping_city
+        string shipping_address_line
+        string shipping_recipient_name
+        string shipping_phone
+        datetime placed_at
+        datetime created_at
+        datetime updated_at
+    }
+
+    order_items {
+        bigint id PK
+        bigint order_id FK
+        bigint variant_id FK
+        string product_name
+        string variant_label
+        string sku
+        int unit_price
+        decimal tax_rate
+        int quantity
+        int line_subtotal
+        int line_tax
+        int line_total
+        datetime created_at
+    }
+
+    payments {
+        bigint id PK
+        bigint order_id FK
+        string payment_method
+        string status
+        int amount
+        string stripe_payment_intent_id UK
+        datetime paid_at
+        datetime created_at
+        datetime updated_at
+    }
+
+    shipments {
+        bigint id PK
+        bigint order_id FK
+        string carrier
+        string tracking_number
+        string status
+        datetime shipped_at
+        datetime delivered_at
+        datetime created_at
+        datetime updated_at
+    }
+
+    coupons {
+        bigint id PK
+        string code UK
+        string discount_type
+        int discount_value
+        int min_purchase_amount
+        int usage_limit
+        int used_count
+        date valid_from
+        date valid_to
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+
+    reviews {
+        bigint id PK
+        bigint product_id FK
+        bigint user_id FK
+        bigint order_item_id FK
+        tinyint rating
+        string comment
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+</div><div class="section-title">■ 5. リレーション定義</div><table><thead><tr><th>リレーションID</th><th>親エンティティ</th><th>子エンティティ</th><th>多重度</th><th>内容</th></tr></thead><tbody><tr><td>REL-001</td><td>users</td><td>addresses</td><td>1:N</td><td>1会員は複数の配送先住所を持つ。</td></tr><tr><td>REL-002</td><td>users</td><td>carts</td><td>1:N</td><td>1会員は複数のカート（履歴含む）を持つ。</td></tr><tr><td>REL-003</td><td>users</td><td>orders</td><td>1:N</td><td>1会員は複数の注文を行う。</td></tr><tr><td>REL-004</td><td>users</td><td>reviews</td><td>1:N</td><td>1会員は複数のレビューを投稿する。</td></tr><tr><td>REL-005</td><td>users</td><td>inventory_logs</td><td>1:N（nullable）</td><td>Adminによる手動在庫調整の実行者を記録する。System起因のログはNULL。</td></tr><tr><td>REL-006</td><td>categories</td><td>categories</td><td>1:N（自己参照）</td><td>カテゴリは親カテゴリを持つことができる（nullable）。</td></tr><tr><td>REL-007</td><td>categories</td><td>products</td><td>1:N</td><td>1カテゴリは複数の商品を持つ。</td></tr><tr><td>REL-008</td><td>products</td><td>product_variants</td><td>1:N</td><td>1商品は複数のバリエーション（SKU）を持つ。</td></tr><tr><td>REL-009</td><td>products</td><td>product_images</td><td>1:N</td><td>1商品は複数の画像を持つ。</td></tr><tr><td>REL-010</td><td>products</td><td>reviews</td><td>1:N</td><td>1商品は複数のレビューを持つ。</td></tr><tr><td>REL-011</td><td>product_variants</td><td>inventories</td><td>1:1</td><td>1バリエーションは1つの在庫レコードを持つ。</td></tr><tr><td>REL-012</td><td>product_variants</td><td>inventory_logs</td><td>1:N</td><td>1バリエーションは複数の在庫変動履歴を持つ。</td></tr><tr><td>REL-013</td><td>product_variants</td><td>cart_items</td><td>1:N</td><td>1バリエーションは複数のカート行に含まれうる。</td></tr><tr><td>REL-014</td><td>product_variants</td><td>order_items</td><td>1:N（参照専用）</td><td>分析目的のFKであり、価格計算には使用しない（BR-ORD-002）。</td></tr><tr><td>REL-015</td><td>carts</td><td>cart_items</td><td>1:N</td><td>1カートは複数の明細行を持つ。</td></tr><tr><td>REL-016</td><td>orders</td><td>order_items</td><td>1:N</td><td>1注文は複数の明細行を持つ。</td></tr><tr><td>REL-017</td><td>orders</td><td>payments</td><td>1:N</td><td>1注文は複数の決済試行を持ちうる（BR-PAY-002の再決済）。</td></tr><tr><td>REL-018</td><td>orders</td><td>shipments</td><td>1:1</td><td>1注文につき1配送情報を持つ（本スコープでは分割出荷は対象外）。</td></tr><tr><td>REL-019</td><td>coupons</td><td>orders</td><td>1:N（nullable）</td><td>1クーポンは複数の注文に適用されうる。未適用の注文は<code>coupon_id</code>がNULL。</td></tr><tr><td>REL-020</td><td>order_items</td><td>reviews</td><td>1:0..1</td><td>1注文明細に対しレビューは最大1件（BR-REV-002）。</td></tr></tbody></table><div class="section-title">■ 6. エンティティ詳細（主要カラム）</div><p>各エンティティの全カラム定義は<code><a href="09_テーブル定義_EC_Site.html">09_テーブル定義.md</a></code>を参照。本章では業務上の要点のみ補足する。</p><table><thead><tr><th>エンティティ</th><th>業務上の要点</th></tr></thead><tbody><tr><td>orders</td><td><code>shipping_*</code>列は<code>addresses</code>のスナップショットであり、<code>addresses</code>への直接FKは持たない（BR-ORD-003）。</td></tr><tr><td>order_items</td><td><code>unit_price</code> <code>tax_rate</code> <code>product_name</code>は<code>products</code>/<code>product_variants</code>のスナップショットであり、参照先の変更に追従しない（BR-ORD-002, BR-TAX-002）。</td></tr><tr><td>inventories</td><td><code>quantity_available</code>と<code>quantity_reserved</code>を分離して持つことで、BR-INV-001〜007の2段階制御を1テーブルで表現する。</td></tr><tr><td>payments</td><td>1注文=1決済ではなく1注文=N決済（試行履歴）とすることで、決済失敗後の再試行を自然に表現する（REL-017）。</td></tr></tbody></table><div class="section-title">■ 7. 主キー・外部キー一覧</div><table><thead><tr><th>テーブル</th><th>PK</th><th>主なFK</th></tr></thead><tbody><tr><td>addresses</td><td>id</td><td>user_id → users.id</td></tr><tr><td>categories</td><td>id</td><td>parent_category_id → categories.id (nullable)</td></tr><tr><td>products</td><td>id</td><td>category_id → categories.id</td></tr><tr><td>product_variants</td><td>id</td><td>product_id → products.id</td></tr><tr><td>product_images</td><td>id</td><td>product_id → products.id</td></tr><tr><td>inventories</td><td>id</td><td>variant_id → product_variants.id (unique)</td></tr><tr><td>inventory_logs</td><td>id</td><td>variant_id → product_variants.id, created_by → users.id (nullable)</td></tr><tr><td>carts</td><td>id</td><td>user_id → users.id</td></tr><tr><td>cart_items</td><td>id</td><td>cart_id → carts.id, variant_id → product_variants.id</td></tr><tr><td>orders</td><td>id</td><td>user_id → users.id, coupon_id → coupons.id (nullable)</td></tr><tr><td>order_items</td><td>id</td><td>order_id → orders.id, variant_id → product_variants.id</td></tr><tr><td>payments</td><td>id</td><td>order_id → orders.id</td></tr><tr><td>shipments</td><td>id</td><td>order_id → orders.id (unique)</td></tr><tr><td>reviews</td><td>id</td><td>product_id → products.id, user_id → users.id, order_item_id → order_items.id (unique)</td></tr></tbody></table><div class="section-title">■ 8. インデックス方針</div><table><thead><tr><th>方針</th><th>内容</th></tr></thead><tbody><tr><td>FK列</td><td>すべてのFK列にインデックスを付与する（MySQLはFK制約作成時に自動付与）。</td></tr><tr><td>検索頻度の高い列</td><td><code>orders.status</code> <code>orders.user_id</code> <code>orders.created_at</code>の複合インデックス（注文管理画面の検索用）。</td></tr><tr><td>一意制約</td><td><code>users.email</code> <code>product_variants.sku</code> <code>coupons.code</code> <code>payments.stripe_payment_intent_id</code>（冪等性、BR-PAY-003）。</td></tr><tr><td>排他制御対象</td><td><code>inventories.variant_id</code>（<code>SELECT ... FOR UPDATE</code>の対象、BR-INV-007）にUNIQUE制約を付与し行ロックを一意に特定できるようにする。</td></tr></tbody></table><div class="section-title">■ 9. データ削除・保持方針</div><table><thead><tr><th>データ</th><th>方針</th></tr></thead><tbody><tr><td>products / categories</td><td>論理無効化（status=inactive）を優先し、物理削除しない（ER-003）。</td></tr><tr><td>orders / order_items / payments</td><td>永続保持（会計証憑として削除しない）。</td></tr><tr><td>carts（abandoned）</td><td>一定期間保持後、分析バッチ対象とし物理削除も許容する（個人情報を含まないカート明細のみのため）。</td></tr><tr><td>reviews</td><td>不適切投稿は<code>status=hidden</code>で論理無効化する。</td></tr></tbody></table><div class="section-title">■ 10. 正規化方針とあえて非正規化した点</div><table><thead><tr><th>対象</th><th>状態</th><th>理由</th></tr></thead><tbody><tr><td>order_items の product_name / unit_price / tax_rate</td><td>意図的な非正規化（products/product_variantsと重複）</td><td>BR-ORD-002: 履歴の正確性を保つためのスナップショット。正規化の教科書的には冗長だが、EC設計では必須のアンチパターン例外。</td></tr><tr><td>orders の shipping_* 列</td><td>意図的な非正規化（addressesと重複）</td><td>BR-ORD-003: 同上。会員が住所を編集・削除しても過去の注文の配送先表示を保持するため。</td></tr><tr><td>orders の subtotal / tax_total / grand_total</td><td>意図的な非正規化（order_itemsの合計から算出可能）</td><td>注文一覧画面での集計クエリを避け、確定時点の金額を1回の計算で確定させるため（決済との整合性を保つ目的もある）。</td></tr><tr><td>それ以外</td><td>第3正規形</td><td>上記以外は関数従属性に基づき正規化する。</td></tr></tbody></table><div class="section-title">■ 11. drawio図面ファイル</div><p>物理配置・視覚的なER図は <code>../diagrams/er/ec_site_erd.drawio</code>（本書 <code>docs/08_ER図.md</code> から見た相対パス。プロジェクトルートからは <code>diagrams/er/ec_site_erd.drawio</code>）を参照。1ページ構成、swimlane形式（<code>drawio-er</code>スキル仕様準拠）。2026/07/15にレイアウトを全面再設計（v2）。</p><p>テーブルはFK依存の深さ（レベル0〜4）順に左から右へ5列で配置し、同一列内のテーブルは縦に並べる。これにより20リレーションのうち14件は隣接列間の直線（forward-edge）となり、逆方向の矢印は<code>categories</code>の自己参照1件のみ。</p><table><thead><tr><th>列（レベル）</th><th>配置テーブル</th></tr></thead><tbody><tr><td>Lv0（左端）</td><td>users, categories, coupons</td></tr><tr><td>Lv1</td><td>addresses, products, carts, orders</td></tr><tr><td>Lv2</td><td>product_variants, product_images, payments, shipments</td></tr><tr><td>Lv3</td><td>inventories, inventory_logs, cart_items, order_items</td></tr><tr><td>Lv4（右端）</td><td>reviews</td></tr></tbody></table><p>残り2列以上をまたぐ長距離リレーション5件（<code>cart_items.cart_id→carts</code>, <code>order_items.order_id→orders</code>, <code>inventory_logs.created_by→users</code>, <code>reviews.product_id→products</code>, <code>reviews.user_id→users</code>）は、全テーブルの上部に確保した迂回レーン（5段、またぐ列数が狭いものほどテーブルに近い段）を個別に通し、他の線・テーブル本体と重ならないようにしている。<code>categories</code>の自己参照はテーブル左側の小さなループで表現する。各リレーションは専用のchannelX（垂直経路）を持ち、同じ隙間を通る線同士が重ならないよう20〜35px間隔で振り分けている。</p><div class="section-title">■ 12. トレーサビリティ</div><p><code><a href="02_要件定義書_EC_Site.html">02_要件定義書.md</a></code>の業務ルール（BR-ORD/BR-TAX/BR-INV/BR-CPN/BR-PAY/BR-REV）→ 本書のリレーション定義（5章）→ <code><a href="09_テーブル定義_EC_Site.html">09_テーブル定義.md</a></code>の物理制約、の順に一意に追跡できる。</p><div class="section-title">■ 13. まとめ</div><p>本ER図の設計上の核心は、REL-014（<code>order_items</code>から<code>product_variants</code>への参照はスナップショット元の追跡専用であり価格計算には使わない）と、REL-011/012（<code>inventories</code>と<code>inventory_logs</code>による在庫の状態と履歴の分離）の2点である。この2点を正しく理解していれば、<code><a href="09_テーブル定義_EC_Site.html">09_テーブル定義.md</a></code>以降の物理設計・実装は自然に導かれる。</p></div>
+<div class="doc-footer">DOC-ID: EC-008 ・ EC Site ・ Draft</div>
+<div class="no-print"><a class="nav-back-top" href="#top">▲ ページ先頭へ</a></div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+</body>
+</html>

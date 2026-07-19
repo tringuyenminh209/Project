@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>01 環境構築・認証基盤 - EC Site 実装ガイド</title>
+<link rel="stylesheet" href="assets/guide.css">
+</head>
+<body>
+<div class="page">
+<nav class="guide-nav">
+  <a class="nav-home" href="index.html">🏠 TOP</a>
+  <span class="next-disabled">← (最初のチャプター)</span>
+  <a href="02_商品カタログ.html">Chương 02: Danh mục &amp; Sản phẩm →</a>
+  <a class="nav-doc-link" href="../docs/html/10_API設計_EC_Site.html">📘 10_API設計</a>
+</nav>
+
+<h1>Chương 01 — Môi trường phát triển & Xác thực (Auth)</h1>
+<p class="lead">Chương này dựng nền móng đầu tiên của EC Site: Docker Compose cho local dev (nginx + app + db + scheduler), khung project Laravel 12, bảng <code>users</code> (TBL-001), response envelope dùng chung cho toàn hệ thống, và luồng xác thực cốt lõi — <strong>đăng ký (API-001)</strong> và <strong>đăng nhập (API-002)</strong> — bằng Laravel Sanctum. Mọi chương sau (giỏ hàng, đơn hàng, thanh toán...) đều cần user đã đăng nhập, nên đây là điều kiện bắt buộc trước tiên.</p>
+
+<div class="box box-why">
+<div class="box-title">💡 Vì sao dùng Sanctum token, không dùng session?</div>
+<p><code>10_API設計.md</code> API-POL-003 quy định API là <strong>Stateless</strong>, xác thực bằng Sanctum token thay vì session, để đáp ứng NFR-009 (Web server có thể mở rộng nhiều instance mà không cần sticky session). Token đăng ký/đăng nhập có hạn <strong>24 giờ</strong> (API設計 4.1節) — dài hơn Project 01 (8 giờ) vì đối tượng là Customer, ưu tiên trải nghiệm mua sắm liền mạch hơn.</p>
+</div>
+
+<div class="box box-why">
+<div class="box-title">💡 Vì sao cột mật khẩu tên là <code>password_hash</code> chứ không phải <code>password</code>?</div>
+<p><code>09_テーブル定義.md</code> TBL-001 đặt tên cột là <code>password_hash</code> (rõ nghĩa hơn quy ước mặc định <code>password</code> của Laravel). Vì Eloquent's <code>Authenticatable</code> mặc định đọc cột <code>password</code> khi xác thực, model <code>User</code> phải override <code>getAuthPassword()</code> để trỏ đúng cột — nếu bỏ qua bước này, <code>Hash::check()</code> nội bộ của Laravel (Auth::attempt) sẽ luôn thất bại. Vì lý do đó, guide này tự kiểm tra mật khẩu bằng <code>Hash::check()</code> trực tiếp trong Service thay vì dùng <code>Auth::attempt()</code>, để không phụ thuộc ngầm vào quy ước cột của framework.</p>
+</div>
+
+<div class="box box-why">
+<div class="box-title">💡 Vì sao E001 dùng chung cho "sai email", "sai mật khẩu" VÀ "tài khoản bị khoá"?</div>
+<p><code>02_要件定義書.md</code> BR-USR-001: tài khoản <code>status=inactive</code> không thể đăng nhập. Thay vì trả một mã lỗi riêng cho trường hợp này, <code>AuthService::login</code> gộp cả 3 nguyên nhân (không tồn tại / sai mật khẩu / bị khoá) vào cùng một <code>E001</code> với cùng một thông điệp — tránh lộ thông tin cho kẻ tấn công dò email nào đã tồn tại trong hệ thống (enumeration attack), đúng tinh thần NFR-012/NFR-013.</p>
+</div>
+
+<h2>■ Phạm vi chương này</h2>
+<table>
+<thead><tr><th>Phần</th><th>Nội dung</th><th>Trạng thái</th></tr></thead>
+<tbody>
+<tr><td>Docker Compose local dev</td><td>nginx / app (PHP-FPM) / db (MySQL 8) / scheduler — theo <code>13_インフラ設計.md</code> 7.1節</td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>Migration <code>users</code></td><td>Đúng theo TBL-001: <code>password_hash</code>, <code>role</code>, <code>status</code> enum</td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>Response envelope + exception base</td><td><code>ApiException</code>, xử lý ValidationException/AuthenticationException dùng chung (API設計 3.3節)</td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>API-001 Đăng ký</td><td>RegisterRequest → AuthController → AuthService, phát Sanctum token ngay sau khi đăng ký</td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>API-002 Đăng nhập</td><td>LoginRequest → AuthController → AuthService, áp dụng BR-USR-001</td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>API-003 Đăng xuất</td><td>Vô hiệu hoá Sanctum token hiện tại</td><td>📝 課題</td></tr>
+<tr><td>API-004 Lấy user hiện tại</td><td><code>/auth/me</code>, dùng để Header hiển thị trạng thái đăng nhập</td><td>📝 課題</td></tr>
+<tr><td>API-005 Đổi mật khẩu</td><td>Kiểm tra <code>current_password</code>, cập nhật <code>password_hash</code></td><td>📝 課題</td></tr>
+<tr><td>Middleware phân quyền <code>role:admin</code></td><td>Chặn truy cập <code>/admin/*</code> nếu không phải Admin (E002)</td><td>📝 課題</td></tr>
+</tbody>
+</table>
+
+<div class="step-heading"><div class="step-number">1</div><div class="step-title">Docker Compose cho local dev</div></div>
+<p>Theo <code>13_インフラ設計.md</code> 7.1節, môi trường local gồm 4 container: <code>nginx</code> (reverse proxy), <code>app</code> (PHP-FPM/Laravel), <code>db</code> (MySQL 8, chỉ dùng local — production dùng RDS), và <code>scheduler</code> (chạy <code>php artisan schedule:work</code>, phục vụ batch huỷ đơn hàng hết hạn giữ chỗ ở BR-INV-006, sẽ dùng từ chương về đơn hàng).</p>
+
+<div class="code-block">
+<div class="code-filename">docker-compose.yml<span class="code-lang">yaml</span></div>
+<pre>services:
+  nginx:
+    image: nginx:stable
+    ports:
+      - "80:80"
+    volumes:
+      - ./backend:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    volumes:
+      - ./backend:/var/www/html
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  # BR-INV-006: 在庫確保(pending)の期限切れを毎分キャンセルするバッチ用コンテナ
+  # 13_インフラ設計.md 7.1節
+  scheduler:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    command: php artisan schedule:work
+    volumes:
+      - ./backend:/var/www/html
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  # 本番はAWS RDSを使用（13_インフラ設計.md 10章）。ローカル開発用のみ。
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ec_site
+      MYSQL_USER: ec_site
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db-data:</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">docker/php/Dockerfile<span class="code-lang">dockerfile</span></div>
+<pre># docker/php/Dockerfile
+# 13_インフラ設計.md 9.1節: PHP 8.4 / Laravel 12（Project 01と統一）
+FROM php:8.4-fpm
+
+RUN apt-get update &amp;&amp; apt-get install -y \
+        git unzip libzip-dev libpng-dev \
+    &amp;&amp; docker-php-ext-install pdo_mysql zip gd
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">docker/nginx/default.conf<span class="code-lang">nginx</span></div>
+<pre># 13_インフラ設計.md 8章: Project 01のdocker/nginx/default.confと同一パターン
+# （rootをpublic/に限定、try_files、隠しファイル拒否）
+server {
+    listen 80;
+    server_name localhost;
+
+    root /var/www/html/public;
+    index index.php;
+
+    # 隠しファイル（.env等）へのアクセス拒否
+    location ~ /\. {
+        deny all;
+    }
+
+    location / {
+        # 13_インフラ設計.md 3.1節のtry_filesパターン
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        # 13_インフラ設計.md 5.1節: PHP-FPMは9000番（コンテナ内部通信のみ）
+        fastcgi_pass app:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">2</div><div class="step-title">Khởi tạo Laravel 12 + Sanctum</div></div>
+<div class="terminal">
+<div><span class="prompt">composer create-project laravel/laravel backend "^12.0"</span></div>
+<div><span class="prompt">cd backend</span></div>
+<div><span class="prompt">php artisan install:api</span></div>
+<div><span class="output">&gt; Sanctum本体 + routes/api.php + personal_access_tokens migrationが自動導入される（Laravel 12はapi.phpを標準で持たないため、この正式手順を使う）</span></div>
+<div><span class="prompt">docker compose up -d --build</span></div>
+<div><span class="prompt">docker compose exec app php artisan migrate</span></div>
+</div>
+<p>Sau khi cài Sanctum, đặt hạn token <strong>24 giờ</strong> theo đúng <code>10_API設計.md</code> 4.1節 (mặc định của Sanctum là <code>null</code> = không bao giờ hết hạn, không đúng spec): mở <code>config/sanctum.php</code> và sửa <code>'expiration' =&gt; 60 * 24</code> (đơn vị là <strong>phút</strong>).</p>
+<p>Thêm các biến môi trường sau vào <code>backend/.env</code> (giá trị AWS/Stripe để trống, sẽ điền ở các chương sau — AWS dùng cho ảnh sản phẩm, Stripe dùng cho thanh toán):</p>
+
+<div class="code-block">
+<div class="code-filename">backend/.env（追記分）<span class="code-lang">dotenv</span></div>
+<pre>DB_CONNECTION=mysql
+DB_HOST=db
+DB_PORT=3306
+DB_DATABASE=ec_site
+DB_USERNAME=ec_site
+DB_PASSWORD=secret
+
+# 14_インフラ設計.md 14章 — 本番はIAMロール推奨、開発時のみキー直書き
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_BUCKET=ec-site-product-images-local
+
+# 5章以降（決済チャプター）で使用。Stripeダッシュボードから取得。
+STRIPE_KEY=
+STRIPE_SECRET=
+STRIPE_WEBHOOK_SECRET=</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">3</div><div class="step-title">Migration bảng <code>users</code>（TBL-001）</div></div>
+<p>Bám sát đúng từng cột trong <code>09_テーブル定義.md</code> 4.1節 — đặc biệt <code>password_hash</code> (không phải <code>password</code>), và 2 cột <code>ENUM</code> có index riêng phục vụ lọc theo role/status. <strong>Không tạo file migration mới</strong>: Laravel đã có sẵn file mặc định <code>0001_01_01_000001_create_users_table.php</code> tạo bảng <code>users</code> — tạo file mới sẽ nổ "table already exists". Thay toàn bộ nội dung file mặc định bằng bản dưới (giữ nguyên 2 bảng phụ <code>password_reset_tokens</code>/<code>sessions</code> — bảng <code>sessions</code> đang được <code>SESSION_DRIVER=database</code> mặc định của .env sử dụng).</p>
+
+<div class="code-block">
+<div class="code-filename">database/migrations/0001_01_01_000001_create_users_table.php（Laravel標準ファイルをこの内容で置き換える）<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// database/migrations/0001_01_01_000001_create_users_table.php
+// Laravel標準の同名ファイルを、この内容で丸ごと置き換える（新規ファイルを作ると
+// 標準migrationと二重にusersを作ろうとして "table already exists" になる）。
+// usersは09_テーブル定義.md TBL-001に厳密対応。password_reset_tokens / sessionsは
+// Laravel標準のまま残す（sessionsはSESSION_DRIVER=database（.env既定）が使用する）。
+// 注意: password列はLaravelの規約名(password)ではなく、テーブル定義どおり password_hash にする
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table-&gt;id();
+            $table-&gt;string('name', 100);
+            $table-&gt;string('email', 255)-&gt;unique();
+            $table-&gt;string('password_hash', 255);
+            $table-&gt;string('phone', 15)-&gt;nullable();
+            $table-&gt;enum('role', ['customer', 'admin'])-&gt;default('customer');
+            $table-&gt;enum('status', ['active', 'inactive'])-&gt;default('active');
+            $table-&gt;timestamps();
+
+            $table-&gt;index('role');
+            $table-&gt;index('status');
+        });
+
+        // ↓ここから下はLaravel標準のまま（変更しない）
+        Schema::create('password_reset_tokens', function (Blueprint $table) {
+            $table-&gt;string('email')-&gt;primary();
+            $table-&gt;string('token');
+            $table-&gt;timestamp('created_at')-&gt;nullable();
+        });
+
+        Schema::create('sessions', function (Blueprint $table) {
+            $table-&gt;string('id')-&gt;primary();
+            $table-&gt;foreignId('user_id')-&gt;nullable()-&gt;index();
+            $table-&gt;string('ip_address', 45)-&gt;nullable();
+            $table-&gt;text('user_agent')-&gt;nullable();
+            $table-&gt;longText('payload');
+            $table-&gt;integer('last_activity')-&gt;index();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
+    }
+};</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">app/Models/User.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Models/User.php
+// 09_テーブル定義.md TBL-001
+
+namespace App\Models;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
+
+class User extends Authenticatable
+{
+    use HasApiTokens;
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password_hash',
+        'phone',
+        'role',
+        'status',
+    ];
+
+    protected $hidden = [
+        'password_hash',
+    ];
+
+    // テーブル定義のpassword_hash列を使う（Laravel既定のpasswordではない）ため上書きする
+    public function getAuthPassword(): string
+    {
+        return $this-&gt;password_hash;
+    }
+
+    // 12_詳細設計書.md 6章: User — scopeActive
+    public function scopeActive($query)
+    {
+        return $query-&gt;where('status', 'active');
+    }
+}</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">4</div><div class="step-title">Response envelope &amp; exception base dùng chung toàn hệ thống</div></div>
+<p><code>10_API設計.md</code> 3.3節 quy định mọi API phải trả về đúng 1 trong 2 hình dạng: <code>{success:true, message, data}</code> hoặc <code>{success:false, error:{code,message,details}}</code>. Thay vì lặp lại cấu trúc này ở từng Controller, ta định nghĩa 1 exception nền (<code>ApiException</code>) để mọi exception nghiệp vụ (E004 thiếu tồn kho, E005 coupon, E006 sai trạng thái đơn hàng... ở các chương sau) chỉ cần kế thừa và khai báo mã lỗi.</p>
+
+<div class="code-block">
+<div class="code-filename">app/Exceptions/ApiException.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Exceptions/ApiException.php
+// 10_API設計.md 3.3節（共通Response形式）+ 12_詳細設計書.md DD-POL-003
+// 「業務エラーはカスタムExceptionとして定義し、render()でJSON+HTTPステータスを返す」の基底クラス
+
+namespace App\Exceptions;
+
+use Exception;
+use Illuminate\Http\JsonResponse;
+
+abstract class ApiException extends Exception
+{
+    protected string $errorCode;
+    protected int $httpStatus;
+    protected array $details = [];
+
+    public function render(): JsonResponse
+    {
+        return response()-&gt;json([
+            'success' =&gt; false,
+            'error' =&gt; [
+                'code' =&gt; $this-&gt;errorCode,
+                'message' =&gt; $this-&gt;getMessage(),
+                'details' =&gt; $this-&gt;details,
+            ],
+        ], $this-&gt;httpStatus);
+    }
+}</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">app/Exceptions/AuthenticationFailedException.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Exceptions/AuthenticationFailedException.php
+// 02_要件定義書.md 16章 E001 / 10_API設計.md 6.2節(API-002)・7章
+// BR-USR-001（無効化会員はログインできない）もこの例外に統一する
+// -&gt; メール不一致・パスワード不一致・status=inactive のいずれも「ログイン失敗」として同じE001を返す
+//    （攻撃者にメール存在有無を推測させないため、理由ごとにメッセージを変えない）
+
+namespace App\Exceptions;
+
+class AuthenticationFailedException extends ApiException
+{
+    protected string $errorCode = 'E001';
+    protected int $httpStatus = 401;
+
+    public function __construct()
+    {
+        parent::__construct('メールアドレスまたはパスワードが正しくありません。');
+    }
+}</pre>
+</div>
+
+<p>Framework tự ném <code>ValidationException</code> (khi FormRequest fail) và <code>AuthenticationException</code> (khi middleware <code>auth:sanctum</code> không thấy token hợp lệ) — 2 exception này không kế thừa <code>ApiException</code> nên cần đăng ký riêng trong <code>bootstrap/app.php</code> để cùng trả đúng envelope (E003/E010):</p>
+
+<div class="code-block">
+<div class="code-filename">bootstrap/app.php（抜粋）<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// bootstrap/app.php（抜粋）
+// 10_API設計.md 3.3節の共通Response形式を、フレームワークが投げる例外（Validation/認証エラー等）にも適用する。
+// ApiException系（業務エラー）はrender()を持つため個別処理は不要。ここではフレームワーク標準の例外のみ変換する。
+
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Validation\ValidationException;
+
+return Application::configure(basePath: dirname(__DIR__))
+    -&gt;withRouting(
+        api: __DIR__.'/../routes/api.php',
+        commands: __DIR__.'/../routes/console.php',
+        health: '/api/health',
+    )
+    -&gt;withMiddleware(function (Middleware $middleware) {
+        //
+    })
+    -&gt;withExceptions(function (Exceptions $exceptions) {
+        // E003: バリデーションエラー（422）
+        $exceptions-&gt;render(function (ValidationException $e) {
+            return response()-&gt;json([
+                'success' =&gt; false,
+                'error' =&gt; [
+                    'code' =&gt; 'E003',
+                    'message' =&gt; '入力内容に誤りがあります。',
+                    'details' =&gt; $e-&gt;errors(),
+                ],
+            ], 422);
+        });
+
+        // E010: 未認証（auth:sanctumミドルウェアがトークン無し/失効時にこれを投げる）
+        $exceptions-&gt;render(function (AuthenticationException $e) {
+            return response()-&gt;json([
+                'success' =&gt; false,
+                'error' =&gt; [
+                    'code' =&gt; 'E010',
+                    'message' =&gt; '認証が必要です。',
+                    'details' =&gt; [],
+                ],
+            ], 401);
+        });
+    })-&gt;create();</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">5</div><div class="step-title">API-001 Đăng ký</div></div>
+<div class="code-block">
+<div class="code-filename">app/Http/Requests/Auth/RegisterRequest.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Http/Requests/Auth/RegisterRequest.php
+// 10_API設計.md 6.1節(API-001) / 12_詳細設計書.md 7章
+
+namespace App\Http\Requests\Auth;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class RegisterRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true; // Guestが呼ぶAPIのため常にtrue
+    }
+
+    public function rules(): array
+    {
+        return [
+            'name' =&gt; ['required', 'string', 'max:100'],
+            'email' =&gt; ['required', 'email', 'max:255', 'unique:users,email'],
+            'password' =&gt; ['required', 'string', 'min:8', 'max:20', 'confirmed'],
+        ];
+    }
+}</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">6</div><div class="step-title">API-002 Đăng nhập</div></div>
+<div class="code-block">
+<div class="code-filename">app/Http/Requests/Auth/LoginRequest.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Http/Requests/Auth/LoginRequest.php
+// 10_API設計.md 6.2節(API-002)
+
+namespace App\Http\Requests\Auth;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class LoginRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'email' =&gt; ['required', 'email', 'max:255'],
+            'password' =&gt; ['required', 'string', 'min:8', 'max:20'],
+        ];
+    }
+}</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">7</div><div class="step-title">AuthService &amp; AuthController</div></div>
+<div class="code-block">
+<div class="code-filename">app/Services/AuthService.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Services/AuthService.php
+// 12_詳細設計書.md 3章（Fat Service, Thin Controller）
+// register/login のみ実装。logout/me/updatePassword は本チャプターの課題（下の表を参照）。
+
+namespace App\Services;
+
+use App\Exceptions\AuthenticationFailedException;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
+class AuthService
+{
+    // API-001 会員登録
+    public function register(array $data): array
+    {
+        $user = User::create([
+            'name' =&gt; $data['name'],
+            'email' =&gt; $data['email'],
+            'password_hash' =&gt; Hash::make($data['password']),
+            'role' =&gt; 'customer',
+            'status' =&gt; 'active',
+        ]);
+
+        // 10_API設計.md 6.1節: 「登録成功時はログインと同様に即座にアクセストークンを発行する」
+        $token = $user-&gt;createToken('api-token')-&gt;plainTextToken;
+
+        return $this-&gt;buildAuthResponse($user, $token);
+    }
+
+    // API-002 ログイン
+    public function login(array $data): array
+    {
+        $user = User::where('email', $data['email'])-&gt;first();
+
+        // BR-USR-001: status=inactive の会員はログイン不可。
+        // メール不存在・パスワード不一致・inactiveのいずれも同じE001に丸める（列挙攻撃対策）。
+        if (!$user || $user-&gt;status !== 'active' || !Hash::check($data['password'], $user-&gt;password_hash)) {
+            throw new AuthenticationFailedException();
+        }
+
+        $token = $user-&gt;createToken('api-token')-&gt;plainTextToken;
+
+        return $this-&gt;buildAuthResponse($user, $token);
+    }
+
+    private function buildAuthResponse(User $user, string $token): array
+    {
+        return [
+            'access_token' =&gt; $token,
+            'user' =&gt; [
+                'id' =&gt; $user-&gt;id,
+                'name' =&gt; $user-&gt;name,
+                'email' =&gt; $user-&gt;email,
+                'role' =&gt; $user-&gt;role,
+            ],
+        ];
+    }
+}</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">app/Http/Controllers/Auth/AuthController.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Http/Controllers/Auth/AuthController.php
+// 12_詳細設計書.md 4章: Auth\AuthController — register, login, logout, me, updatePassword (API-001〜005)
+// このチャプターでは register / login のみ実装する。残り3メソッドは課題（下の表を参照）。
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Services\AuthService;
+use Illuminate\Http\JsonResponse;
+
+class AuthController extends Controller
+{
+    public function __construct(private AuthService $authService)
+    {
+    }
+
+    public function register(RegisterRequest $request): JsonResponse
+    {
+        $result = $this-&gt;authService-&gt;register($request-&gt;validated());
+
+        return response()-&gt;json([
+            'success' =&gt; true,
+            'message' =&gt; '会員登録が完了しました。',
+            'data' =&gt; $result,
+        ], 201);
+    }
+
+    public function login(LoginRequest $request): JsonResponse
+    {
+        $result = $this-&gt;authService-&gt;login($request-&gt;validated());
+
+        return response()-&gt;json([
+            'success' =&gt; true,
+            'message' =&gt; 'ログインしました。',
+            'data' =&gt; $result,
+        ]);
+    }
+}</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">routes/api.php（抜粋）<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// routes/api.php（抜粋）
+// 10_API設計.md 5章 API一覧 / API-POL-008: Base URLに /v1 を付けない、フィールド名snake_case
+
+use App\Http\Controllers\Auth\AuthController;
+use Illuminate\Support\Facades\Route;
+
+Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/auth/login', [AuthController::class, 'login']);
+
+// 課題: logout(API-003) / me(API-004) / password(API-005) は
+// Route::middleware('auth:sanctum')-&gt;group(...) の中に追加する</pre>
+</div>
+
+<div class="box box-check">
+<div class="box-title">✅ チェックポイント</div>
+<ul>
+<li>☐ <code>docker compose up -d --build</code> chạy được cả 4 container (nginx/app/db/scheduler) không lỗi</li>
+<li>☐ <code>php artisan migrate</code> tạo đúng bảng <code>users</code> — đối chiếu từng cột với <code>09_テーブル定義.md</code> TBL-001 (đặc biệt tên cột <code>password_hash</code>)</li>
+<li>☐ <code>POST /auth/register</code> với dữ liệu hợp lệ trả về 201 kèm <code>access_token</code> + <code>user</code> đúng hình dạng ở API設計 6.1節</li>
+<li>☐ <code>POST /auth/register</code> với email đã tồn tại trả về <code>E003</code> (422), không phải lỗi 500</li>
+<li>☐ <code>POST /auth/login</code> sai mật khẩu trả về <code>E001</code> (401)</li>
+<li>☐ Đăng ký xong, tự sửa tay <code>status='inactive'</code> trong DB rồi thử login lại bằng đúng mật khẩu → vẫn phải bị từ chối bằng <code>E001</code> (kiểm chứng BR-USR-001)</li>
+<li>☐ Gọi 1 route bất kỳ được bọc <code>auth:sanctum</code> mà không có <code>Authorization</code> header → trả đúng envelope <code>E010</code> (401), không phải trang HTML lỗi mặc định của Laravel</li>
+</ul>
+</div>
+
+<div class="step-heading"><div class="step-number">8</div><div class="step-title">📝 課題</div></div>
+<div class="box box-task">
+<div class="box-title">📝 Tự làm — không có code mẫu</div>
+<table>
+<thead><tr><th>Tính năng</th><th>API/tham chiếu dùng</th><th>Điểm cần chú ý</th></tr></thead>
+<tbody>
+<tr><td>Đăng xuất</td><td>API-003 (<code>10_API設計.md</code> 6.3節). Sanctum: <code>$request->user()->currentAccessToken()->delete()</code></td><td>Route phải nằm trong group <code>auth:sanctum</code>. Sau khi logout, gọi lại API bằng token cũ phải nhận <code>E010</code>, không phải 200.</td></tr>
+<tr><td>Lấy user hiện tại</td><td>API-004 (6.4節). Dùng <code>$request->user()</code></td><td>Trả đúng shape <code>{id,name,email,role}</code> giống response của API-002 — <strong>không</strong> lộ <code>password_hash</code> (đã có <code>$hidden</code> trong User model, nhưng ở đây ta build mảng thủ công nên phải tự loại trừ).</td></tr>
+<tr><td>Đổi mật khẩu</td><td>API-005 (6.5節). So khớp <code>current_password</code> bằng <code>Hash::check()</code> với <code>password_hash</code> hiện tại, rồi <code>Hash::make(new_password)</code> để cập nhật</td><td>Validation: <code>new_password</code> required/min:8/max:20/confirmed. Nếu <code>current_password</code> sai → trả <code>E003</code> (không phải <code>E001</code> — xem đúng bảng "主なエラー" ở 6.5節, đây khác với logic ở bước 6 nên đừng tái dùng nhầm <code>AuthenticationFailedException</code>).</td></tr>
+<tr><td>Middleware phân quyền Admin</td><td><code>12_詳細設計書.md</code> 8章: <code>role:admin</code> áp dụng cho toàn bộ <code>/admin/*</code>. Tạo <code>app/Http/Middleware/EnsureRole.php</code>, đăng ký alias trong <code>bootstrap/app.php</code> (<code>withMiddleware</code> → <code>$middleware->alias(['role' => EnsureRole::class])</code>)</td><td>So sánh <code>$request->user()->role</code> với role được truyền vào middleware (<code>role:admin</code>); không khớp → trả <code>E002</code> (403) theo đúng envelope lỗi, không phải <code>abort(403)</code> mặc định của Laravel (sẽ không đúng hình dạng JSON của 3.3節).</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box box-doc">
+<div class="box-title">📘 Tài liệu đã dùng trong chương này</div>
+<p><code>02_要件定義書.md</code> REQ-001/002/003/017, BR-USR-001, NFR-009/012/013 · <code>09_テーブル定義.md</code> TBL-001 · <code>10_API設計.md</code> 3.3節, 4.1節, API-001〜005, 7章 · <code>12_詳細設計書.md</code> 3章 (ディレクトリ構成), DD-POL-001〜003, 7章 (FormRequest), 8章 (Middleware) · <code>13_インフラ設計.md</code> 7章 (Docker), 14章 (環境変数)</p>
+</div>
+
+<div class="footer-nav">
+<a href="index.html">← Mục lục</a>
+<a href="02_商品カタログ.html">Chương 02: Danh mục &amp; Sản phẩm →</a>
+</div>
+</div>
+</body>
+</html>

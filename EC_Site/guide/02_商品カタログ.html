@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>02 商品カタログ - EC Site 実装ガイド</title>
+<link rel="stylesheet" href="assets/guide.css">
+</head>
+<body>
+<div class="page">
+<nav class="guide-nav">
+  <a class="nav-home" href="index.html">🏠 TOP</a>
+  <a href="01_環境構築_認証.html">← Chương 01: Môi trường & Auth</a>
+  <a href="03_カート_配送先.html">Chương 03: Giỏ hàng &amp; Địa chỉ →</a>
+  <a class="nav-doc-link" href="../docs/html/09_テーブル定義_EC_Site.html">📘 09_テーブル定義</a>
+</nav>
+
+<h1>Chương 02 — Danh mục & Sản phẩm (Catalog)</h1>
+<p class="lead">Chương này dựng toàn bộ "xương sống dữ liệu" của catalog: 5 bảng <code>categories / products / product_variants / product_images / inventories</code> (TBL-003〜007), model + relation Eloquent, và 2 API công khai quan trọng nhất — <strong>danh sách sản phẩm (API-006)</strong> với giá trị tổng hợp <code>price_min/price_max</code>, và <strong>chi tiết sản phẩm (API-007)</strong> kèm tồn kho theo variant. Phía Admin, làm mẫu <strong>đăng ký variant (API-025)</strong> vì nó chứa pattern quan trọng: transaction tạo đồng thời <code>product_variants</code> + <code>inventories</code>.</p>
+
+<div class="box box-warn">
+<div class="box-title">⚠️ Điều kiện vào chương</div>
+<p>Đã hoàn thành Chương 01, <strong>bao gồm cả bài tập Middleware <code>EnsureRole</code></strong> — các route <code>/admin/*</code> trong chương này dùng alias <code>role:admin</code> (12_詳細設計書 8章). Nếu chưa làm, quay lại 課題 số 4 của Chương 01 trước.</p>
+</div>
+
+<div class="box box-why">
+<div class="box-title">💡 Vì sao <code>price_min/price_max</code> không lưu trong bảng <code>products</code>?</div>
+<p>Giá thuộc về <strong>variant</strong> (SKU), không thuộc về product — <code>10_API設計.md</code> 6.6節 ghi rõ đây là "集計値" (giá trị tổng hợp MIN/MAX từ <code>product_variants.price</code>, không tồn tại trong bảng). Nếu lưu trùng vào <code>products</code>, mỗi lần sửa giá variant sẽ phải đồng bộ 2 nơi — vi phạm single source of truth. Đổi lại, mỗi query danh sách phải aggregate; Eloquent <code>withMin/withMax</code> sinh subquery gọn và đủ nhanh ở quy mô NFR-002 (100 user đồng thời). Khi cần tối ưu thêm mới tính đến Redis cache (NFR-011, bonus).</p>
+</div>
+
+<div class="box box-why">
+<div class="box-title">💡 Vì sao đăng ký variant phải tạo luôn bản ghi <code>inventories</code> rỗng trong cùng transaction?</div>
+<p>BR-INV-001: tồn kho quản lý tập trung tại <code>inventories</code>, mỗi variant đúng 1 dòng (UNIQUE <code>variant_id</code>). Dòng này còn là <strong>đối tượng khoá</strong> của <code>SELECT ... FOR UPDATE</code> ở nghiệp vụ đặt hàng (BR-INV-007) — nếu variant tồn tại mà dòng inventory chưa có, luồng đặt hàng sau này sẽ không có gì để khoá và phải xử lý case "NULL inventory" ở khắp nơi. Vì vậy REQ-020 quy định tạo variant thì tự động tạo inventory với <code>quantity_available=0</code> (12_詳細設計書 5.12節), và DD-POL-002 buộc 2 insert này nằm trong 1 <code>DB::transaction()</code>.</p>
+</div>
+
+<div class="box box-why">
+<div class="box-title">💡 Vì sao "không tìm thấy" và "inactive" đều trả E007?</div>
+<p>TBL-POL-003: catalog dùng logical delete (đổi <code>status</code>) thay vì xoá vật lý — vì <code>order_items</code> tham chiếu variant bằng FK RESTRICT, xoá thật sẽ phá lịch sử đơn hàng. Với Customer, một sản phẩm đã inactive tương đương "không tồn tại" (API-007: cả 2 case đều E007) — không cần tiết lộ sự khác biệt. Còn Admin thì ngược lại: API-024 trả cả inactive (để quản lý), đây là điểm khác nhau giữa API công khai và API admin cùng đọc một bảng.</p>
+</div>
+
+<h2>■ Phạm vi chương này</h2>
+<table>
+<thead><tr><th>Phần</th><th>Nội dung</th><th>Trạng thái</th></tr></thead>
+<tbody>
+<tr><td>Migration 5 bảng catalog</td><td>TBL-003〜007 + CHECK constraint tồn kho không âm (09_テーブル定義 8章)</td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>Models & relations</td><td>Category / Product / ProductVariant / ProductImage / Inventory (12_詳細設計書 6章)</td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>API-006 Danh sách sản phẩm</td><td>Tìm kiếm keyword, lọc category, phân trang, <code>price_min/max</code>, ảnh chính</td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>API-007 Chi tiết sản phẩm</td><td>Variants + tồn kho từ <code>inventories</code>, ảnh, E007</td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>API-025 Đăng ký variant (Admin)</td><td>Transaction: variant + inventory khởi tạo 0</td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>API-008 Danh sách category (cây phân cấp)</td><td>Cha → con, chỉ active</td><td>📝 課題</td></tr>
+<tr><td>API-022 Quản lý sản phẩm (Admin)</td><td>store / update / setStatus</td><td>📝 課題</td></tr>
+<tr><td>API-024 Quản lý category (Admin)</td><td>CRUD, bao gồm cả inactive</td><td>📝 課題</td></tr>
+<tr><td>API-023 Upload ảnh sản phẩm (S3)</td><td>multipart, lưu S3, xoá kèm object</td><td>📝 課題</td></tr>
+<tr><td>Seeder dữ liệu mẫu</td><td>Categories + products + variants để test</td><td>📝 課題</td></tr>
+</tbody>
+</table>
+
+<div class="step-heading"><div class="step-number">1</div><div class="step-title">Migration 5 bảng catalog（TBL-003〜007）</div></div>
+<p>Tạo theo đúng thứ tự phụ thuộc FK: <code>categories → products → product_variants → product_images → inventories</code>. Chú ý 3 điểm dễ sai: (1) <code>inventories</code> <strong>không có <code>created_at</code></strong> (ngoại lệ TBL-POL-004); (2) UNIQUE 3 cột <code>(product_id, size, color)</code> trên variants; (3) CHECK constraint chống tồn kho âm phải thêm bằng <code>DB::statement</code> vì Blueprint của Laravel không có API cho CHECK.</p>
+
+<div class="code-block">
+<div class="code-filename">database/migrations/2026_07_21_000001_create_catalog_tables.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// database/migrations/2026_07_21_000001_create_catalog_tables.php
+// 09_テーブル定義.md TBL-003〜007（カタログ系5テーブルを依存順に1ファイルで作成）
+// FK方針は5章「外部キー制約」の表に厳密対応: categories自己参照=SET NULL,
+// products→categories=RESTRICT, variants→products=RESTRICT, images→products=CASCADE,
+// inventories→variants=RESTRICT
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        // TBL-003 categories
+        Schema::create('categories', function (Blueprint $table) {
+            $table-&gt;id();
+            $table-&gt;foreignId('parent_category_id')-&gt;nullable()
+                  -&gt;constrained('categories')-&gt;nullOnDelete();
+            $table-&gt;string('name', 100)-&gt;unique();
+            $table-&gt;enum('status', ['active', 'inactive'])-&gt;default('active');
+            $table-&gt;timestamps();
+            $table-&gt;index('status');
+        });
+
+        // TBL-004 products
+        Schema::create('products', function (Blueprint $table) {
+            $table-&gt;id();
+            $table-&gt;foreignId('category_id')-&gt;constrained('categories')-&gt;restrictOnDelete();
+            $table-&gt;string('name', 200);
+            $table-&gt;text('description')-&gt;nullable();
+            $table-&gt;enum('tax_category', ['standard', 'reduced'])-&gt;default('standard'); // BR-TAX-001
+            $table-&gt;enum('status', ['active', 'inactive'])-&gt;default('active');
+            $table-&gt;timestamps();
+            $table-&gt;index('name');
+            $table-&gt;index('status');
+        });
+
+        // TBL-005 product_variants
+        Schema::create('product_variants', function (Blueprint $table) {
+            $table-&gt;id();
+            $table-&gt;foreignId('product_id')-&gt;constrained('products')-&gt;restrictOnDelete();
+            $table-&gt;string('sku', 50)-&gt;unique();
+            $table-&gt;string('size', 20)-&gt;nullable();
+            $table-&gt;string('color', 30)-&gt;nullable();
+            $table-&gt;unsignedInteger('price'); // TBL-POL-001: JPYは整数、DECIMAL禁止
+            $table-&gt;enum('status', ['active', 'inactive'])-&gt;default('active');
+            $table-&gt;timestamps();
+            $table-&gt;index('status');
+            // 同一商品で同じサイズ×色の重複登録防止（TBL-005 制約）
+            $table-&gt;unique(['product_id', 'size', 'color']);
+        });
+
+        // TBL-006 product_images
+        Schema::create('product_images', function (Blueprint $table) {
+            $table-&gt;id();
+            $table-&gt;foreignId('product_id')-&gt;constrained('products')-&gt;cascadeOnDelete();
+            $table-&gt;string('image_url', 500);
+            $table-&gt;unsignedInteger('display_order')-&gt;default(0);
+            $table-&gt;boolean('is_primary')-&gt;default(false);
+            $table-&gt;timestamps();
+        });
+
+        // TBL-007 inventories — TBL-POL-004の例外: updated_atのみ（created_atなし）
+        Schema::create('inventories', function (Blueprint $table) {
+            $table-&gt;id();
+            $table-&gt;foreignId('variant_id')-&gt;unique()
+                  -&gt;constrained('product_variants')-&gt;restrictOnDelete();
+            $table-&gt;integer('quantity_available')-&gt;default(0);
+            $table-&gt;integer('quantity_reserved')-&gt;default(0);
+            $table-&gt;timestamp('updated_at')-&gt;nullable();
+        });
+
+        // 8章 CHECK制約: 在庫マイナス化の物理防止（BR-INV-007の最終防衛線）
+        DB::statement(
+            'ALTER TABLE inventories ADD CONSTRAINT chk_inventories_non_negative
+             CHECK (quantity_available &gt;= 0 AND quantity_reserved &gt;= 0)'
+        );
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('inventories');
+        Schema::dropIfExists('product_images');
+        Schema::dropIfExists('product_variants');
+        Schema::dropIfExists('products');
+        Schema::dropIfExists('categories');
+    }
+};</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">2</div><div class="step-title">Models & relations</div></div>
+
+<div class="code-block">
+<div class="code-filename">app/Models/Category.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Models/Category.php — 09_テーブル定義.md TBL-003
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Category extends Model
+{
+    protected $fillable = ['parent_category_id', 'name', 'status'];
+
+    public function parent(): BelongsTo
+    {
+        return $this-&gt;belongsTo(Category::class, 'parent_category_id');
+    }
+
+    public function children(): HasMany
+    {
+        return $this-&gt;hasMany(Category::class, 'parent_category_id');
+    }
+
+    public function products(): HasMany
+    {
+        return $this-&gt;hasMany(Product::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query-&gt;where('status', 'active');
+    }
+}</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">app/Models/Product.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Models/Product.php — 09_テーブル定義.md TBL-004 / 12_詳細設計書.md 6章
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
+class Product extends Model
+{
+    protected $fillable = ['category_id', 'name', 'description', 'tax_category', 'status'];
+
+    public function category(): BelongsTo
+    {
+        return $this-&gt;belongsTo(Category::class);
+    }
+
+    public function variants(): HasMany
+    {
+        return $this-&gt;hasMany(ProductVariant::class);
+    }
+
+    // 一覧・詳細でCustomerに見せるのはactiveなバリエーションのみ（TBL-POL-003: 論理削除優先）
+    public function activeVariants(): HasMany
+    {
+        return $this-&gt;hasMany(ProductVariant::class)-&gt;where('status', 'active');
+    }
+
+    public function images(): HasMany
+    {
+        return $this-&gt;hasMany(ProductImage::class)-&gt;orderBy('display_order');
+    }
+
+    // API-006のprimary_image_url用（is_primary=trueの1枚）
+    public function primaryImage(): HasOne
+    {
+        return $this-&gt;hasOne(ProductImage::class)-&gt;where('is_primary', true);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query-&gt;where('status', 'active');
+    }
+}</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">app/Models/ProductVariant.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Models/ProductVariant.php — 09_テーブル定義.md TBL-005
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
+class ProductVariant extends Model
+{
+    protected $fillable = ['product_id', 'sku', 'size', 'color', 'price', 'status'];
+
+    protected $casts = [
+        'price' =&gt; 'integer', // 12_詳細設計書.md 6章: 金額列はintegerキャストを明示
+    ];
+
+    public function product(): BelongsTo
+    {
+        return $this-&gt;belongsTo(Product::class);
+    }
+
+    public function inventory(): HasOne
+    {
+        return $this-&gt;hasOne(Inventory::class, 'variant_id');
+    }
+}</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">app/Models/ProductImage.php + app/Models/Inventory.php（2ファイルに分けて保存）<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Models/ProductImage.php — 09_テーブル定義.md TBL-006
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class ProductImage extends Model
+{
+    protected $fillable = ['product_id', 'image_url', 'display_order', 'is_primary'];
+
+    protected $casts = ['is_primary' =&gt; 'boolean'];
+
+    public function product(): BelongsTo
+    {
+        return $this-&gt;belongsTo(Product::class);
+    }
+}
+
+// ────────────────────────────────────────────────
+// app/Models/Inventory.php — 09_テーブル定義.md TBL-007（別ファイルに保存すること）
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Inventory extends Model
+{
+    // TBL-POL-004例外: created_atを持たないため、Eloquentの自動管理をupdated_atのみに絞る
+    const CREATED_AT = null;
+
+    protected $fillable = ['variant_id', 'quantity_available', 'quantity_reserved'];
+
+    public function variant(): BelongsTo
+    {
+        return $this-&gt;belongsTo(ProductVariant::class, 'variant_id');
+    }
+
+    // 12_詳細設計書.md 6章: scopeLowStock（quantity_available &lt; 10）
+    public function scopeLowStock($query)
+    {
+        return $query-&gt;where('quantity_available', '&lt;', 10);
+    }
+}</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">3</div><div class="step-title">Exception E007 — <code>ResourceNotFoundException</code></div></div>
+<p>Tên class lấy đúng theo <code>12_詳細設計書.md</code> 11章: <strong><code>ResourceNotFoundException</code></strong>, kế thừa <code>ModelNotFoundException</code> chuẩn của Laravel (chủ ý của thiết kế: sau này exception từ <code>findOrFail()</code> cũng có thể quy về cùng một chỗ xử lý). Vì không kế thừa <code>ApiException</code> của Chương 01, class này tự mang <code>render()</code> riêng trả đúng envelope 3.3節.</p>
+
+<div class="code-block">
+<div class="code-filename">app/Exceptions/ResourceNotFoundException.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Exceptions/ResourceNotFoundException.php
+// 10_API設計.md 7章 E007: 対象データ未検出（404）
+// 12_詳細設計書.md 11章の指定どおりLaravel標準のModelNotFoundExceptionを継承する
+// 「存在しない」と「status=inactive」を同じE007に丸める（API-007の仕様どおり。
+//  inactiveであることをCustomerに区別して見せる必要はない）
+
+namespace App\Exceptions;
+
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+
+class ResourceNotFoundException extends ModelNotFoundException
+{
+    public function __construct(string $message = '対象のデータが見つかりません。')
+    {
+        parent::__construct($message);
+    }
+
+    public function render(): JsonResponse
+    {
+        return response()-&gt;json([
+            'success' =&gt; false,
+            'error' =&gt; [
+                'code' =&gt; 'E007',
+                'message' =&gt; $this-&gt;getMessage(),
+                'details' =&gt; [],
+            ],
+        ], 404);
+    }
+}</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">4</div><div class="step-title">API-006 / API-007 — ProductService & ProductController</div></div>
+<p>Lưu ý: <code>12_詳細設計書.md</code> 6章 gợi ý accessor <code>getPriceRangeAttribute</code> (MIN/MAX của variants) trên model <code>Product</code>. Guide này tính ở tầng query bằng <code>withMin/withMax</code> thay vì accessor — cùng giá trị, nhưng accessor sẽ lazy-load variants của <em>từng</em> sản phẩm trong danh sách (N+1 query), còn <code>withMin/withMax</code> gộp vào 1 subquery cho cả trang. Nếu muốn theo đúng chữ của 詳細設計書, bạn có thể thêm accessor đó cho các chỗ chỉ xử lý 1 sản phẩm.</p>
+
+<div class="code-block">
+<div class="code-filename">app/Services/ProductService.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Services/ProductService.php
+// 10_API設計.md 6.6節(API-006)・6.7節(API-007) / 12_詳細設計書.md 6章
+
+namespace App\Services;
+
+use App\Exceptions\ResourceNotFoundException;
+use App\Models\Product;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+
+class ProductService
+{
+    // API-006 商品一覧（検索・絞込・ページング）
+    public function list(array $filters): LengthAwarePaginator
+    {
+        return Product::query()
+            -&gt;active() // REQ-005: status=activeのみ（inactiveは表示しない）
+            -&gt;with(['category:id,name', 'primaryImage'])
+            // price_min/price_maxはテーブルに存在しない集計値（10_API設計 6.6節）
+            -&gt;withMin('activeVariants as price_min', 'price')
+            -&gt;withMax('activeVariants as price_max', 'price')
+            -&gt;when($filters['keyword'] ?? null,
+                fn ($q, $kw) =&gt; $q-&gt;where('name', 'like', "%{$kw}%"))
+            -&gt;when($filters['category_id'] ?? null,
+                fn ($q, $cid) =&gt; $q-&gt;where('category_id', $cid))
+            -&gt;latest('id')
+            // 6.6節のResponse例(total:96, last_page:5)から1ページ20件とする
+            -&gt;paginate(20);
+    }
+
+    // API-007 商品詳細
+    public function detail(int $id): Product
+    {
+        $product = Product::query()
+            -&gt;active()
+            -&gt;with([
+                'category:id,name',
+                // 在庫数はinventoriesからJOINして返す集計値（6.7節）
+                'activeVariants.inventory:id,variant_id,quantity_available',
+                'images',
+            ])
+            -&gt;find($id);
+
+        // 存在しない or status=inactive はいずれもE007（6.7節）
+        if (!$product) {
+            throw new ResourceNotFoundException('対象の商品が見つかりません。');
+        }
+
+        return $product;
+    }
+}</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">app/Http/Controllers/ProductController.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Http/Controllers/ProductController.php
+// 12_詳細設計書.md 4章: ProductController — index, show (API-006/007)
+// Response shapeは10_API設計.md 6.6節・6.7節の例に厳密に合わせる
+
+namespace App\Http\Controllers;
+
+use App\Services\ProductService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
+class ProductController extends Controller
+{
+    public function __construct(private ProductService $productService)
+    {
+    }
+
+    public function index(Request $request): JsonResponse
+    {
+        $page = $this-&gt;productService-&gt;list(
+            $request-&gt;only(['keyword', 'category_id'])
+        );
+
+        return response()-&gt;json([
+            'success' =&gt; true,
+            'message' =&gt; 'OK',
+            'data' =&gt; [
+                'data' =&gt; collect($page-&gt;items())-&gt;map(fn ($p) =&gt; [
+                    'id' =&gt; $p-&gt;id,
+                    'name' =&gt; $p-&gt;name,
+                    'category' =&gt; [
+                        'id' =&gt; $p-&gt;category-&gt;id,
+                        'name' =&gt; $p-&gt;category-&gt;name,
+                    ],
+                    'price_min' =&gt; (int) $p-&gt;price_min,
+                    'price_max' =&gt; (int) $p-&gt;price_max,
+                    'primary_image_url' =&gt; $p-&gt;primaryImage?-&gt;image_url,
+                ]),
+                'meta' =&gt; [
+                    'current_page' =&gt; $page-&gt;currentPage(),
+                    'last_page' =&gt; $page-&gt;lastPage(),
+                    'total' =&gt; $page-&gt;total(),
+                ],
+            ],
+        ]);
+    }
+
+    public function show(int $id): JsonResponse
+    {
+        $product = $this-&gt;productService-&gt;detail($id);
+
+        return response()-&gt;json([
+            'success' =&gt; true,
+            'message' =&gt; 'OK',
+            'data' =&gt; [
+                'id' =&gt; $product-&gt;id,
+                'name' =&gt; $product-&gt;name,
+                'description' =&gt; $product-&gt;description,
+                'tax_category' =&gt; $product-&gt;tax_category,
+                'category' =&gt; [
+                    'id' =&gt; $product-&gt;category-&gt;id,
+                    'name' =&gt; $product-&gt;category-&gt;name,
+                ],
+                'variants' =&gt; $product-&gt;activeVariants-&gt;map(fn ($v) =&gt; [
+                    'id' =&gt; $v-&gt;id,
+                    'sku' =&gt; $v-&gt;sku,
+                    'size' =&gt; $v-&gt;size,
+                    'color' =&gt; $v-&gt;color,
+                    'price' =&gt; $v-&gt;price,
+                    'quantity_available' =&gt; $v-&gt;inventory?-&gt;quantity_available ?? 0,
+                ]),
+                'images' =&gt; $product-&gt;images-&gt;map(fn ($img) =&gt; [
+                    'url' =&gt; $img-&gt;image_url,
+                    'is_primary' =&gt; $img-&gt;is_primary,
+                ]),
+                // review_summary（6.7節）はレビュー実装チャプターで追加する（reviewsテーブル未作成のため）
+            ],
+        ]);
+    }
+}</pre>
+</div>
+
+<div class="box box-warn">
+<div class="box-title">⚠️ <code>review_summary</code> chưa có trong response API-007</div>
+<p><code>10_API設計.md</code> 6.7節 có field <code>review_summary</code> (điểm trung bình + số lượng review), nhưng bảng <code>reviews</code> (TBL-016) thuộc chương Review sau này. Đây là khoảng chênh có chủ đích: chương này trả response <strong>không có</strong> <code>review_summary</code>, và sẽ bổ sung đúng shape khi làm chương Review — lúc đó nhớ quay lại sửa <code>ProductController::show</code>.</p>
+</div>
+
+<div class="step-heading"><div class="step-number">5</div><div class="step-title">API-025 — Đăng ký variant + khởi tạo tồn kho (Admin)</div></div>
+
+<div class="code-block">
+<div class="code-filename">app/Http/Requests/Admin/StoreVariantRequest.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Http/Requests/Admin/StoreVariantRequest.php
+// 10_API設計.md 6.25節(API-025) / 02_要件定義書.md 12章（product_variantsの行）
+
+namespace App\Http\Requests\Admin;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreVariantRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true; // 権限チェックはrole:admin Middlewareが担当（12_詳細設計書 8章）
+    }
+
+    public function rules(): array
+    {
+        return [
+            'sku' =&gt; ['required', 'string', 'max:50', 'unique:product_variants,sku'],
+            'size' =&gt; ['nullable', 'string', 'max:20'],
+            'color' =&gt; ['nullable', 'string', 'max:30'],
+            'price' =&gt; ['required', 'integer', 'min:0'],
+            // (product_id, size, color)の組み合わせ重複はDBのUNIQUE制約（TBL-005）が最終防衛。
+            // FormRequestでの事前チェックは課題（下の表）で追加する。
+        ];
+    }
+}</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">app/Services/VariantService.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Services/VariantService.php
+// 12_詳細設計書.md 5.12節: VariantService::create（バリエーション登録時の在庫初期化）
+// REQ-020受入条件: 「同時にinventoriesの初期レコード(quantity_available=0)が自動作成される」
+
+namespace App\Services;
+
+use App\Exceptions\ResourceNotFoundException;
+use App\Models\Product;
+use App\Models\ProductVariant;
+use Illuminate\Support\Facades\DB;
+
+class VariantService
+{
+    public function create(int $productId, array $data): ProductVariant
+    {
+        $product = Product::find($productId);
+        if (!$product) {
+            throw new ResourceNotFoundException('対象の商品が見つかりません。');
+        }
+
+        // DD-POL-002: 複数テーブル(product_variants + inventories)更新は必ず1トランザクション。
+        // variantだけ作られてinventoryが無い「片肺」状態を許さない。
+        return DB::transaction(function () use ($product, $data) {
+            $variant = $product-&gt;variants()-&gt;create([
+                'sku' =&gt; $data['sku'],
+                'size' =&gt; $data['size'] ?? null,
+                'color' =&gt; $data['color'] ?? null,
+                'price' =&gt; $data['price'],
+                'status' =&gt; 'active',
+            ]);
+
+            // 在庫の実数は別途API-027（在庫調整）で入荷登録する（5.12節）
+            $variant-&gt;inventory()-&gt;create([
+                'quantity_available' =&gt; 0,
+                'quantity_reserved' =&gt; 0,
+            ]);
+
+            return $variant-&gt;load('inventory');
+        });
+    }
+}</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">app/Http/Controllers/Admin/VariantController.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Http/Controllers/Admin/VariantController.php
+// 12_詳細設計書.md 4章: Admin\VariantController — store, update (API-025)
+// updateは課題（下の表）。
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreVariantRequest;
+use App\Services\VariantService;
+use Illuminate\Http\JsonResponse;
+
+class VariantController extends Controller
+{
+    public function __construct(private VariantService $variantService)
+    {
+    }
+
+    // POST /admin/products/{id}/variants
+    public function store(StoreVariantRequest $request, int $productId): JsonResponse
+    {
+        $variant = $this-&gt;variantService-&gt;create($productId, $request-&gt;validated());
+
+        return response()-&gt;json([
+            'success' =&gt; true,
+            'message' =&gt; 'バリエーションを登録しました。',
+            'data' =&gt; [
+                'id' =&gt; $variant-&gt;id,
+                'sku' =&gt; $variant-&gt;sku,
+                'size' =&gt; $variant-&gt;size,
+                'color' =&gt; $variant-&gt;color,
+                'price' =&gt; $variant-&gt;price,
+                'quantity_available' =&gt; $variant-&gt;inventory-&gt;quantity_available,
+            ],
+        ], 201);
+    }
+}</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">6</div><div class="step-title">Routes</div></div>
+
+<div class="code-block">
+<div class="code-filename">routes/api.php（追記分）<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// routes/api.php（Chương 02で追記する分）
+// 10_API設計.md 5章: API-006/007は権限Guest（未認証で叩ける）、/admin/*はAdmin専用
+
+use App\Http\Controllers\Admin;
+use App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\Route;
+
+// ---- Public（Guest可、API-006/007） ----
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{id}', [ProductController::class, 'show']);
+// 課題: GET /categories (API-008)
+
+// ---- Admin（auth:sanctum + role:admin、12_詳細設計書 8章） ----
+// role Middlewareは Chương 01 の課題で作成した EnsureRole を使う
+Route::middleware(['auth:sanctum', 'role:admin'])-&gt;prefix('admin')-&gt;group(function () {
+    Route::post('/products/{id}/variants', [Admin\VariantController::class, 'store']); // API-025
+    // 課題: API-022 (products CRUD) / API-023 (images) / API-024 (categories) /
+    //        PUT /admin/variants/{id} (API-025 編集)
+});</pre>
+</div>
+
+<div class="box box-check">
+<div class="box-title">✅ チェックポイント</div>
+<ul>
+<li>☐ <code>php artisan migrate</code> tạo đủ 5 bảng; thử <code>INSERT</code> trực tiếp 1 dòng <code>inventories</code> với <code>quantity_available=-1</code> → MySQL phải từ chối (CHECK constraint hoạt động)</li>
+<li>☐ Tạo 2 variant cùng <code>(product_id, size, color)</code> → dòng thứ 2 bị từ chối bởi UNIQUE (TBL-005 制約)</li>
+<li>☐ <code>GET /products</code> trả đúng shape 6.6節: <code>price_min/price_max</code> đúng bằng MIN/MAX giá các variant <strong>active</strong> của sản phẩm</li>
+<li>☐ <code>GET /products?keyword=Tシャツ&amp;category_id=2</code> lọc đúng, phân trang 20 dòng/trang</li>
+<li>☐ Sửa tay 1 sản phẩm thành <code>status='inactive'</code> → biến mất khỏi <code>GET /products</code>, và <code>GET /products/{id}</code> trả <code>E007</code> (404)</li>
+<li>☐ <code>POST /admin/products/{id}/variants</code> bằng token <strong>customer</strong> → <code>E002</code> (403); bằng token admin → 201, và bảng <code>inventories</code> có ngay dòng mới <code>quantity_available=0</code></li>
+<li>☐ Đăng ký variant với SKU đã tồn tại → <code>E003</code> (422), transaction không để lại dòng rác trong <code>inventories</code></li>
+</ul>
+</div>
+
+<div class="step-heading"><div class="step-number">7</div><div class="step-title">📝 課題</div></div>
+<div class="box box-task">
+<div class="box-title">📝 Tự làm — không có code mẫu</div>
+<table>
+<thead><tr><th>Tính năng</th><th>API/tham chiếu dùng</th><th>Điểm cần chú ý</th></tr></thead>
+<tbody>
+<tr><td>Danh sách category (public)</td><td>API-008 (<code>10_API設計.md</code> 6.8節). <code>Category::active()->whereNull('parent_category_id')->with('children')</code></td><td>Chỉ trả active ở <strong>cả cha lẫn con</strong> — relation <code>children</code> cũng phải lọc active (constrain bằng closure trong <code>with()</code>). API này dùng chung cho SCR-003 (menu lọc) và SCR-014 (form đăng ký sản phẩm của Admin).</td></tr>
+<tr><td>Quản lý sản phẩm (Admin)</td><td>API-022 (6.22節): POST <code>/admin/products</code>, PUT <code>/admin/products/{id}</code>, PATCH <code>/admin/products/{id}/status</code>. Pseudocode: <code>12_詳細設計書.md</code> 5.11節</td><td>Validation theo 02_要件定義書 12章: <code>name</code> required/max:200, <code>tax_category</code> in:standard,reduced, <code>category_id</code> exists. <code>setStatus</code> chỉ đổi cột status — <strong>không</strong> có API xoá vật lý (TBL-POL-003).</td></tr>
+<tr><td>Quản lý category (Admin)</td><td>API-024 (6.24節): GET/POST/PUT/PATCH <code>/admin/categories</code></td><td>GET của Admin trả <strong>cả inactive</strong> (khác API-008). <code>name</code> unique — khi PUT nhớ <code>Rule::unique(...)->ignore($id)</code>. <code>parent_category_id</code> nullable + exists:categories,id.</td></tr>
+<tr><td>Upload / xoá ảnh sản phẩm</td><td>API-023 (6.23節), <code>13_インフラ設計.md</code> 11章. <code>Storage::disk('s3')->putFileAs("products/{$productId}", $file, $uuid.'.'.$ext)</code></td><td>Đường dẫn S3 phải đúng format <code>products/{product_id}/{uuid}.{ext}</code> (11章). Local dev fallback disk <code>local</code> (9.2節). DELETE phải xoá <strong>cả object trên S3</strong> lẫn dòng DB (11章 削除方針); <code>imageId</code> không tồn tại → E007. Nếu upload ảnh mới với <code>is_primary=true</code>, hạ cờ ảnh chính cũ trong cùng transaction.</td></tr>
+<tr><td>Seeder dữ liệu mẫu</td><td><code>09_テーブル定義.md</code> 9.2節 (categories: アパレル → トップス, 食品) + tự thêm vài sản phẩm/variant</td><td>Sản phẩm thuộc カテゴリ「食品」đặt <code>tax_category='reduced'</code> (8%, BR-TAX-001) — dữ liệu này sẽ dùng để test tính thuế ở chương Đặt hàng.</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box box-doc">
+<div class="box-title">📘 Tài liệu đã dùng trong chương này</div>
+<p><code>02_要件定義書.md</code> REQ-005/006/007/018/019/020/021, 12章 (validation) · <code>09_テーブル定義.md</code> TBL-003〜007, 5章 (FK), 8章 (CHECK), 9.2節 (seed) · <code>10_API設計.md</code> API-006/007/008, API-022〜025 · <code>12_詳細設計書.md</code> 4章, 5.11/5.12節, 6章 (Model), DD-POL-002 · <code>13_インフラ設計.md</code> 9.2節, 11章 (S3)</p>
+</div>
+
+<div class="footer-nav">
+<a href="01_環境構築_認証.html">← Chương 01</a>
+<a href="03_カート_配送先.html">Chương 03: Giỏ hàng &amp; Địa chỉ →</a>
+</div>
+</div>
+</body>
+</html>

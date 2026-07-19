@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>03 カート・配送先 - EC Site 実装ガイド</title>
+<link rel="stylesheet" href="assets/guide.css">
+</head>
+<body>
+<div class="page">
+<nav class="guide-nav">
+  <a class="nav-home" href="index.html">🏠 TOP</a>
+  <a href="02_商品カタログ.html">← Chương 02: Danh mục &amp; Sản phẩm</a>
+  <a href="04_注文確定_スナップショット.html">Chương 04: Đặt hàng &amp; Snapshot →</a>
+  <a class="nav-doc-link" href="../docs/html/10_API設計_EC_Site.html">📘 10_API設計</a>
+</nav>
+
+<h1>Chương 03 — Giỏ hàng & Địa chỉ giao hàng</h1>
+<p class="lead">Chương này dựng 3 bảng <code>addresses / carts / cart_items</code> (TBL-002/009/010) và luồng giỏ hàng: <strong>xem giỏ (API-009)</strong> và <strong>thêm vào giỏ (API-010)</strong> theo đúng pseudocode <code>CartService::addItem</code> (12_詳細設計書 5.1節). Đây là chương "đệm" quan trọng trước chương Đặt hàng: mọi khái niệm ở đây — active cart, kiểm tra tồn kho <em>không</em> trừ kho, cộng dồn số lượng — đều là tiền đề trực tiếp cho <code>OrderService::place</code> (5.2節).</p>
+
+<div class="box box-warn">
+<div class="box-title">⚠️ Điều kiện vào chương</div>
+<p>Đã hoàn thành Chương 02 (cần bảng <code>product_variants</code> + <code>inventories</code> và dữ liệu mẫu có tồn kho — nếu chưa làm 課題 seeder, hãy tạo tay 1 sản phẩm + variant qua API-025 rồi chỉnh tồn kho trực tiếp trong DB, vì API-027 điều chỉnh tồn kho thuộc chương sau).</p>
+</div>
+
+<div class="box box-why">
+<div class="box-title">💡 Vì sao "1 user 1 active cart" không ép bằng UNIQUE constraint?</div>
+<p><code>09_テーブル定義.md</code> 11章-2: MySQL không hỗ trợ partial unique index (UNIQUE có điều kiện <code>WHERE status='active'</code>), nên không thể biểu diễn ràng buộc "mỗi user chỉ có 1 cart active" thuần bằng DB — UNIQUE trên <code>(user_id, status)</code> sẽ chặn luôn việc có nhiều cart <code>converted</code> trong lịch sử. Có thể giả lập bằng generated column + UNIQUE, nhưng thiết kế đánh giá là phức tạp không tương xứng, và chọn bảo đảm ở tầng Service: mọi thao tác lấy-hoặc-tạo active cart phải chạy trong transaction với <code>SELECT ... FOR UPDATE</code>. Nhưng chú ý cái bẫy: <code>FOR UPDATE</code> <strong>không khoá được dòng chưa tồn tại</strong> — nếu user chưa có cart nào, 2 request song song đều thấy "chưa có" rồi cùng tạo 2 cart. Vì vậy code mẫu khoá thêm dòng <code>users</code> của chính user (luôn tồn tại) làm mỏ neo trực tiếp hoá mọi thao tác cart của một user — xem comment trong <code>addItem</code>.</p>
+</div>
+
+<div class="box box-why">
+<div class="box-title">💡 Vì sao thêm vào giỏ KHÔNG trừ tồn kho? (BR-INV-002)</div>
+<p>Đây là quyết định thiết kế trung tâm của <code>02_要件定義書.md</code> 9.3節: trừ kho lúc thêm giỏ → người "chỉ xem" chiếm giữ hàng, mất cơ hội bán; không trừ gì đến tận lúc thanh toán → dễ hết hàng giữa chừng khi đang thanh toán. EC Site chọn phương án 2 giai đoạn: <strong>giỏ hàng không đụng tồn kho</strong> (chương này), <strong>đặt hàng mới giữ chỗ</strong> (reserve, chương sau), thanh toán mới chốt. Vì vậy E004 ném ra ở <code>addItem</code> chỉ mang tính <em>cảnh báo hiển thị</em> — kể cả thêm giỏ thành công cũng không có gì bảo đảm còn hàng lúc đặt; kiểm tra "thật" nằm ở <code>OrderService::place</code> với khóa bi quan (BR-INV-007).</p>
+</div>
+
+<div class="box box-why">
+<div class="box-title">💡 Vì sao giá trong giỏ không phải giá cuối cùng?</div>
+<p>Response của API-009 trả <code>price</code> / <code>line_subtotal</code> tính từ <code>product_variants.price</code> <em>hiện tại</em> — thuần để hiển thị. Nếu Admin đổi giá trong lúc hàng nằm trong giỏ, lần mở giỏ sau sẽ thấy giá mới (đúng chủ đích). Giá chỉ bị "đóng băng" tại thời điểm xác nhận đơn, khi snapshot vào <code>order_items.unit_price</code> (BR-ORD-002). Hiểu rõ ranh giới này thì chương Đặt hàng sẽ rất tự nhiên.</p>
+</div>
+
+<h2>■ Phạm vi chương này</h2>
+<table>
+<thead><tr><th>Phần</th><th>Nội dung</th><th>Trạng thái</th></tr></thead>
+<tbody>
+<tr><td>Migration 3 bảng</td><td>TBL-002 addresses / TBL-009 carts / TBL-010 cart_items + UNIQUE(cart_id, variant_id)</td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>Models</td><td>Address / Cart (scopeActive) / CartItem</td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>Exception E004</td><td><code>InsufficientStockException</code> (dùng lại ở chương Đặt hàng)</td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>API-009 Xem giỏ</td><td>Active cart + items kèm thông tin variant, tồn kho; giỏ trống trả <code>items: []</code></td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>API-010 Thêm vào giỏ</td><td>Lock active cart, kiểm tra kho (cảnh báo), cộng dồn quantity — theo 5.1節</td><td>Code mẫu đầy đủ</td></tr>
+<tr><td>API-011 Đổi số lượng</td><td>Ownership check qua <code>cart.user_id</code> (chống IDOR)</td><td>📝 課題</td></tr>
+<tr><td>API-012 Xoá khỏi giỏ</td><td>Cùng pattern ownership với API-011</td><td>📝 課題</td></tr>
+<tr><td>API-013 Quản lý địa chỉ</td><td>GET/POST/PUT <code>/addresses</code>, validation 〒 + 47 tỉnh, is_default</td><td>📝 課題</td></tr>
+</tbody>
+</table>
+
+<div class="step-heading"><div class="step-number">1</div><div class="step-title">Migration 3 bảng（TBL-002 / 009 / 010）</div></div>
+<p>Chú ý cột nghiệp vụ quan trọng nhất: <code>carts.status</code> có 3 trạng thái — <code>active</code> (đang mua), <code>converted</code> (đã chuyển thành đơn hàng khi 注文確定, 5.2節-12), <code>abandoned</code> (bỏ quên, batch chuyển sau ~30 ngày, 02_要件定義書 11.2節). Xoá user thì cart/address đi theo (CASCADE), nhưng <code>cart_items.variant_id</code> là RESTRICT — không thể xoá vật lý variant đang nằm trong giỏ của ai đó (thêm một lý do cho logical delete ở chương 02).</p>
+
+<div class="code-block">
+<div class="code-filename">database/migrations/2026_07_22_000001_create_cart_and_address_tables.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// database/migrations/2026_07_22_000001_create_cart_and_address_tables.php
+// 09_テーブル定義.md TBL-002 / TBL-009 / TBL-010
+// FK方針（5章）: addresses/carts/cart_items.cart_id は「利用者の一時的な入れ物」なのでCASCADE、
+// cart_items.variant_id は商品参照なのでRESTRICT
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        // TBL-002 addresses（会員の住所帳。注文時にorders.shipping_*へスナップショットされる元データ）
+        Schema::create('addresses', function (Blueprint $table) {
+            $table-&gt;id();
+            $table-&gt;foreignId('user_id')-&gt;constrained('users')-&gt;cascadeOnDelete();
+            $table-&gt;string('postal_code', 8);      // 例: 123-4567
+            $table-&gt;string('prefecture', 10);      // 都道府県
+            $table-&gt;string('city', 100);           // 市区町村
+            $table-&gt;string('address_line', 255);   // 番地以降
+            $table-&gt;string('building', 100)-&gt;nullable();
+            $table-&gt;string('recipient_name', 100);
+            $table-&gt;string('phone', 15);
+            $table-&gt;boolean('is_default')-&gt;default(false);
+            $table-&gt;timestamps();
+        });
+
+        // TBL-009 carts
+        Schema::create('carts', function (Blueprint $table) {
+            $table-&gt;id();
+            $table-&gt;foreignId('user_id')-&gt;constrained('users')-&gt;cascadeOnDelete();
+            $table-&gt;enum('status', ['active', 'converted', 'abandoned'])-&gt;default('active');
+            $table-&gt;timestamps();
+            $table-&gt;index('status');
+            // 「1会員1 activeカート」のUNIQUE制約はあえて張らない（09_テーブル定義 11章2、Service層で保証）
+        });
+
+        // TBL-010 cart_items
+        Schema::create('cart_items', function (Blueprint $table) {
+            $table-&gt;id();
+            $table-&gt;foreignId('cart_id')-&gt;constrained('carts')-&gt;cascadeOnDelete();
+            $table-&gt;foreignId('variant_id')-&gt;constrained('product_variants')-&gt;restrictOnDelete();
+            $table-&gt;unsignedInteger('quantity')-&gt;default(1);
+            $table-&gt;timestamps();
+            // 同一カートに同じバリエーションを重複登録せず数量を加算する（TBL-010 制約）
+            $table-&gt;unique(['cart_id', 'variant_id']);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('cart_items');
+        Schema::dropIfExists('carts');
+        Schema::dropIfExists('addresses');
+    }
+};</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">2</div><div class="step-title">Models</div></div>
+
+<div class="code-block">
+<div class="code-filename">app/Models/Address.php + Cart.php + CartItem.php（3ファイルに分けて保存）<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Models/Address.php — 09_テーブル定義.md TBL-002
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Address extends Model
+{
+    protected $fillable = [
+        'user_id', 'postal_code', 'prefecture', 'city', 'address_line',
+        'building', 'recipient_name', 'phone', 'is_default',
+    ];
+
+    protected $casts = ['is_default' =&gt; 'boolean'];
+
+    public function user(): BelongsTo
+    {
+        return $this-&gt;belongsTo(User::class);
+    }
+}
+
+// ────────────────────────────────────────────────
+// app/Models/Cart.php — 09_テーブル定義.md TBL-009（別ファイルに保存すること）
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Cart extends Model
+{
+    protected $fillable = ['user_id', 'status'];
+
+    public function user(): BelongsTo
+    {
+        return $this-&gt;belongsTo(User::class);
+    }
+
+    public function items(): HasMany
+    {
+        return $this-&gt;hasMany(CartItem::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query-&gt;where('status', 'active');
+    }
+}
+
+// ────────────────────────────────────────────────
+// app/Models/CartItem.php — 09_テーブル定義.md TBL-010（別ファイルに保存すること）
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class CartItem extends Model
+{
+    protected $fillable = ['cart_id', 'variant_id', 'quantity'];
+
+    public function cart(): BelongsTo
+    {
+        return $this-&gt;belongsTo(Cart::class);
+    }
+
+    public function variant(): BelongsTo
+    {
+        return $this-&gt;belongsTo(ProductVariant::class, 'variant_id');
+    }
+}</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">3</div><div class="step-title">Exception E004</div></div>
+
+<div class="code-block">
+<div class="code-filename">app/Exceptions/InsufficientStockException.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Exceptions/InsufficientStockException.php
+// 10_API設計.md 7章 E004: 在庫不足（409） / 12_詳細設計書.md 11章
+// 発生元: CartService（本チャプター、警告目的）と OrderService（注文チャプター、確保失敗）
+
+namespace App\Exceptions;
+
+class InsufficientStockException extends ApiException
+{
+    protected string $errorCode = 'E004';
+    protected int $httpStatus = 409;
+
+    public function __construct()
+    {
+        // メッセージは10_API設計.md 3.3節の失敗Response例と同一
+        parent::__construct('在庫が不足しています。');
+    }
+}</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">4</div><div class="step-title">API-010 — FormRequest & CartService</div></div>
+<p>Toàn bộ logic của <code>addItem</code> bám 1:1 theo 4 bước pseudocode ở <code>12_詳細設計書.md</code> 5.1節 — đọc pseudocode trước rồi mới đọc code. Điểm tinh tế: variant không tồn tại bị chặn từ FormRequest (<code>exists</code> → E003), còn variant <em>tồn tại nhưng inactive</em> thì Service trả E007 — cùng triết lý "không tiết lộ trạng thái nội bộ" như API-007 ở chương 02.</p>
+
+<div class="code-block">
+<div class="code-filename">app/Http/Requests/Cart/AddCartItemRequest.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Http/Requests/Cart/AddCartItemRequest.php
+// 12_詳細設計書.md 7章: variant_id required/exists, quantity required/integer/min:1
+// （02_要件定義書.md 12章: cart_items.quantity Required/Integer/1以上）
+
+namespace App\Http\Requests\Cart;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class AddCartItemRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true; // 認証はauth:sanctum Middlewareが担当
+    }
+
+    public function rules(): array
+    {
+        return [
+            // 実在しないvariant_idはここでE003になる。
+            // status=inactiveのvariantはService側でE007に振り分ける（存在を秘匿、API-007と同方針）
+            'variant_id' =&gt; ['required', 'integer', 'exists:product_variants,id'],
+            'quantity' =&gt; ['required', 'integer', 'min:1'],
+        ];
+    }
+}</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">app/Services/CartService.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Services/CartService.php
+// 12_詳細設計書.md 5.1節: CartService::addItem（BR-INV-002）
+// show/addItemのみ実装。updateItem/removeItem（API-011/012）は課題（下の表を参照）。
+
+namespace App\Services;
+
+use App\Exceptions\InsufficientStockException;
+use App\Exceptions\ResourceNotFoundException;
+use App\Models\Cart;
+use App\Models\CartItem;
+use App\Models\ProductVariant;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+
+class CartService
+{
+    // API-009 カート取得
+    public function show(int $userId): array
+    {
+        $cart = Cart::active()
+            -&gt;where('user_id', $userId)
+            -&gt;with(['items.variant.product', 'items.variant.inventory'])
+            -&gt;first();
+
+        // 10_API設計.md 6.9節: activeカートが無い場合はエラーにせず空配列を返す
+        if (!$cart) {
+            return ['cart_id' =&gt; null, 'items' =&gt; [], 'subtotal' =&gt; 0];
+        }
+
+        $items = $cart-&gt;items-&gt;map(fn ($item) =&gt; [
+            'cart_item_id' =&gt; $item-&gt;id,
+            'variant_id' =&gt; $item-&gt;variant_id,
+            'product_name' =&gt; $item-&gt;variant-&gt;product-&gt;name,
+            // 表示名は order_items.variant_label（TBL-012、例: "M / Red"）と同じ組み立て方
+            'variant_label' =&gt; implode(' / ', array_filter([$item-&gt;variant-&gt;size, $item-&gt;variant-&gt;color])),
+            'sku' =&gt; $item-&gt;variant-&gt;sku,
+            'price' =&gt; $item-&gt;variant-&gt;price,
+            'quantity' =&gt; $item-&gt;quantity,
+            'line_subtotal' =&gt; $item-&gt;variant-&gt;price * $item-&gt;quantity,
+            'quantity_available' =&gt; $item-&gt;variant-&gt;inventory?-&gt;quantity_available ?? 0,
+        ]);
+
+        return [
+            'cart_id' =&gt; $cart-&gt;id,
+            'items' =&gt; $items-&gt;values()-&gt;all(),
+            // カート画面の小計はあくまで現在価格による表示用プレビュー。
+            // 確定金額は注文確定時にスナップショットして計算する（BR-ORD-002、次章）
+            'subtotal' =&gt; $items-&gt;sum('line_subtotal'),
+        ];
+    }
+
+    // API-010 カート追加（12_詳細設計書.md 5.1節の疑似コードに1:1対応）
+    public function addItem(int $userId, array $data): CartItem
+    {
+        return DB::transaction(function () use ($userId, $data) {
+            // 直列化アンカー: SELECT ... FOR UPDATEは「まだ存在しない行」をロックできない。
+            // カート未作成の会員が2並列でaddItemすると、両方ともactiveカートを見つけられず
+            // 2つ作ってしまう（幻の行問題）。必ず存在するusersの自分の行をロックすることで、
+            // 同一会員のカート作成を1本ずつに直列化する（09_テーブル定義 11章-2の保証を実装で担う）
+            User::whereKey($userId)-&gt;lockForUpdate()-&gt;first();
+
+            // 5.1-1: activeカートを取得、無ければ新規作成。
+            // 09_テーブル定義.md 11章-2: 「1会員1 activeカート」はMySQLの部分UNIQUE制約非対応のため
+            // DB制約で表現できず、トランザクション + 上記ロックで保証する
+            $cart = Cart::active()
+                -&gt;where('user_id', $userId)
+                -&gt;lockForUpdate()
+                -&gt;first();
+
+            if (!$cart) {
+                $cart = Cart::create(['user_id' =&gt; $userId, 'status' =&gt; 'active']);
+            }
+
+            // 5.1-2: variant + inventory を取得（inactiveや在庫行欠損はE007）
+            $variant = ProductVariant::with('inventory')
+                -&gt;where('status', 'active')
+                -&gt;find($data['variant_id']);
+
+            if (!$variant || !$variant-&gt;inventory) {
+                throw new ResourceNotFoundException('対象の商品が見つかりません。');
+            }
+
+            // 5.1-3 / BR-INV-002: この時点では在庫を一切変更しない。
+            // このE004は「表示上の警告」目的のチェックのみ（確保は注文確定時、BR-INV-003）
+            if ($data['quantity'] &gt; $variant-&gt;inventory-&gt;quantity_available) {
+                throw new InsufficientStockException();
+            }
+
+            // 5.1-4: UNIQUE(cart_id, variant_id) — 既存行があれば数量を加算、無ければ新規作成
+            $item = CartItem::where('cart_id', $cart-&gt;id)
+                -&gt;where('variant_id', $variant-&gt;id)
+                -&gt;first();
+
+            if ($item) {
+                $item-&gt;update(['quantity' =&gt; $item-&gt;quantity + $data['quantity']]);
+            } else {
+                $item = CartItem::create([
+                    'cart_id' =&gt; $cart-&gt;id,
+                    'variant_id' =&gt; $variant-&gt;id,
+                    'quantity' =&gt; $data['quantity'],
+                ]);
+            }
+
+            return $item;
+        });
+    }
+}</pre>
+</div>
+
+<div class="step-heading"><div class="step-number">5</div><div class="step-title">CartController & routes</div></div>
+<p>Response của API-009 trong tài liệu chỉ mô tả nội dung ("明細一覧、各行にproduct_variants情報・単価・行小計を含む") chứ không cho JSON mẫu — shape cụ thể dưới đây do ta tự chốt, giữ snake_case theo API-POL-008 và đặt tên field khớp với các cột snapshot của <code>order_items</code> (TBL-012: <code>product_name</code>, <code>variant_label</code>, <code>sku</code>...) để sang chương Đặt hàng không phải đổi tên.</p>
+
+<div class="code-block">
+<div class="code-filename">app/Http/Controllers/CartController.php<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// app/Http/Controllers/CartController.php
+// 12_詳細設計書.md 4章: CartController — show, addItem, updateItem, removeItem (API-009〜012)
+// このチャプターでは show / addItem のみ実装する。残り2メソッドは課題。
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\Cart\AddCartItemRequest;
+use App\Services\CartService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
+class CartController extends Controller
+{
+    public function __construct(private CartService $cartService)
+    {
+    }
+
+    // GET /cart (API-009)
+    public function show(Request $request): JsonResponse
+    {
+        return response()-&gt;json([
+            'success' =&gt; true,
+            'message' =&gt; 'OK',
+            'data' =&gt; $this-&gt;cartService-&gt;show($request-&gt;user()-&gt;id),
+        ]);
+    }
+
+    // POST /cart/items (API-010)
+    public function addItem(AddCartItemRequest $request): JsonResponse
+    {
+        $item = $this-&gt;cartService-&gt;addItem($request-&gt;user()-&gt;id, $request-&gt;validated());
+
+        // Response shapeは10_API設計.md 6.10節、201は15_単体試験仕様書 UT-CART-001に合わせる
+        return response()-&gt;json([
+            'success' =&gt; true,
+            'message' =&gt; 'カートに追加しました。',
+            'data' =&gt; [
+                'cart_item_id' =&gt; $item-&gt;id,
+                'variant_id' =&gt; $item-&gt;variant_id,
+                'quantity' =&gt; $item-&gt;quantity,
+            ],
+        ], 201);
+    }
+}</pre>
+</div>
+
+<div class="code-block">
+<div class="code-filename">routes/api.php（追記分）<span class="code-lang">php</span></div>
+<pre>&lt;?php
+// routes/api.php（Chương 03で追記する分）
+// 10_API設計.md 5章: API-009〜013は権限Customer。
+// 12_詳細設計書.md 8章のMiddleware表ではauth:sanctumのみ必須
+// （role:customerのような専用Middlewareは設計上存在しない — Adminがカートを持つことは
+//   画面上あり得ないが、API層ではauth:sanctumだけで許容する設計）
+
+use App\Http\Controllers\CartController;
+use Illuminate\Support\Facades\Route;
+
+Route::middleware('auth:sanctum')-&gt;group(function () {
+    Route::get('/cart', [CartController::class, 'show']);           // API-009
+    Route::post('/cart/items', [CartController::class, 'addItem']); // API-010
+    // 課題: PATCH  /cart/items/{id}  (API-011 数量変更)
+    // 課題: DELETE /cart/items/{id}  (API-012 削除)
+    // 課題: GET/POST/PUT /addresses  (API-013 配送先住所管理)
+});</pre>
+</div>
+
+<div class="box box-check">
+<div class="box-title">✅ チェックポイント（UT-CART-001〜004対応）</div>
+<ul>
+<li>☐ <code>GET /cart</code> khi chưa từng có giỏ → 200, <code>items: []</code>, không lỗi (6.9節)</li>
+<li>☐ <code>POST /cart/items</code> variant còn hàng → 201; ngay sau đó soi bảng <code>inventories</code>: <strong>không có gì thay đổi</strong> (UT-CART-001, BR-INV-002)</li>
+<li>☐ Thêm cùng variant lần 2 → <code>quantity</code> cộng dồn trên dòng cũ, bảng <code>cart_items</code> không sinh dòng mới (UT-CART-003)</li>
+<li>☐ Variant có <code>quantity_available=0</code> → 409 <code>E004</code> (UT-CART-002)</li>
+<li>☐ <code>variant_id</code> không tồn tại → 422 <code>E003</code>; variant bị Admin đổi <code>status='inactive'</code> → 404 <code>E007</code></li>
+<li>☐ Login 2 user khác nhau: giỏ của ai người nấy thấy, không lẫn (mỗi user 1 active cart riêng)</li>
+<li>☐ Sau khi làm 課題: <code>PATCH /cart/items/{id}</code> với <code>quantity=0</code> → 422 <code>E003</code> (UT-CART-004); chỉ định <code>cart_item</code> của user khác → 404 <code>E007</code></li>
+</ul>
+</div>
+
+<div class="step-heading"><div class="step-number">6</div><div class="step-title">📝 課題</div></div>
+<div class="box box-task">
+<div class="box-title">📝 Tự làm — không có code mẫu</div>
+<table>
+<thead><tr><th>Tính năng</th><th>API/tham chiếu dùng</th><th>Điểm cần chú ý</th></tr></thead>
+<tbody>
+<tr><td>Đổi số lượng trong giỏ</td><td>API-011 (<code>10_API設計.md</code> 6.11節): PATCH <code>/cart/items/{id}</code>. Validation: <code>quantity</code> required/integer/min:1</td><td><strong>Ownership check bắt buộc</strong>: load <code>cart_items</code> kèm <code>cart</code>, so <code>cart.user_id</code> với user đang login — lệch thì E007 (không phải E002, để không tiết lộ resource tồn tại; 6.11節 ghi rõ đây là IDOR対策 giống AttendanceService::search của Project 01). Trả về cart_item sau cập nhật.</td></tr>
+<tr><td>Xoá khỏi giỏ</td><td>API-012 (6.12節): DELETE <code>/cart/items/{id}</code></td><td>Cùng ownership check với API-011 — nên tách thành private method <code>findOwnedItem(int $userId, int $itemId)</code> trong CartService để 2 API dùng chung, đừng copy-paste. Message: "カートから削除しました。"</td></tr>
+<tr><td>Quản lý địa chỉ giao hàng</td><td>API-013 (6.13節): GET/POST/PUT <code>/addresses</code>. Controller: AddressController — index/store/update (12_詳細設計書 4章)</td><td>Validation theo 02_要件定義書 12章: <code>postal_code</code> regex <code>NNN-NNNN</code> (<code>regex:/^\d{3}-\d{4}$/</code>), <code>prefecture</code> phải thuộc 47 tỉnh (<code>Rule::in([...])</code> — khai mảng 47 都道府県 ở 1 chỗ dùng chung, đừng lặp), <code>recipient_name</code> max:100, <code>phone</code> required. GET/PUT chỉ trong phạm vi địa chỉ của chính user — id người khác → E007. Nếu <code>is_default=true</code>: hạ cờ các địa chỉ default cũ của user trong cùng transaction (docs không ép "duy nhất 1 default", nhưng màn hình chọn địa chỉ SCR-006 cần đúng 1 mặc định — hãy tự quyết và ghi chú lại).</td></tr>
+<tr><td>Refactor kiểm tra sở hữu</td><td>So sánh cách API-011/012 (qua <code>cart.user_id</code>) với API-018/019 của chương sau (qua <code>orders.user_id</code>)</td><td>Viết ra nhận xét ngắn (nội bộ, tiếng Việt): khi nào scope bằng <code>WHERE user_id = ?</code> ngay trong query, khi nào load rồi so sánh — chuẩn bị trước cho pattern <code>scopeOwnedBy</code> của Order model (12_詳細設計書 6章).</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box box-doc">
+<div class="box-title">📘 Tài liệu đã dùng trong chương này</div>
+<p><code>02_要件定義書.md</code> REQ-008/009/010, BR-INV-002, 9.3節 (thiết kế 2 giai đoạn), 11.2節 (abandoned), 12章 (validation) · <code>09_テーブル定義.md</code> TBL-002/009/010, 5章 (FK), 11章-2 (active cart) · <code>10_API設計.md</code> API-009〜013 (6.9〜6.13節) · <code>12_詳細設計書.md</code> 4章, 5.1節, 7章, 8章 · <code>15_単体試験仕様書.md</code> UT-CART-001〜004</p>
+</div>
+
+<div class="footer-nav">
+<a href="02_商品カタログ.html">← Chương 02</a>
+<a href="04_注文確定_スナップショット.html">Chương 04: Đặt hàng &amp; Snapshot →</a>
+</div>
+</div>
+</body>
+</html>
