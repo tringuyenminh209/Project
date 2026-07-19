@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>業務フロー - HR &amp; Attendance System</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/mermaid.min.js"></script>
+</head>
+<body id="top">
+<nav class="doc-nav no-print">
+  <div class="nav-row nav-row-adjacent">
+    <a class="nav-adjacent" href="03_ユースケース_HR_Attendance_System.html">← 03 ユースケース</a>
+    <a class="nav-index" href="index.html">目次</a>
+    <a class="nav-adjacent" href="05_画面遷移図_HR_Attendance_System.html">05 画面遷移図 →</a>
+  </div>
+  <div class="nav-row nav-row-chips"><a class="nav-chip" href="00_開発計画書_HR_Attendance_System.html" title="📋 開発計画書">00</a><a class="nav-chip" href="01_企画書_HR_Attendance_System.html" title="企画書">01</a><a class="nav-chip" href="02_要件定義書_HR_Attendance_System.html" title="要件定義書">02</a><a class="nav-chip" href="03_ユースケース_HR_Attendance_System.html" title="ユースケース">03</a><a class="nav-chip nav-chip-current" href="04_業務フロー_HR_Attendance_System.html" title="業務フロー">04</a><a class="nav-chip" href="05_画面遷移図_HR_Attendance_System.html" title="画面遷移図">05</a><a class="nav-chip" href="06_画面設計_HR_Attendance_System.html" title="画面設計">06</a><a class="nav-chip" href="07_機能一覧_HR_Attendance_System.html" title="機能一覧">07</a><a class="nav-chip" href="08_ER図_HR_Attendance_System.html" title="ER図">08</a><a class="nav-chip" href="09_テーブル定義_HR_Attendance_System.html" title="テーブル定義">09</a><a class="nav-chip" href="10_API設計_HR_Attendance_System.html" title="API設計">10</a><a class="nav-chip" href="11_基本設計書_HR_Attendance_System.html" title="基本設計書">11</a><a class="nav-chip" href="12_詳細設計書_HR_Attendance_System.html" title="詳細設計書">12</a><a class="nav-chip" href="13_インフラ設計_HR_Attendance_System.html" title="インフラ設計">13</a><a class="nav-chip" href="14_セキュリティ設計_HR_Attendance_System.html" title="セキュリティ設計">14</a><a class="nav-chip" href="15_単体試験仕様書_HR_Attendance_System.html" title="単体試験仕様書">15</a><a class="nav-chip" href="16_結合試験仕様書_HR_Attendance_System.html" title="結合試験仕様書">16</a><a class="nav-chip" href="17_システム試験仕様書_HR_Attendance_System.html" title="システム試験仕様書">17</a><a class="nav-chip" href="18_UAT_HR_Attendance_System.html" title="UAT仕様書">18</a><a class="nav-chip" href="19_リリース手順書_HR_Attendance_System.html" title="リリース手順書">19</a><a class="nav-chip" href="20_運用保守手順書_HR_Attendance_System.html" title="運用保守手順書">20</a></div>
+</nav>
+<table class="doc-header-bar">
+  <tr>
+    <td class="hb-type" rowspan="2">業務フロー</td>
+    <td class="hb-sys" rowspan="2">HR &amp; Attendance System</td>
+    <td class="hb-label">文書番号</td>
+    <td class="hb-val">DOC-004</td>
+    <td class="hb-label">バージョン</td>
+    <td class="hb-val">1.1</td>
+  </tr>
+  <tr>
+    <td class="hb-label">作成日</td>
+    <td class="hb-val">2026/06/25</td>
+    <td class="hb-label">作成者</td>
+    <td class="hb-val">Nguyen Minh Tri</td>
+  </tr>
+</table>
+<div class="doc-body">
+<h1 class="doc-title">業務フロー</h1><p>HR &amp; Attendance System（勤怠管理システム）</p><div class="section-title">■ 文書管理情報</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>システム名</td><td>HR &amp; Attendance System</td></tr><tr><td>文書名</td><td>業務フロー</td></tr><tr><td>文書番号</td><td>DOC-004</td></tr><tr><td>作成者</td><td>Nguyen Minh Tri</td></tr><tr><td>作成日</td><td>2026/06/25</td></tr><tr><td>バージョン</td><td>1.1</td></tr><tr><td>ステータス</td><td>Draft</td></tr></tbody></table><div class="section-title">■ 改訂履歴</div><table><thead><tr><th>Version</th><th>日付</th><th>作成者</th><th>内容</th></tr></thead><tbody><tr><td>1.0</td><td>2026/06/25</td><td>Nguyen Minh Tri</td><td>初版作成</td></tr><tr><td>1.1</td><td>2026/07/02</td><td>Nguyen Minh Tri</td><td>整合性レビューによる修正：BR-003に休憩時間の差し引きを明記、休暇申請状態遷移からCompletedを削除</td></tr></tbody></table><div class="section-title">■ 目次</div><ol><li>本書の目的</li><li>業務概要</li><li>AS-IS 業務フロー</li><li>TO-BE 業務フロー</li><li>打刻業務フロー</li><li>休暇申請・承認業務フロー</li><li>勤怠確認・レポート業務フロー</li><li>マスタ管理業務フロー</li><li>例外フロー</li><li>業務ルール対応</li><li>ユースケース対応</li><li>まとめ</li></ol><div class="section-title">■ 1. 本書の目的</div><p>本書は、HR &amp; Attendance Systemにおける勤怠管理業務の流れを整理し、AS-ISとTO-BEの違いを明確にするものである。</p><p>本書で定義した業務フローは、画面遷移図、画面設計、API設計、テスト仕様書の入力情報として利用する。</p><div class="section-title">■ 2. 業務概要</div><p>本システムでは、以下の業務を対象とする。</p><table><thead><tr><th>業務ID</th><th>業務名</th><th>主担当</th><th>関連UC</th><th>関連REQ</th></tr></thead><tbody><tr><td>BF-001</td><td>ログイン・認証</td><td>User / Manager / Admin</td><td>UC-001 / UC-002</td><td>REQ-001 / REQ-002 / REQ-003</td></tr><tr><td>BF-002</td><td>出勤・退勤打刻</td><td>User</td><td>UC-003 / UC-004</td><td>REQ-004 / REQ-005 / REQ-006</td></tr><tr><td>BF-003</td><td>勤怠履歴確認</td><td>User / Manager</td><td>UC-005 / UC-009</td><td>REQ-007 / REQ-008 / REQ-012</td></tr><tr><td>BF-004</td><td>休暇申請</td><td>User</td><td>UC-006 / UC-007</td><td>REQ-009 / REQ-010</td></tr><tr><td>BF-005</td><td>休暇承認</td><td>Manager</td><td>UC-008</td><td>REQ-011</td></tr><tr><td>BF-006</td><td>月次レポート・CSV出力</td><td>Manager / Admin</td><td>UC-010 / UC-011</td><td>REQ-013 / REQ-014</td></tr><tr><td>BF-007</td><td>社員管理</td><td>Admin</td><td>UC-012</td><td>REQ-015 / REQ-016 / REQ-017</td></tr><tr><td>BF-008</td><td>部署管理</td><td>Admin</td><td>UC-013</td><td>REQ-018</td></tr><tr><td>BF-009</td><td>シフト管理</td><td>Admin</td><td>UC-014</td><td>REQ-019</td></tr><tr><td>BF-010</td><td>操作ログ記録</td><td>System</td><td>UC-016</td><td>REQ-021</td></tr></tbody></table><div class="section-title">■ 3. AS-IS 業務フロー</div><p>現状は、紙またはExcelによる勤怠管理を想定する。</p><div class="mermaid">
+flowchart TD
+    A[&quot;社員が出勤・退勤時刻を紙/Excelに記入&quot;] --&gt; B[&quot;社員が休暇申請を口頭/メールで連絡&quot;]
+    B --&gt; C[&quot;管理者が内容を確認&quot;]
+    C --&gt; D{&quot;承認可能?&quot;}
+    D --&gt;|Yes| E[&quot;管理者が承認結果を連絡&quot;]
+    D --&gt;|No| F[&quot;管理者が却下理由を連絡&quot;]
+    E --&gt; G[&quot;月末に管理者が勤怠情報を集計&quot;]
+    F --&gt; G
+    G --&gt; H[&quot;Excelでレポート作成&quot;]
+    H --&gt; I[&quot;入力ミス・確認漏れを手作業で修正&quot;]
+</div><div class="subsection-title">3.1 AS-IS 課題</div><table><thead><tr><th>課題ID</th><th>課題</th><th>影響</th></tr></thead><tbody><tr><td>ASIS-001</td><td>打刻情報が手入力である</td><td>入力漏れ、記録ミスが発生しやすい</td></tr><tr><td>ASIS-002</td><td>休暇申請の状態が見えにくい</td><td>承認漏れ、確認漏れが発生する</td></tr><tr><td>ASIS-003</td><td>月次集計が手作業である</td><td>管理者の作業負担が大きい</td></tr><tr><td>ASIS-004</td><td>権限管理が明確でない</td><td>不適切な閲覧・編集が発生する可能性がある</td></tr><tr><td>ASIS-005</td><td>操作履歴が残りにくい</td><td>問題発生時の原因調査が難しい</td></tr></tbody></table><div class="section-title">■ 4. TO-BE 業務フロー</div><p>TO-BEでは、打刻、休暇申請、承認、レポート確認をWebシステム上で一元管理する。</p><div class="mermaid">
+flowchart TD
+    A[&quot;User logs in&quot;] --&gt; B{&quot;権限確認&quot;}
+    B --&gt;|User| C[&quot;出勤・退勤打刻&quot;]
+    B --&gt;|User| D[&quot;勤怠履歴確認&quot;]
+    B --&gt;|User| E[&quot;休暇申請&quot;]
+    B --&gt;|Manager| F[&quot;休暇申請確認&quot;]
+    F --&gt; G{&quot;承認判断&quot;}
+    G --&gt;|Approve| H[&quot;Approvedに更新&quot;]
+    G --&gt;|Reject| I[&quot;Rejectedに更新&quot;]
+    B --&gt;|Manager/Admin| J[&quot;月次レポート閲覧&quot;]
+    J --&gt; K[&quot;CSV出力&quot;]
+    B --&gt;|Admin| L[&quot;社員・部署・シフト管理&quot;]
+    C --&gt; M[&quot;操作ログ記録&quot;]
+    H --&gt; M
+    I --&gt; M
+    K --&gt; M
+    L --&gt; M
+</div><div class="subsection-title">4.1 TO-BE 改善点</div><table><thead><tr><th>改善ID</th><th>改善内容</th><th>対応課題</th></tr></thead><tbody><tr><td>TOBE-001</td><td>出退勤を画面から登録する</td><td>ASIS-001</td></tr><tr><td>TOBE-002</td><td>休暇申請状態をPending / Approved / Rejectedで管理する</td><td>ASIS-002</td></tr><tr><td>TOBE-003</td><td>月次レポートとCSV出力をシステム化する</td><td>ASIS-003</td></tr><tr><td>TOBE-004</td><td>User / Manager / Adminで権限制御する</td><td>ASIS-004</td></tr><tr><td>TOBE-005</td><td>重要操作をaudit logに記録する</td><td>ASIS-005</td></tr></tbody></table><div class="section-title">■ 5. 打刻業務フロー</div><div class="subsection-title">5.1 出勤打刻</div><div class="mermaid">
+flowchart TD
+    A[&quot;User opens 打刻画面&quot;] --&gt; B{&quot;ログイン済み?&quot;}
+    B --&gt;|No| E010[&quot;E010 Session Timeout&quot;]
+    B --&gt;|Yes| C{&quot;当日出勤打刻済み?&quot;}
+    C --&gt;|Yes| E004[&quot;E004 Duplicate Attendance&quot;]
+    C --&gt;|No| D[&quot;現在時刻をcheck_in_timeとして登録&quot;]
+    D --&gt; E[&quot;attendance_recordsを保存&quot;]
+    E --&gt; F[&quot;登録完了メッセージ表示&quot;]
+</div><div class="subsection-title">5.2 退勤打刻</div><div class="mermaid">
+flowchart TD
+    A[&quot;User opens 打刻画面&quot;] --&gt; B{&quot;ログイン済み?&quot;}
+    B --&gt;|No| E010[&quot;E010 Session Timeout&quot;]
+    B --&gt;|Yes| C{&quot;出勤打刻済み?&quot;}
+    C --&gt;|No| E005[&quot;E005 Check Out Without Check In&quot;]
+    C --&gt;|Yes| D{&quot;退勤打刻済み?&quot;}
+    D --&gt;|Yes| E004[&quot;E004 Duplicate Attendance&quot;]
+    D --&gt;|No| E[&quot;現在時刻をcheck_out_timeとして登録&quot;]
+    E --&gt; F[&quot;勤務時間を自動計算&quot;]
+    F --&gt; G[&quot;attendance_recordsを保存&quot;]
+    G --&gt; H[&quot;登録完了メッセージ表示&quot;]
+</div><div class="subsection-title">5.3 打刻業務ルール</div><table><thead><tr><th>ルール</th><th>内容</th></tr></thead><tbody><tr><td>BR-001</td><td>同一勤務日に出勤打刻は原則1回のみ登録できる。</td></tr><tr><td>BR-002</td><td>退勤打刻は出勤打刻後にのみ登録できる。</td></tr><tr><td>BR-003</td><td>勤務時間は退勤時刻から出勤時刻を差し引いた時間から、シフトの休憩時間（break_minutes）を差し引いて算出する。</td></tr></tbody></table><div class="section-title">■ 6. 休暇申請・承認業務フロー</div><div class="subsection-title">6.1 休暇申請</div><div class="mermaid">
+flowchart TD
+    A[&quot;User opens 休暇申請画面&quot;] --&gt; B{&quot;ログイン済み?&quot;}
+    B --&gt;|No| E010[&quot;E010 Session Timeout&quot;]
+    B --&gt;|Yes| C[&quot;申請種別・対象日・理由を入力&quot;]
+    C --&gt; D{&quot;入力チェックOK?&quot;}
+    D --&gt;|No| E003[&quot;E003 Validation Error&quot;]
+    D --&gt;|Yes| E{&quot;重複申請なし?&quot;}
+    E --&gt;|No| F[&quot;重複申請エラー表示&quot;]
+    E --&gt;|Yes| G[&quot;leave_requestsをPendingで登録&quot;]
+    G --&gt; H[&quot;申請完了メッセージ表示&quot;]
+</div><div class="subsection-title">6.2 休暇承認</div><div class="mermaid">
+flowchart TD
+    A[&quot;Manager opens 休暇承認画面&quot;] --&gt; B{&quot;ログイン済み?&quot;}
+    B --&gt;|No| E010[&quot;E010 Session Timeout&quot;]
+    B --&gt;|Yes| C{&quot;Manager/Admin権限あり?&quot;}
+    C --&gt;|No| E002[&quot;E002 Permission Denied&quot;]
+    C --&gt;|Yes| D[&quot;承認待ち申請一覧を表示&quot;]
+    D --&gt; E[&quot;申請内容を確認&quot;]
+    E --&gt; F{&quot;承認する?&quot;}
+    F --&gt;|Approve| G[&quot;状態をApprovedに更新&quot;]
+    F --&gt;|Reject| H[&quot;状態をRejectedに更新&quot;]
+    G --&gt; I[&quot;操作ログ記録&quot;]
+    H --&gt; I
+    I --&gt; J[&quot;処理完了メッセージ表示&quot;]
+</div><div class="subsection-title">6.3 休暇申請状態遷移</div><p>DBに保存する状態はPending / Approved / Rejectedの3つのみとする。対象日を経過したApproved申請の状態は変更せず、画面表示時にend_dateと現在日付を比較して「済」を付加表示する。</p><div class="mermaid">
+stateDiagram-v2
+    [*] --&gt; Pending: User submits request
+    Pending --&gt; Approved: Manager approves
+    Pending --&gt; Rejected: Manager rejects
+    Approved --&gt; [*]
+    Rejected --&gt; [*]
+</div><div class="section-title">■ 7. 勤怠確認・レポート業務フロー</div><div class="subsection-title">7.1 User 勤怠履歴確認</div><div class="mermaid">
+flowchart TD
+    A[&quot;User opens 勤怠履歴画面&quot;] --&gt; B{&quot;ログイン済み?&quot;}
+    B --&gt;|No| E010[&quot;E010 Session Timeout&quot;]
+    B --&gt;|Yes| C[&quot;対象年月・期間を指定&quot;]
+    C --&gt; D{&quot;入力チェックOK?&quot;}
+    D --&gt;|No| E003[&quot;E003 Validation Error&quot;]
+    D --&gt;|Yes| E[&quot;自分の勤怠データを検索&quot;]
+    E --&gt; F{&quot;データあり?&quot;}
+    F --&gt;|No| E007[&quot;E007 Data Not Found&quot;]
+    F --&gt;|Yes| G[&quot;勤怠履歴一覧を表示&quot;]
+</div><div class="subsection-title">7.2 Manager 勤怠状況確認・CSV出力</div><div class="mermaid">
+flowchart TD
+    A[&quot;Manager/Admin opens レポート画面&quot;] --&gt; B{&quot;ログイン済み?&quot;}
+    B --&gt;|No| E010[&quot;E010 Session Timeout&quot;]
+    B --&gt;|Yes| C{&quot;Manager/Admin権限あり?&quot;}
+    C --&gt;|No| E002[&quot;E002 Permission Denied&quot;]
+    C --&gt;|Yes| D[&quot;対象年月・部署・社員を指定&quot;]
+    D --&gt; E[&quot;権限範囲内の勤怠データを検索&quot;]
+    E --&gt; F{&quot;データあり?&quot;}
+    F --&gt;|No| E007[&quot;E007 Data Not Found&quot;]
+    F --&gt;|Yes| G[&quot;月次レポート表示&quot;]
+    G --&gt; H{&quot;CSV出力する?&quot;}
+    H --&gt;|No| I[&quot;終了&quot;]
+    H --&gt;|Yes| J[&quot;CSV生成&quot;]
+    J --&gt; K{&quot;生成成功?&quot;}
+    K --&gt;|No| E008[&quot;E008 CSV Export Failed&quot;]
+    K --&gt;|Yes| L[&quot;CSVダウンロード&quot;]
+    L --&gt; M[&quot;操作ログ記録&quot;]
+</div><div class="section-title">■ 8. マスタ管理業務フロー</div><p>Adminは、社員、部署、シフトを管理する。</p><div class="mermaid">
+flowchart TD
+    A[&quot;Admin opens 管理画面&quot;] --&gt; B{&quot;ログイン済み?&quot;}
+    B --&gt;|No| E010[&quot;E010 Session Timeout&quot;]
+    B --&gt;|Yes| C{&quot;Admin権限あり?&quot;}
+    C --&gt;|No| E002[&quot;E002 Permission Denied&quot;]
+    C --&gt;|Yes| D{&quot;管理対象を選択&quot;}
+    D --&gt;|社員| E[&quot;社員情報を登録・編集・無効化&quot;]
+    D --&gt;|部署| F[&quot;部署情報を登録・編集・無効化&quot;]
+    D --&gt;|シフト| G[&quot;シフト情報を登録・編集・無効化&quot;]
+    E --&gt; H{&quot;入力チェックOK?&quot;}
+    F --&gt; H
+    G --&gt; H
+    H --&gt;|No| E003[&quot;E003 Validation Error&quot;]
+    H --&gt;|Yes| I[&quot;DB保存&quot;]
+    I --&gt; J{&quot;保存成功?&quot;}
+    J --&gt;|No| E009[&quot;E009 Database Error&quot;]
+    J --&gt;|Yes| K[&quot;操作ログ記録&quot;]
+    K --&gt; L[&quot;完了メッセージ表示&quot;]
+</div><div class="subsection-title">8.1 マスタ管理方針</div><table><thead><tr><th>対象</th><th>方針</th></tr></thead><tbody><tr><td>社員</td><td>退職・利用停止の場合は物理削除より無効化を優先する。</td></tr><tr><td>部署</td><td>使用中部署は削除せず、無効化を優先する。</td></tr><tr><td>シフト</td><td>勤怠履歴と関連するため、使用中シフトは無効化を優先する。</td></tr></tbody></table><div class="section-title">■ 9. 例外フロー</div><table><thead><tr><th>エラーID</th><th>エラー名</th><th>発生業務</th><th>処理</th></tr></thead><tbody><tr><td>E001</td><td>Login Failed</td><td>ログイン</td><td>ログイン失敗メッセージを表示する。</td></tr><tr><td>E002</td><td>Permission Denied</td><td>承認、レポート、マスタ管理</td><td>アクセス権限がない旨を表示する。</td></tr><tr><td>E003</td><td>Validation Error</td><td>休暇申請、検索、マスタ管理</td><td>対象項目ごとにエラーを表示する。</td></tr><tr><td>E004</td><td>Duplicate Attendance</td><td>出勤・退勤打刻</td><td>二重打刻できない旨を表示する。</td></tr><tr><td>E005</td><td>Check Out Without Check In</td><td>退勤打刻</td><td>先に出勤打刻が必要である旨を表示する。</td></tr><tr><td>E006</td><td>Leave Request Already Processed</td><td>休暇承認</td><td>最新状態を再表示する。</td></tr><tr><td>E007</td><td>Data Not Found</td><td>勤怠確認、レポート</td><td>データが見つからない旨を表示する。</td></tr><tr><td>E008</td><td>CSV Export Failed</td><td>CSV出力</td><td>エラーメッセージを表示し、ログを記録する。</td></tr><tr><td>E009</td><td>Database Error</td><td>登録・更新・検索</td><td>システムエラーを表示し、ログを記録する。</td></tr><tr><td>E010</td><td>Session Timeout</td><td>全業務画面</td><td>ログイン画面へ遷移する。</td></tr></tbody></table><div class="section-title">■ 10. 業務ルール対応</div><table><thead><tr><th>業務ルールID</th><th>対応業務</th><th>対応内容</th></tr></thead><tbody><tr><td>BR-001</td><td>出勤打刻</td><td>同一勤務日の二重出勤打刻を防止する。</td></tr><tr><td>BR-002</td><td>退勤打刻</td><td>出勤打刻なしの退勤打刻を防止する。</td></tr><tr><td>BR-003</td><td>退勤打刻</td><td>退勤登録時に、退勤時刻と出勤時刻の差からシフトの休憩時間を差し引いて勤務時間を計算する。</td></tr><tr><td>BR-004</td><td>休暇申請</td><td>Pending、Approved、Rejectedで状態管理する。</td></tr><tr><td>BR-005</td><td>休暇申請</td><td>承認済み申請はUserが直接変更できない。</td></tr><tr><td>BR-006</td><td>休暇承認</td><td>ManagerまたはAdminのみ承認・却下できる。</td></tr><tr><td>BR-007</td><td>ログイン</td><td>無効化された社員のログインを拒否する。</td></tr><tr><td>BR-008</td><td>CSV出力</td><td>権限範囲内の勤怠データのみ出力する。</td></tr></tbody></table><div class="section-title">■ 11. ユースケース対応</div><table><thead><tr><th>業務ID</th><th>業務名</th><th>関連UC</th><th>関連画面</th></tr></thead><tbody><tr><td>BF-001</td><td>ログイン・認証</td><td>UC-001 / UC-002</td><td>SCR-001 / SCR-002</td></tr><tr><td>BF-002</td><td>出勤・退勤打刻</td><td>UC-003 / UC-004</td><td>SCR-003</td></tr><tr><td>BF-003</td><td>勤怠履歴確認</td><td>UC-005 / UC-009</td><td>SCR-004</td></tr><tr><td>BF-004</td><td>休暇申請</td><td>UC-006 / UC-007</td><td>SCR-005</td></tr><tr><td>BF-005</td><td>休暇承認</td><td>UC-008</td><td>SCR-006</td></tr><tr><td>BF-006</td><td>月次レポート・CSV出力</td><td>UC-010 / UC-011</td><td>SCR-010</td></tr><tr><td>BF-007</td><td>社員管理</td><td>UC-012</td><td>SCR-007</td></tr><tr><td>BF-008</td><td>部署管理</td><td>UC-013</td><td>SCR-008</td></tr><tr><td>BF-009</td><td>シフト管理</td><td>UC-014</td><td>SCR-009</td></tr><tr><td>BF-010</td><td>操作ログ記録</td><td>UC-016</td><td>-</td></tr></tbody></table><div class="section-title">■ 12. まとめ</div><p>本書では、HR &amp; Attendance SystemのAS-IS、TO-BE、打刻、休暇申請・承認、勤怠確認・レポート、マスタ管理、例外処理の業務フローを定義した。</p><p>本書の業務IDとフローを基準として、次工程の画面遷移図、画面設計、API設計、試験仕様書へ展開する。</p>
+</div>
+<div class="doc-footer">DOC-ID: DOC-004 ・ HR &amp; Attendance System ・ Draft</div>
+<div class="no-print"><a class="nav-back-top" href="#top">▲ ページ先頭へ</a></div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+</body>
+</html>

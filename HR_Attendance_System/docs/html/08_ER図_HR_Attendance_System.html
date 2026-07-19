@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ER図 - HR &amp; Attendance System</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/mermaid.min.js"></script>
+</head>
+<body id="top">
+<nav class="doc-nav no-print">
+  <div class="nav-row nav-row-adjacent">
+    <a class="nav-adjacent" href="07_機能一覧_HR_Attendance_System.html">← 07 機能一覧</a>
+    <a class="nav-index" href="index.html">目次</a>
+    <a class="nav-adjacent" href="09_テーブル定義_HR_Attendance_System.html">09 テーブル定義 →</a>
+  </div>
+  <div class="nav-row nav-row-chips"><a class="nav-chip" href="00_開発計画書_HR_Attendance_System.html" title="📋 開発計画書">00</a><a class="nav-chip" href="01_企画書_HR_Attendance_System.html" title="企画書">01</a><a class="nav-chip" href="02_要件定義書_HR_Attendance_System.html" title="要件定義書">02</a><a class="nav-chip" href="03_ユースケース_HR_Attendance_System.html" title="ユースケース">03</a><a class="nav-chip" href="04_業務フロー_HR_Attendance_System.html" title="業務フロー">04</a><a class="nav-chip" href="05_画面遷移図_HR_Attendance_System.html" title="画面遷移図">05</a><a class="nav-chip" href="06_画面設計_HR_Attendance_System.html" title="画面設計">06</a><a class="nav-chip" href="07_機能一覧_HR_Attendance_System.html" title="機能一覧">07</a><a class="nav-chip nav-chip-current" href="08_ER図_HR_Attendance_System.html" title="ER図">08</a><a class="nav-chip" href="09_テーブル定義_HR_Attendance_System.html" title="テーブル定義">09</a><a class="nav-chip" href="10_API設計_HR_Attendance_System.html" title="API設計">10</a><a class="nav-chip" href="11_基本設計書_HR_Attendance_System.html" title="基本設計書">11</a><a class="nav-chip" href="12_詳細設計書_HR_Attendance_System.html" title="詳細設計書">12</a><a class="nav-chip" href="13_インフラ設計_HR_Attendance_System.html" title="インフラ設計">13</a><a class="nav-chip" href="14_セキュリティ設計_HR_Attendance_System.html" title="セキュリティ設計">14</a><a class="nav-chip" href="15_単体試験仕様書_HR_Attendance_System.html" title="単体試験仕様書">15</a><a class="nav-chip" href="16_結合試験仕様書_HR_Attendance_System.html" title="結合試験仕様書">16</a><a class="nav-chip" href="17_システム試験仕様書_HR_Attendance_System.html" title="システム試験仕様書">17</a><a class="nav-chip" href="18_UAT_HR_Attendance_System.html" title="UAT仕様書">18</a><a class="nav-chip" href="19_リリース手順書_HR_Attendance_System.html" title="リリース手順書">19</a><a class="nav-chip" href="20_運用保守手順書_HR_Attendance_System.html" title="運用保守手順書">20</a></div>
+</nav>
+<table class="doc-header-bar">
+  <tr>
+    <td class="hb-type" rowspan="2">ER図</td>
+    <td class="hb-sys" rowspan="2">HR &amp; Attendance System</td>
+    <td class="hb-label">文書番号</td>
+    <td class="hb-val">DOC-008</td>
+    <td class="hb-label">バージョン</td>
+    <td class="hb-val">1.2</td>
+  </tr>
+  <tr>
+    <td class="hb-label">作成日</td>
+    <td class="hb-val">2026/07/02</td>
+    <td class="hb-label">作成者</td>
+    <td class="hb-val">Nguyen Minh Tri</td>
+  </tr>
+</table>
+<div class="doc-body">
+<h1 class="doc-title">ER図</h1><p>HR &amp; Attendance System（勤怠管理システム）</p><div class="section-title">■ 文書管理情報</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>システム名</td><td>HR &amp; Attendance System</td></tr><tr><td>文書名</td><td>ER図</td></tr><tr><td>文書番号</td><td>DOC-008</td></tr><tr><td>作成者</td><td>Nguyen Minh Tri</td></tr><tr><td>作成日</td><td>2026/07/02</td></tr><tr><td>バージョン</td><td>1.2</td></tr><tr><td>ステータス</td><td>Draft</td></tr></tbody></table><div class="section-title">■ 改訂履歴</div><table><thead><tr><th>Version</th><th>日付</th><th>作成者</th><th>内容</th></tr></thead><tbody><tr><td>1.0</td><td>2026/07/02</td><td>Nguyen Minh Tri</td><td>初版作成</td></tr><tr><td>1.1</td><td>2026/07/02</td><td>Nguyen Minh Tri</td><td>整合性レビューによる修正：leave_requestsのCompleted状態を削除</td></tr><tr><td>1.2</td><td>2026/07/02</td><td>Nguyen Minh Tri</td><td>整合性レビューによる修正：attendance_recordsのNotCheckedIn状態を削除（レコード不存在で判定する方針に統一）</td></tr></tbody></table><div class="section-title">■ 目次</div><ol><li>本書の目的</li><li>ER設計方針</li><li>エンティティ一覧</li><li>ER図</li><li>リレーション定義</li><li>エンティティ詳細</li><li>主キー・外部キー一覧</li><li>インデックス方針</li><li>データ削除・保持方針</li><li>正規化方針</li><li>トレーサビリティ</li><li>まとめ</li></ol><div class="section-title">■ 1. 本書の目的</div><p>本書は、HR &amp; Attendance Systemで利用するデータの論理構造とエンティティ間の関係を定義するものである。</p><p>本書で定義したエンティティ、リレーション、キー設計は、次工程のテーブル定義、API設計、実装、テスト仕様書の基準とする。</p><div class="section-title">■ 2. ER設計方針</div><table><thead><tr><th>方針ID</th><th>方針</th><th>内容</th></tr></thead><tbody><tr><td>ER-001</td><td>Logical First</td><td>本書では論理ERを定義し、物理カラム型や詳細制約はテーブル定義書で定義する。</td></tr><tr><td>ER-002</td><td>Traceability</td><td>エンティティは要件、機能、画面、APIと対応できるようにする。</td></tr><tr><td>ER-003</td><td>Soft Delete Priority</td><td>勤怠・申請履歴と関連するマスタは物理削除より無効化を優先する。</td></tr><tr><td>ER-004</td><td>Auditability</td><td>承認、CSV出力、マスタ更新などの重要操作はaudit_logsに記録する。</td></tr><tr><td>ER-005</td><td>Normalization</td><td>初期設計では第3正規形を基本とし、集計値は必要最小限にする。</td></tr></tbody></table><div class="section-title">■ 3. エンティティ一覧</div><table><thead><tr><th>エンティティ</th><th>論理名</th><th>概要</th><th>主な関連機能</th></tr></thead><tbody><tr><td>roles</td><td>権限</td><td>User、Manager、Adminなどの権限を管理する。</td><td>FUNC-003</td></tr><tr><td>departments</td><td>部署</td><td>社員の所属部署を管理する。</td><td>FUNC-017</td></tr><tr><td>shifts</td><td>シフト</td><td>勤務開始・終了時刻、休憩時間を管理する。</td><td>FUNC-018</td></tr><tr><td>employees</td><td>社員</td><td>ログインユーザーおよび社員基本情報を管理する。</td><td>FUNC-001 / FUNC-014〜FUNC-016</td></tr><tr><td>attendance_records</td><td>勤怠記録</td><td>出勤、退勤、勤務時間、勤務状態を管理する。</td><td>FUNC-004〜FUNC-008</td></tr><tr><td>leave_requests</td><td>休暇申請</td><td>有給、欠勤、遅刻、早退などの申請と承認状態を管理する。</td><td>FUNC-009〜FUNC-011</td></tr><tr><td>audit_logs</td><td>操作ログ</td><td>重要操作の実行者、操作内容、対象、結果を記録する。</td><td>FUNC-020</td></tr></tbody></table><div class="section-title">■ 4. ER図</div><div class="mermaid">
+erDiagram
+    roles ||--o{ employees : &quot;has&quot;
+    departments ||--o{ employees : &quot;has&quot;
+    shifts ||--o{ employees : &quot;default shift&quot;
+    employees ||--o{ attendance_records : &quot;records&quot;
+    employees ||--o{ leave_requests : &quot;requests&quot;
+    employees ||--o{ leave_requests : &quot;approves&quot;
+    employees ||--o{ audit_logs : &quot;performs&quot;
+
+    roles {
+        bigint id PK
+        string role_code UK
+        string role_name
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+
+    departments {
+        bigint id PK
+        string department_code UK
+        string department_name
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+
+    shifts {
+        bigint id PK
+        string shift_code UK
+        string shift_name
+        time start_time
+        time end_time
+        int break_minutes
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+
+    employees {
+        bigint id PK
+        string employee_id UK
+        string name
+        string email UK
+        string password_hash
+        bigint role_id FK
+        bigint department_id FK
+        bigint shift_id FK
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+
+    attendance_records {
+        bigint id PK
+        bigint employee_id FK
+        date work_date
+        time check_in_time
+        time check_out_time
+        decimal work_hours
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+
+    leave_requests {
+        bigint id PK
+        bigint employee_id FK
+        string leave_type
+        date start_date
+        date end_date
+        string reason
+        string status
+        bigint approved_by FK
+        datetime approved_at
+        datetime created_at
+        datetime updated_at
+    }
+
+    audit_logs {
+        bigint id PK
+        bigint employee_id FK
+        string action
+        string target_type
+        bigint target_id
+        string result
+        string ip_address
+        datetime created_at
+    }
+</div><div class="section-title">■ 5. リレーション定義</div><table><thead><tr><th>リレーションID</th><th>親エンティティ</th><th>子エンティティ</th><th>多重度</th><th>内容</th></tr></thead><tbody><tr><td>REL-001</td><td>roles</td><td>employees</td><td>1:N</td><td>1つの権限は複数の社員に割り当てられる。</td></tr><tr><td>REL-002</td><td>departments</td><td>employees</td><td>1:N</td><td>1つの部署には複数の社員が所属する。</td></tr><tr><td>REL-003</td><td>shifts</td><td>employees</td><td>1:N</td><td>1つの標準シフトは複数の社員に割り当てられる。</td></tr><tr><td>REL-004</td><td>employees</td><td>attendance_records</td><td>1:N</td><td>1人の社員は複数日の勤怠記録を持つ。</td></tr><tr><td>REL-005</td><td>employees</td><td>leave_requests</td><td>1:N</td><td>1人の社員は複数の休暇申請を持つ。</td></tr><tr><td>REL-006</td><td>employees</td><td>audit_logs</td><td>1:N</td><td>1人の社員は複数の操作ログを発生させる。</td></tr><tr><td>REL-007</td><td>employees</td><td>leave_requests.approved_by</td><td>1:N</td><td>Manager/Adminが複数の休暇申請を承認・却下する。</td></tr></tbody></table><div class="section-title">■ 6. エンティティ詳細</div><div class="subsection-title">6.1 roles</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>目的</td><td>User、Manager、Adminなどの権限を管理する。</td></tr><tr><td>主キー</td><td>id</td></tr><tr><td>一意キー</td><td>role_code</td></tr><tr><td>主な状態</td><td>active / inactive</td></tr><tr><td>関連REQ</td><td>REQ-003</td></tr><tr><td>関連FUNC</td><td>FUNC-003</td></tr></tbody></table><div class="subsection-title">6.2 departments</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>目的</td><td>社員の所属部署を管理する。</td></tr><tr><td>主キー</td><td>id</td></tr><tr><td>一意キー</td><td>department_code / department_name</td></tr><tr><td>主な状態</td><td>active / inactive</td></tr><tr><td>関連REQ</td><td>REQ-018</td></tr><tr><td>関連FUNC</td><td>FUNC-017</td></tr></tbody></table><div class="subsection-title">6.3 shifts</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>目的</td><td>勤務シフトの開始時刻、終了時刻、休憩時間を管理する。</td></tr><tr><td>主キー</td><td>id</td></tr><tr><td>一意キー</td><td>shift_code</td></tr><tr><td>主な状態</td><td>active / inactive</td></tr><tr><td>関連REQ</td><td>REQ-019</td></tr><tr><td>関連FUNC</td><td>FUNC-018</td></tr></tbody></table><div class="subsection-title">6.4 employees</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>目的</td><td>ログインユーザーおよび社員情報を管理する。</td></tr><tr><td>主キー</td><td>id</td></tr><tr><td>一意キー</td><td>employee_id / email</td></tr><tr><td>外部キー</td><td>role_id / department_id / shift_id</td></tr><tr><td>主な状態</td><td>active / inactive</td></tr><tr><td>関連REQ</td><td>REQ-001 / REQ-015 / REQ-016 / REQ-017</td></tr><tr><td>関連FUNC</td><td>FUNC-001 / FUNC-014 / FUNC-015 / FUNC-016</td></tr></tbody></table><div class="subsection-title">6.5 attendance_records</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>目的</td><td>社員の日別勤怠記録を管理する。</td></tr><tr><td>主キー</td><td>id</td></tr><tr><td>外部キー</td><td>employee_id</td></tr><tr><td>一意制約</td><td>employee_id + work_date</td></tr><tr><td>主な状態</td><td>CheckedIn / CheckedOut / Fixed（「未出勤」は該当employee_id・work_dateのレコードが存在しないことで判定し、状態としては保持しない）</td></tr><tr><td>関連REQ</td><td>REQ-004 / REQ-005 / REQ-006 / REQ-007 / REQ-008 / REQ-012</td></tr><tr><td>関連FUNC</td><td>FUNC-004 / FUNC-005 / FUNC-006 / FUNC-007 / FUNC-008</td></tr></tbody></table><div class="subsection-title">6.6 leave_requests</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>目的</td><td>休暇、欠勤、遅刻、早退の申請と承認状態を管理する。</td></tr><tr><td>主キー</td><td>id</td></tr><tr><td>外部キー</td><td>employee_id / approved_by</td></tr><tr><td>主な状態</td><td>Pending / Approved / Rejected（対象日経過は画面表示時にend_dateから判定し、状態としては保持しない）</td></tr><tr><td>関連REQ</td><td>REQ-009 / REQ-010 / REQ-011</td></tr><tr><td>関連FUNC</td><td>FUNC-009 / FUNC-010 / FUNC-011</td></tr></tbody></table><div class="subsection-title">6.7 audit_logs</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>目的</td><td>重要操作の操作履歴を記録する。</td></tr><tr><td>主キー</td><td>id</td></tr><tr><td>外部キー</td><td>employee_id</td></tr><tr><td>対象参照</td><td>target_type + target_id</td></tr><tr><td>関連REQ</td><td>REQ-021</td></tr><tr><td>関連FUNC</td><td>FUNC-020</td></tr></tbody></table><div class="section-title">■ 7. 主キー・外部キー一覧</div><table><thead><tr><th>エンティティ</th><th>主キー</th><th>外部キー</th></tr></thead><tbody><tr><td>roles</td><td>id</td><td>-</td></tr><tr><td>departments</td><td>id</td><td>-</td></tr><tr><td>shifts</td><td>id</td><td>-</td></tr><tr><td>employees</td><td>id</td><td>role_id → roles.id / department_id → departments.id / shift_id → shifts.id</td></tr><tr><td>attendance_records</td><td>id</td><td>employee_id → employees.id</td></tr><tr><td>leave_requests</td><td>id</td><td>employee_id → employees.id / approved_by → employees.id</td></tr><tr><td>audit_logs</td><td>id</td><td>employee_id → employees.id</td></tr></tbody></table><div class="section-title">■ 8. インデックス方針</div><table><thead><tr><th>エンティティ</th><th>インデックス候補</th><th>目的</th></tr></thead><tbody><tr><td>roles</td><td>role_code</td><td>権限コード検索、一意制約</td></tr><tr><td>departments</td><td>department_code / department_name</td><td>部署検索、一意制約</td></tr><tr><td>shifts</td><td>shift_code</td><td>シフト検索、一意制約</td></tr><tr><td>employees</td><td>employee_id / email</td><td>ログイン、社員検索、一意制約</td></tr><tr><td>employees</td><td>role_id / department_id / shift_id</td><td>権限別、部署別、シフト別検索</td></tr><tr><td>attendance_records</td><td>employee_id + work_date</td><td>日別勤怠検索、二重打刻防止</td></tr><tr><td>attendance_records</td><td>work_date</td><td>月次レポート、CSV出力</td></tr><tr><td>leave_requests</td><td>employee_id + status</td><td>自分の申請一覧、状態検索</td></tr><tr><td>leave_requests</td><td>status + start_date</td><td>承認待ち申請検索</td></tr><tr><td>audit_logs</td><td>employee_id / created_at</td><td>操作履歴検索</td></tr><tr><td>audit_logs</td><td>target_type + target_id</td><td>対象データの操作履歴追跡</td></tr></tbody></table><div class="section-title">■ 9. データ削除・保持方針</div><table><thead><tr><th>エンティティ</th><th>削除方針</th><th>理由</th></tr></thead><tbody><tr><td>roles</td><td>無効化優先</td><td>社員履歴との整合性を維持するため。</td></tr><tr><td>departments</td><td>無効化優先</td><td>過去の社員・勤怠履歴と紐づくため。</td></tr><tr><td>shifts</td><td>無効化優先</td><td>過去の勤怠履歴と紐づくため。</td></tr><tr><td>employees</td><td>無効化優先</td><td>勤怠、休暇、操作ログと紐づくため。</td></tr><tr><td>attendance_records</td><td>原則保持</td><td>月次レポート、監査、履歴確認に必要なため。</td></tr><tr><td>leave_requests</td><td>原則保持</td><td>承認履歴確認に必要なため。</td></tr><tr><td>audit_logs</td><td>一定期間保持</td><td>障害調査、監査確認に必要なため。</td></tr></tbody></table><div class="section-title">■ 10. 正規化方針</div><table><thead><tr><th>観点</th><th>方針</th></tr></thead><tbody><tr><td>第1正規形</td><td>繰り返し項目を持たず、1カラムに1値を保持する。</td></tr><tr><td>第2正規形</td><td>複合キーに部分従属する項目を持たない。</td></tr><tr><td>第3正規形</td><td>部署名、権限名、シフト名などはマスタへ分離する。</td></tr><tr><td>集計値</td><td>月次集計値は原則保存せず、attendance_recordsから算出する。</td></tr><tr><td>監査ログ</td><td>操作対象はtarget_type + target_idで汎用的に保持する。</td></tr></tbody></table><div class="section-title">■ 11. トレーサビリティ</div><table><thead><tr><th>エンティティ</th><th>関連FUNC</th><th>関連REQ</th><th>関連SCR</th></tr></thead><tbody><tr><td>roles</td><td>FUNC-003</td><td>REQ-003</td><td>SCR-002</td></tr><tr><td>departments</td><td>FUNC-017</td><td>REQ-018</td><td>SCR-008</td></tr><tr><td>shifts</td><td>FUNC-018</td><td>REQ-019</td><td>SCR-009</td></tr><tr><td>employees</td><td>FUNC-001 / FUNC-014 / FUNC-015 / FUNC-016</td><td>REQ-001 / REQ-015 / REQ-016 / REQ-017</td><td>SCR-001 / SCR-007</td></tr><tr><td>attendance_records</td><td>FUNC-004 / FUNC-005 / FUNC-006 / FUNC-007 / FUNC-008 / FUNC-012 / FUNC-013</td><td>REQ-004 / REQ-005 / REQ-006 / REQ-007 / REQ-008 / REQ-012 / REQ-013 / REQ-014</td><td>SCR-003 / SCR-004 / SCR-010</td></tr><tr><td>leave_requests</td><td>FUNC-009 / FUNC-010 / FUNC-011</td><td>REQ-009 / REQ-010 / REQ-011</td><td>SCR-005 / SCR-006</td></tr><tr><td>audit_logs</td><td>FUNC-020</td><td>REQ-021</td><td>-</td></tr></tbody></table><div class="section-title">■ 12. まとめ</div><p>本書では、HR &amp; Attendance Systemの論理ERとして、roles、departments、shifts、employees、attendance_records、leave_requests、audit_logsの7エンティティを定義した。</p><p>本書のエンティティ、リレーション、キー、インデックス方針を基準として、次工程のテーブル定義書で物理カラム、データ型、制約、インデックスを詳細化する。</p>
+</div>
+<div class="doc-footer">DOC-ID: DOC-008 ・ HR &amp; Attendance System ・ Draft</div>
+<div class="no-print"><a class="nav-back-top" href="#top">▲ ページ先頭へ</a></div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+</body>
+</html>

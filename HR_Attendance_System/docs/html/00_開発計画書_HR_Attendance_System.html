@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>開発計画書 - HR &amp; Attendance System</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/mermaid.min.js"></script>
+</head>
+<body id="top">
+<nav class="doc-nav no-print">
+  <div class="nav-row nav-row-adjacent">
+    <span class="nav-adjacent nav-disabled">← 先頭</span>
+    <a class="nav-index" href="index.html">目次</a>
+    <a class="nav-adjacent" href="01_企画書_HR_Attendance_System.html">01 企画書 →</a>
+  </div>
+  <div class="nav-row nav-row-chips"><a class="nav-chip nav-chip-current" href="00_開発計画書_HR_Attendance_System.html" title="📋 開発計画書">00</a><a class="nav-chip" href="01_企画書_HR_Attendance_System.html" title="企画書">01</a><a class="nav-chip" href="02_要件定義書_HR_Attendance_System.html" title="要件定義書">02</a><a class="nav-chip" href="03_ユースケース_HR_Attendance_System.html" title="ユースケース">03</a><a class="nav-chip" href="04_業務フロー_HR_Attendance_System.html" title="業務フロー">04</a><a class="nav-chip" href="05_画面遷移図_HR_Attendance_System.html" title="画面遷移図">05</a><a class="nav-chip" href="06_画面設計_HR_Attendance_System.html" title="画面設計">06</a><a class="nav-chip" href="07_機能一覧_HR_Attendance_System.html" title="機能一覧">07</a><a class="nav-chip" href="08_ER図_HR_Attendance_System.html" title="ER図">08</a><a class="nav-chip" href="09_テーブル定義_HR_Attendance_System.html" title="テーブル定義">09</a><a class="nav-chip" href="10_API設計_HR_Attendance_System.html" title="API設計">10</a><a class="nav-chip" href="11_基本設計書_HR_Attendance_System.html" title="基本設計書">11</a><a class="nav-chip" href="12_詳細設計書_HR_Attendance_System.html" title="詳細設計書">12</a><a class="nav-chip" href="13_インフラ設計_HR_Attendance_System.html" title="インフラ設計">13</a><a class="nav-chip" href="14_セキュリティ設計_HR_Attendance_System.html" title="セキュリティ設計">14</a><a class="nav-chip" href="15_単体試験仕様書_HR_Attendance_System.html" title="単体試験仕様書">15</a><a class="nav-chip" href="16_結合試験仕様書_HR_Attendance_System.html" title="結合試験仕様書">16</a><a class="nav-chip" href="17_システム試験仕様書_HR_Attendance_System.html" title="システム試験仕様書">17</a><a class="nav-chip" href="18_UAT_HR_Attendance_System.html" title="UAT仕様書">18</a><a class="nav-chip" href="19_リリース手順書_HR_Attendance_System.html" title="リリース手順書">19</a><a class="nav-chip" href="20_運用保守手順書_HR_Attendance_System.html" title="運用保守手順書">20</a></div>
+</nav>
+<table class="doc-header-bar">
+  <tr>
+    <td class="hb-type" rowspan="2">開発計画書</td>
+    <td class="hb-sys" rowspan="2">HR &amp; Attendance System</td>
+    <td class="hb-label">文書番号</td>
+    <td class="hb-val">DOC-000</td>
+    <td class="hb-label">バージョン</td>
+    <td class="hb-val">1.0</td>
+  </tr>
+  <tr>
+    <td class="hb-label">作成日</td>
+    <td class="hb-val">2026/06/24</td>
+    <td class="hb-label">作成者</td>
+    <td class="hb-val">Nguyen Minh Tri</td>
+  </tr>
+</table>
+<div class="doc-body">
+<h1 class="doc-title">📋 開発計画書</h1><p>HR &amp; Attendance System（勤怠管理システム）</p><div class="section-title">■ 文書管理情報</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>システム名</td><td>HR &amp; Attendance System</td></tr><tr><td>文書名</td><td>開発計画書</td></tr><tr><td>文書番号</td><td>DOC-000</td></tr><tr><td>作成者</td><td>Nguyen Minh Tri</td></tr><tr><td>作成日</td><td>2026/06/24</td></tr><tr><td>バージョン</td><td>1.0</td></tr><tr><td>ステータス</td><td>Draft</td></tr></tbody></table><div class="section-title">■ 改訂履歴</div><table><thead><tr><th>Version</th><th>日付</th><th>作成者</th><th>内容</th></tr></thead><tbody><tr><td>1.0</td><td>2026/06/24</td><td>Nguyen Minh Tri</td><td>初版作成</td></tr></tbody></table><div class="section-title">■ 目次</div><ol><li>開発目的</li><li>開発範囲</li><li>対象ユーザー</li><li>システム概要</li><li>主な機能</li><li>使用技術</li><li>開発体制</li><li>開発スケジュール</li><li>データベース概要</li><li>テスト計画</li><li>リスク管理</li><li>成果物</li><li>今後の拡張予定</li><li>まとめ</li></ol><div class="section-title">■ 1. 開発目的</div><p>本システムは、社員の出退勤情報、休暇申請および勤務状況を効率的に管理することを目的として開発する。</p><p>従来の紙やExcelによる勤怠管理をシステム化することで、以下を実現する。</p><ul><li>勤怠管理業務の効率化</li><li>人的ミスの削減</li><li>リアルタイムな勤務状況の把握</li><li>勤怠データの一元管理</li><li>月次集計業務の自動化</li></ul><div class="section-title">■ 2. 開発範囲</div><div class="subsection-title">2.1 開発対象（In Scope）</div><table><thead><tr><th>機能ID</th><th>機能名</th><th>概要</th></tr></thead><tbody><tr><td>F001</td><td>ログイン機能</td><td>社員認証</td></tr><tr><td>F002</td><td>打刻機能</td><td>出勤・退勤登録</td></tr><tr><td>F003</td><td>勤怠確認機能</td><td>勤務履歴確認</td></tr><tr><td>F004</td><td>休暇申請機能</td><td>有給・欠勤申請</td></tr><tr><td>F005</td><td>社員管理機能</td><td>社員情報管理</td></tr><tr><td>F006</td><td>勤怠管理機能</td><td>勤怠状況確認</td></tr><tr><td>F007</td><td>レポート出力機能</td><td>CSV出力</td></tr></tbody></table><div class="subsection-title">2.2 開発対象外（Out Scope）</div><table><thead><tr><th>機能</th><th>理由</th></tr></thead><tbody><tr><td>給与計算機能</td><td>Phase2で対応予定</td></tr><tr><td>外部システム連携</td><td>MVP対象外</td></tr><tr><td>ICカード連携</td><td>将来拡張機能</td></tr><tr><td>多言語対応</td><td>初期リリース対象外</td></tr></tbody></table><div class="section-title">■ 3. 対象ユーザー</div><table><thead><tr><th>ユーザー</th><th>説明</th></tr></thead><tbody><tr><td>一般社員</td><td>打刻、勤怠確認、休暇申請</td></tr><tr><td>管理者</td><td>社員管理、勤怠確認、承認処理</td></tr><tr><td>システム管理者</td><td>システム設定、部署管理、シフト管理</td></tr></tbody></table><div class="section-title">■ 4. システム概要</div><div class="subsection-title">システム構成</div><pre class="ascii"><code>Browser
+   ↓
+AWS EC2
+   ↓
+Docker
+   ├── Nginx Container
+   ├── PHP-FPM / Laravel Container
+   └── Node/Vite Build
+   ↓
+AWS RDS / MySQL 8</code></pre><div class="section-title">■ 5. 主な機能</div><div class="subsection-title">5.1 ログイン機能</div><ul><li>社員ID・パスワード認証</li><li>セッション管理</li><li>ログアウト</li></ul><div class="subsection-title">5.2 打刻機能</div><ul><li>出勤打刻</li><li>退勤打刻</li><li>勤務時間自動計算</li></ul><div class="subsection-title">5.3 勤怠確認機能</div><ul><li>日別勤怠確認</li><li>月別勤怠確認</li><li>検索機能</li></ul><div class="subsection-title">5.4 休暇申請機能</div><ul><li>有給休暇申請</li><li>欠勤申請</li><li>遅刻申請</li><li>早退申請</li></ul><div class="subsection-title">5.5 社員管理機能</div><ul><li>社員登録</li><li>社員編集</li><li>社員削除</li><li>部署管理</li><li>シフト管理</li><li>権限管理</li></ul><div class="subsection-title">5.6 勤怠管理機能</div><ul><li>全社員勤怠確認</li><li>承認処理</li><li>勤怠修正</li></ul><div class="subsection-title">5.7 レポート出力機能</div><ul><li>月次勤怠一覧</li><li>CSV出力</li></ul><div class="section-title">■ 6. 使用技術</div><table><thead><tr><th>分類</th><th>技術</th></tr></thead><tbody><tr><td>Frontend</td><td>Blade / HTML5 / CSS3 / JavaScript</td></tr><tr><td>Backend</td><td>PHP 8.4 / Laravel 12</td></tr><tr><td>Database</td><td>MySQL 8</td></tr><tr><td>ORM</td><td>Eloquent ORM</td></tr><tr><td>Web Server</td><td>Nginx</td></tr><tr><td>Container</td><td>Docker</td></tr><tr><td>CI/CD</td><td>GitHub Actions</td></tr><tr><td>Version Control</td><td>Git / GitHub</td></tr><tr><td>IDE</td><td>IntelliJ IDEA / VS Code</td></tr><tr><td>Design Tool</td><td>draw.io / Figma</td></tr><tr><td>API Test</td><td>Postman</td></tr><tr><td>Cloud</td><td>AWS EC2 / AWS RDS</td></tr></tbody></table><div class="section-title">■ 7. 開発体制</div><table><thead><tr><th>役割</th><th>担当</th><th>備考</th></tr></thead><tbody><tr><td>Project Manager</td><td>Nguyen Minh Tri</td><td>全体計画、進捗管理</td></tr><tr><td>System Engineer</td><td>Nguyen Minh Tri</td><td>要件定義、設計書作成</td></tr><tr><td>Frontend Engineer</td><td>Nguyen Minh Tri</td><td>Blade / HTML / CSS / JavaScript</td></tr><tr><td>Backend Engineer</td><td>Nguyen Minh Tri</td><td>PHP 8.4 / Laravel 12</td></tr><tr><td>Database Engineer</td><td>Nguyen Minh Tri</td><td>MySQL 8、ER図、テーブル定義</td></tr><tr><td>Infra Engineer</td><td>Nguyen Minh Tri</td><td>Docker、Nginx、AWS EC2 / RDS</td></tr><tr><td>Tester</td><td>Nguyen Minh Tri</td><td>単体試験、結合試験、システム試験</td></tr></tbody></table><p>本プロジェクトはポートフォリオ用の個人開発であるため、Nguyen Minh Triが全工程を担当する。</p><div class="section-title">■ 8. 開発スケジュール</div><table><thead><tr><th>Week</th><th>作業内容</th></tr></thead><tbody><tr><td>Week1</td><td>要件定義・画面設計・DB設計</td></tr><tr><td>Week2</td><td>基本設計・詳細設計</td></tr><tr><td>Week3</td><td>ログイン・社員管理機能開発</td></tr><tr><td>Week4</td><td>打刻・勤怠確認機能開発</td></tr><tr><td>Week5</td><td>休暇申請・管理者機能開発</td></tr><tr><td>Week6</td><td>レポート機能開発</td></tr><tr><td>Week7</td><td>単体試験</td></tr><tr><td>Week8</td><td>結合試験</td></tr><tr><td>Week9</td><td>システム試験</td></tr><tr><td>Week10</td><td>修正・リリース準備</td></tr></tbody></table><div class="section-title">■ 9. データベース概要</div><div class="subsection-title">テーブル一覧</div><table><thead><tr><th>テーブル名</th><th>説明</th></tr></thead><tbody><tr><td>employees</td><td>社員情報</td></tr><tr><td>departments</td><td>部署情報</td></tr><tr><td>roles</td><td>権限情報</td></tr><tr><td>shifts</td><td>シフト情報</td></tr><tr><td>attendance_records</td><td>勤怠情報</td></tr><tr><td>leave_requests</td><td>休暇申請情報</td></tr><tr><td>audit_logs</td><td>操作ログ</td></tr></tbody></table><div class="subsection-title">ER概要</div><pre class="ascii"><code>roles
+  │
+  └── employees
+
+departments
+      │
+      └── employees
+
+shifts
+  │
+  └── employees
+
+employees
+  │
+  ├── attendance_records
+  ├── leave_requests
+  └── audit_logs</code></pre><div class="section-title">■ 10. テスト計画</div><div class="subsection-title">単体試験</div><ul><li>ログイン処理</li><li>打刻処理</li><li>勤務時間計算</li><li>CSV出力</li></ul><div class="subsection-title">結合試験</div><ul><li>画面⇔API</li><li>API⇔DB</li></ul><div class="subsection-title">システム試験</div><ul><li>業務シナリオ試験</li><li>権限制御試験</li><li>異常系試験</li></ul><div class="subsection-title">テスト項目</div><table><thead><tr><th>ID</th><th>項目</th></tr></thead><tbody><tr><td>T001</td><td>正常ログイン</td></tr><tr><td>T002</td><td>異常ログイン</td></tr><tr><td>T003</td><td>出勤打刻</td></tr><tr><td>T004</td><td>退勤打刻</td></tr><tr><td>T005</td><td>休暇申請</td></tr><tr><td>T006</td><td>CSV出力</td></tr></tbody></table><div class="section-title">■ 11. リスク管理</div><table><thead><tr><th>リスク</th><th>影響</th><th>対策</th></tr></thead><tbody><tr><td>スケジュール遅延</td><td>高</td><td>週次進捗確認</td></tr><tr><td>DB設計変更</td><td>中</td><td>設計レビュー実施</td></tr><tr><td>技術的課題</td><td>中</td><td>PoC実施</td></tr><tr><td>メンバー作業重複</td><td>低</td><td>GitHub Issue管理</td></tr><tr><td>品質低下</td><td>高</td><td>コードレビュー実施</td></tr></tbody></table><div class="section-title">■ 12. 成果物</div><ul><li>HR &amp; Attendance System</li><li>開発計画書</li><li>要件定義書</li><li>画面設計書</li><li>ER図</li><li>テーブル定義書</li><li>API設計書</li><li>テスト仕様書</li><li>運用手順書</li><li>発表資料</li></ul><div class="section-title">■ 13. 今後の拡張予定</div><ul><li>給与計算機能</li><li>ICカード打刻</li><li>Slack通知</li><li>スマートフォン対応</li><li>AWSクラウド化</li><li>多言語対応</li><li>ダッシュボード分析機能</li></ul><div class="section-title">■ 14. まとめ</div><p>HR &amp; Attendance Systemは、社員の勤怠情報を効率的かつ正確に管理することを目的としたシステムである。</p><p>本プロジェクトでは、</p><ul><li>ログイン</li><li>打刻</li><li>勤怠確認</li><li>休暇申請</li><li>管理者機能</li><li>CSV出力</li></ul><p>を実装し、企業で利用可能な勤怠管理システムの完成を目指す。</p>
+</div>
+<div class="doc-footer">DOC-ID: DOC-000 ・ HR &amp; Attendance System ・ Draft</div>
+<div class="no-print"><a class="nav-back-top" href="#top">▲ ページ先頭へ</a></div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+</body>
+</html>

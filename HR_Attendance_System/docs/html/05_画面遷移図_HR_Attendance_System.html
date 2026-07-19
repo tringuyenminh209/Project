@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>画面遷移図 - HR &amp; Attendance System</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/mermaid.min.js"></script>
+</head>
+<body id="top">
+<nav class="doc-nav no-print">
+  <div class="nav-row nav-row-adjacent">
+    <a class="nav-adjacent" href="04_業務フロー_HR_Attendance_System.html">← 04 業務フロー</a>
+    <a class="nav-index" href="index.html">目次</a>
+    <a class="nav-adjacent" href="06_画面設計_HR_Attendance_System.html">06 画面設計 →</a>
+  </div>
+  <div class="nav-row nav-row-chips"><a class="nav-chip" href="00_開発計画書_HR_Attendance_System.html" title="📋 開発計画書">00</a><a class="nav-chip" href="01_企画書_HR_Attendance_System.html" title="企画書">01</a><a class="nav-chip" href="02_要件定義書_HR_Attendance_System.html" title="要件定義書">02</a><a class="nav-chip" href="03_ユースケース_HR_Attendance_System.html" title="ユースケース">03</a><a class="nav-chip" href="04_業務フロー_HR_Attendance_System.html" title="業務フロー">04</a><a class="nav-chip nav-chip-current" href="05_画面遷移図_HR_Attendance_System.html" title="画面遷移図">05</a><a class="nav-chip" href="06_画面設計_HR_Attendance_System.html" title="画面設計">06</a><a class="nav-chip" href="07_機能一覧_HR_Attendance_System.html" title="機能一覧">07</a><a class="nav-chip" href="08_ER図_HR_Attendance_System.html" title="ER図">08</a><a class="nav-chip" href="09_テーブル定義_HR_Attendance_System.html" title="テーブル定義">09</a><a class="nav-chip" href="10_API設計_HR_Attendance_System.html" title="API設計">10</a><a class="nav-chip" href="11_基本設計書_HR_Attendance_System.html" title="基本設計書">11</a><a class="nav-chip" href="12_詳細設計書_HR_Attendance_System.html" title="詳細設計書">12</a><a class="nav-chip" href="13_インフラ設計_HR_Attendance_System.html" title="インフラ設計">13</a><a class="nav-chip" href="14_セキュリティ設計_HR_Attendance_System.html" title="セキュリティ設計">14</a><a class="nav-chip" href="15_単体試験仕様書_HR_Attendance_System.html" title="単体試験仕様書">15</a><a class="nav-chip" href="16_結合試験仕様書_HR_Attendance_System.html" title="結合試験仕様書">16</a><a class="nav-chip" href="17_システム試験仕様書_HR_Attendance_System.html" title="システム試験仕様書">17</a><a class="nav-chip" href="18_UAT_HR_Attendance_System.html" title="UAT仕様書">18</a><a class="nav-chip" href="19_リリース手順書_HR_Attendance_System.html" title="リリース手順書">19</a><a class="nav-chip" href="20_運用保守手順書_HR_Attendance_System.html" title="運用保守手順書">20</a></div>
+</nav>
+<table class="doc-header-bar">
+  <tr>
+    <td class="hb-type" rowspan="2">画面遷移図</td>
+    <td class="hb-sys" rowspan="2">HR &amp; Attendance System</td>
+    <td class="hb-label">文書番号</td>
+    <td class="hb-val">DOC-005</td>
+    <td class="hb-label">バージョン</td>
+    <td class="hb-val">1.0</td>
+  </tr>
+  <tr>
+    <td class="hb-label">作成日</td>
+    <td class="hb-val">2026/07/02</td>
+    <td class="hb-label">作成者</td>
+    <td class="hb-val">Nguyen Minh Tri</td>
+  </tr>
+</table>
+<div class="doc-body">
+<h1 class="doc-title">画面遷移図</h1><p>HR &amp; Attendance System（勤怠管理システム）</p><div class="section-title">■ 文書管理情報</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>システム名</td><td>HR &amp; Attendance System</td></tr><tr><td>文書名</td><td>画面遷移図</td></tr><tr><td>文書番号</td><td>DOC-005</td></tr><tr><td>作成者</td><td>Nguyen Minh Tri</td></tr><tr><td>作成日</td><td>2026/07/02</td></tr><tr><td>バージョン</td><td>1.0</td></tr><tr><td>ステータス</td><td>Draft</td></tr></tbody></table><div class="section-title">■ 改訂履歴</div><table><thead><tr><th>Version</th><th>日付</th><th>作成者</th><th>内容</th></tr></thead><tbody><tr><td>1.0</td><td>2026/07/02</td><td>Nguyen Minh Tri</td><td>初版作成</td></tr></tbody></table><div class="section-title">■ 目次</div><ol><li>本書の目的</li><li>画面一覧</li><li>共通画面遷移</li><li>User画面遷移</li><li>Manager画面遷移</li><li>Admin画面遷移</li><li>権限別利用可能画面</li><li>例外時画面遷移</li><li>画面遷移ルール</li><li>トレーサビリティ</li><li>まとめ</li></ol><div class="section-title">■ 1. 本書の目的</div><p>本書は、HR &amp; Attendance Systemにおける画面間の遷移を定義するものである。</p><p>本書で定義した画面ID、遷移条件、権限別利用範囲は、画面設計、API設計、テスト仕様書の基準とする。</p><div class="section-title">■ 2. 画面一覧</div><table><thead><tr><th>画面ID</th><th>画面名</th><th>対象ユーザー</th><th>概要</th><th>関連UC</th><th>関連REQ</th></tr></thead><tbody><tr><td>SCR-001</td><td>ログイン画面</td><td>User / Manager / Admin</td><td>認証情報を入力してログインする。</td><td>UC-001</td><td>REQ-001 / REQ-003</td></tr><tr><td>SCR-002</td><td>ダッシュボード</td><td>User / Manager / Admin</td><td>ログイン後のトップ画面。</td><td>UC-002 / UC-015</td><td>REQ-002 / REQ-020</td></tr><tr><td>SCR-003</td><td>打刻画面</td><td>User / Manager / Admin</td><td>出勤・退勤を登録する。</td><td>UC-003 / UC-004</td><td>REQ-004 / REQ-005 / REQ-006</td></tr><tr><td>SCR-004</td><td>勤怠履歴画面</td><td>User / Manager / Admin</td><td>勤怠履歴を確認する。</td><td>UC-005 / UC-009</td><td>REQ-007 / REQ-008 / REQ-012</td></tr><tr><td>SCR-005</td><td>休暇申請画面</td><td>User / Manager / Admin</td><td>休暇申請を登録・確認する。</td><td>UC-006 / UC-007</td><td>REQ-009 / REQ-010</td></tr><tr><td>SCR-006</td><td>休暇承認画面</td><td>Manager / Admin</td><td>休暇申請を承認・却下する。</td><td>UC-008</td><td>REQ-011</td></tr><tr><td>SCR-007</td><td>社員管理画面</td><td>Admin</td><td>社員情報を管理する。</td><td>UC-012</td><td>REQ-015 / REQ-016 / REQ-017</td></tr><tr><td>SCR-008</td><td>部署管理画面</td><td>Admin</td><td>部署情報を管理する。</td><td>UC-013</td><td>REQ-018</td></tr><tr><td>SCR-009</td><td>シフト管理画面</td><td>Admin</td><td>シフト情報を管理する。</td><td>UC-014</td><td>REQ-019</td></tr><tr><td>SCR-010</td><td>レポート画面</td><td>Manager / Admin</td><td>月次勤怠レポート確認、CSV出力を行う。</td><td>UC-010 / UC-011</td><td>REQ-013 / REQ-014</td></tr></tbody></table><div class="section-title">■ 3. 共通画面遷移</div><p>全ユーザー共通のログイン、ダッシュボード、ログアウト、セッションタイムアウトの遷移を定義する。</p><div class="mermaid">
+flowchart TD
+    Start[&quot;Start&quot;] --&gt; SCR001[&quot;SCR-001 ログイン画面&quot;]
+    SCR001 --&gt;|Login Success| SCR002[&quot;SCR-002 ダッシュボード&quot;]
+    SCR001 --&gt;|Login Failed / E001| SCR001
+    SCR002 --&gt;|Logout| SCR001
+    SCR002 --&gt;|Session Timeout / E010| SCR001
+    SCR003[&quot;SCR-003 打刻画面&quot;] --&gt;|Session Timeout / E010| SCR001
+    SCR004[&quot;SCR-004 勤怠履歴画面&quot;] --&gt;|Session Timeout / E010| SCR001
+    SCR005[&quot;SCR-005 休暇申請画面&quot;] --&gt;|Session Timeout / E010| SCR001
+    SCR006[&quot;SCR-006 休暇承認画面&quot;] --&gt;|Session Timeout / E010| SCR001
+    SCR007[&quot;SCR-007 社員管理画面&quot;] --&gt;|Session Timeout / E010| SCR001
+    SCR008[&quot;SCR-008 部署管理画面&quot;] --&gt;|Session Timeout / E010| SCR001
+    SCR009[&quot;SCR-009 シフト管理画面&quot;] --&gt;|Session Timeout / E010| SCR001
+    SCR010[&quot;SCR-010 レポート画面&quot;] --&gt;|Session Timeout / E010| SCR001
+</div><div class="section-title">■ 4. User画面遷移</div><p>User（一般社員）は、打刻、勤怠履歴確認、休暇申請を中心に利用する。</p><div class="mermaid">
+flowchart TD
+    SCR001[&quot;SCR-001 ログイン画面&quot;] --&gt;|Login as User| SCR002[&quot;SCR-002 ダッシュボード&quot;]
+    SCR002 --&gt;|打刻| SCR003[&quot;SCR-003 打刻画面&quot;]
+    SCR002 --&gt;|勤怠履歴| SCR004[&quot;SCR-004 勤怠履歴画面&quot;]
+    SCR002 --&gt;|休暇申請| SCR005[&quot;SCR-005 休暇申請画面&quot;]
+    SCR002 --&gt;|パスワード変更| SCR002
+    SCR003 --&gt;|登録完了| SCR002
+    SCR004 --&gt;|戻る| SCR002
+    SCR005 --&gt;|申請完了| SCR002
+    SCR003 --&gt;|Validation Error / E003-E005| SCR003
+    SCR005 --&gt;|Validation Error / E003| SCR005
+</div><div class="subsection-title">4.1 User遷移一覧</div><table><thead><tr><th>From</th><th>To</th><th>操作</th><th>条件</th></tr></thead><tbody><tr><td>SCR-001</td><td>SCR-002</td><td>ログイン</td><td>認証成功</td></tr><tr><td>SCR-002</td><td>SCR-003</td><td>打刻メニュー選択</td><td>User権限</td></tr><tr><td>SCR-002</td><td>SCR-004</td><td>勤怠履歴メニュー選択</td><td>User権限</td></tr><tr><td>SCR-002</td><td>SCR-005</td><td>休暇申請メニュー選択</td><td>User権限</td></tr><tr><td>SCR-003</td><td>SCR-002</td><td>出勤・退勤登録完了</td><td>登録成功</td></tr><tr><td>SCR-005</td><td>SCR-002</td><td>休暇申請登録完了</td><td>登録成功</td></tr><tr><td>SCR-002</td><td>SCR-001</td><td>ログアウト</td><td>ログアウト実行</td></tr></tbody></table><div class="section-title">■ 5. Manager画面遷移</div><p>Manager（管理者）は、User機能に加えて、休暇承認、勤怠状況確認、レポート閲覧、CSV出力を利用する。</p><div class="mermaid">
+flowchart TD
+    SCR001[&quot;SCR-001 ログイン画面&quot;] --&gt;|Login as Manager| SCR002[&quot;SCR-002 ダッシュボード&quot;]
+    SCR002 --&gt;|打刻| SCR003[&quot;SCR-003 打刻画面&quot;]
+    SCR002 --&gt;|勤怠履歴/勤怠状況| SCR004[&quot;SCR-004 勤怠履歴画面&quot;]
+    SCR002 --&gt;|休暇申請| SCR005[&quot;SCR-005 休暇申請画面&quot;]
+    SCR002 --&gt;|休暇承認| SCR006[&quot;SCR-006 休暇承認画面&quot;]
+    SCR002 --&gt;|レポート| SCR010[&quot;SCR-010 レポート画面&quot;]
+    SCR006 --&gt;|承認/却下完了| SCR002
+    SCR010 --&gt;|CSV出力完了| SCR010
+    SCR010 --&gt;|戻る| SCR002
+    SCR006 --&gt;|Permission Error / E002| SCR002
+    SCR010 --&gt;|CSV Error / E008| SCR010
+</div><div class="subsection-title">5.1 Manager遷移一覧</div><table><thead><tr><th>From</th><th>To</th><th>操作</th><th>条件</th></tr></thead><tbody><tr><td>SCR-001</td><td>SCR-002</td><td>ログイン</td><td>認証成功、Manager権限</td></tr><tr><td>SCR-002</td><td>SCR-006</td><td>休暇承認メニュー選択</td><td>Manager権限</td></tr><tr><td>SCR-002</td><td>SCR-010</td><td>レポートメニュー選択</td><td>Manager権限</td></tr><tr><td>SCR-006</td><td>SCR-002</td><td>承認・却下完了</td><td>更新成功</td></tr><tr><td>SCR-010</td><td>SCR-010</td><td>CSV出力</td><td>出力成功または出力エラー</td></tr><tr><td>SCR-010</td><td>SCR-002</td><td>戻る</td><td>ダッシュボードへ戻る</td></tr></tbody></table><div class="section-title">■ 6. Admin画面遷移</div><p>Admin（システム管理者）は、社員、部署、シフト、権限関連の管理機能を利用する。</p><div class="mermaid">
+flowchart TD
+    SCR001[&quot;SCR-001 ログイン画面&quot;] --&gt;|Login as Admin| SCR002[&quot;SCR-002 ダッシュボード&quot;]
+    SCR002 --&gt;|社員管理| SCR007[&quot;SCR-007 社員管理画面&quot;]
+    SCR002 --&gt;|部署管理| SCR008[&quot;SCR-008 部署管理画面&quot;]
+    SCR002 --&gt;|シフト管理| SCR009[&quot;SCR-009 シフト管理画面&quot;]
+    SCR002 --&gt;|レポート| SCR010[&quot;SCR-010 レポート画面&quot;]
+    SCR007 --&gt;|登録/編集/無効化完了| SCR007
+    SCR008 --&gt;|登録/編集/無効化完了| SCR008
+    SCR009 --&gt;|登録/編集/無効化完了| SCR009
+    SCR010 --&gt;|CSV出力完了| SCR010
+    SCR007 --&gt;|戻る| SCR002
+    SCR008 --&gt;|戻る| SCR002
+    SCR009 --&gt;|戻る| SCR002
+    SCR010 --&gt;|戻る| SCR002
+    SCR007 --&gt;|Validation Error / E003| SCR007
+    SCR008 --&gt;|Validation Error / E003| SCR008
+    SCR009 --&gt;|Validation Error / E003| SCR009
+</div><div class="subsection-title">6.1 Admin遷移一覧</div><table><thead><tr><th>From</th><th>To</th><th>操作</th><th>条件</th></tr></thead><tbody><tr><td>SCR-001</td><td>SCR-002</td><td>ログイン</td><td>認証成功、Admin権限</td></tr><tr><td>SCR-002</td><td>SCR-007</td><td>社員管理メニュー選択</td><td>Admin権限</td></tr><tr><td>SCR-002</td><td>SCR-008</td><td>部署管理メニュー選択</td><td>Admin権限</td></tr><tr><td>SCR-002</td><td>SCR-009</td><td>シフト管理メニュー選択</td><td>Admin権限</td></tr><tr><td>SCR-002</td><td>SCR-010</td><td>レポートメニュー選択</td><td>Admin権限</td></tr><tr><td>SCR-007</td><td>SCR-007</td><td>社員登録・編集・無効化</td><td>保存成功または入力エラー</td></tr><tr><td>SCR-008</td><td>SCR-008</td><td>部署登録・編集・無効化</td><td>保存成功または入力エラー</td></tr><tr><td>SCR-009</td><td>SCR-009</td><td>シフト登録・編集・無効化</td><td>保存成功または入力エラー</td></tr></tbody></table><div class="section-title">■ 7. 権限別利用可能画面</div><table><thead><tr><th>画面ID</th><th>画面名</th><th>User</th><th>Manager</th><th>Admin</th></tr></thead><tbody><tr><td>SCR-001</td><td>ログイン画面</td><td>〇</td><td>〇</td><td>〇</td></tr><tr><td>SCR-002</td><td>ダッシュボード</td><td>〇</td><td>〇</td><td>〇</td></tr><tr><td>SCR-003</td><td>打刻画面</td><td>〇</td><td>〇</td><td>〇</td></tr><tr><td>SCR-004</td><td>勤怠履歴画面</td><td>〇</td><td>〇</td><td>〇</td></tr><tr><td>SCR-005</td><td>休暇申請画面</td><td>〇</td><td>〇</td><td>〇</td></tr><tr><td>SCR-006</td><td>休暇承認画面</td><td>×</td><td>〇</td><td>〇</td></tr><tr><td>SCR-007</td><td>社員管理画面</td><td>×</td><td>×</td><td>〇</td></tr><tr><td>SCR-008</td><td>部署管理画面</td><td>×</td><td>×</td><td>〇</td></tr><tr><td>SCR-009</td><td>シフト管理画面</td><td>×</td><td>×</td><td>〇</td></tr><tr><td>SCR-010</td><td>レポート画面</td><td>×</td><td>〇</td><td>〇</td></tr></tbody></table><div class="section-title">■ 8. 例外時画面遷移</div><table><thead><tr><th>エラーID</th><th>発生画面</th><th>遷移先</th><th>処理</th></tr></thead><tbody><tr><td>E001</td><td>SCR-001</td><td>SCR-001</td><td>ログイン失敗メッセージを表示する。</td></tr><tr><td>E002</td><td>SCR-006 / SCR-007 / SCR-008 / SCR-009 / SCR-010</td><td>SCR-002</td><td>権限エラーを表示し、ダッシュボードへ戻す。</td></tr><tr><td>E003</td><td>入力画面全般</td><td>同一画面</td><td>入力エラーを表示し、同一画面に留まる。</td></tr><tr><td>E004</td><td>SCR-003</td><td>SCR-003</td><td>二重打刻エラーを表示する。</td></tr><tr><td>E005</td><td>SCR-003</td><td>SCR-003</td><td>出勤打刻が必要であることを表示する。</td></tr><tr><td>E006</td><td>SCR-006</td><td>SCR-006</td><td>申請の最新状態を再表示する。</td></tr><tr><td>E007</td><td>SCR-004 / SCR-010</td><td>同一画面</td><td>データなしメッセージを表示する。</td></tr><tr><td>E008</td><td>SCR-010</td><td>SCR-010</td><td>CSV出力エラーを表示する。</td></tr><tr><td>E009</td><td>登録・更新画面</td><td>同一画面</td><td>システムエラーを表示し、ログを記録する。</td></tr><tr><td>E010</td><td>業務画面全般</td><td>SCR-001</td><td>セッション切れとしてログイン画面へ遷移する。</td></tr></tbody></table><div class="section-title">■ 9. 画面遷移ルール</div><table><thead><tr><th>ルールID</th><th>内容</th></tr></thead><tbody><tr><td>TR-001</td><td>未ログインユーザーが業務画面へアクセスした場合、SCR-001へ遷移する。</td></tr><tr><td>TR-002</td><td>ログイン成功後は権限に関係なくSCR-002へ遷移する。</td></tr><tr><td>TR-003</td><td>SCR-002に表示するメニューはユーザー権限により制御する。</td></tr><tr><td>TR-004</td><td>権限外画面へアクセスした場合、E002を表示しSCR-002へ戻す。</td></tr><tr><td>TR-005</td><td>入力エラー発生時は同一画面に留まり、対象項目のエラーを表示する。</td></tr><tr><td>TR-006</td><td>登録、更新、承認、CSV出力の成功後は完了メッセージを表示する。</td></tr><tr><td>TR-007</td><td>セッションタイムアウト発生時はSCR-001へ遷移する。</td></tr></tbody></table><div class="section-title">■ 10. トレーサビリティ</div><table><thead><tr><th>画面ID</th><th>関連BF</th><th>関連UC</th><th>関連REQ</th><th>主なエラー</th></tr></thead><tbody><tr><td>SCR-001</td><td>BF-001</td><td>UC-001</td><td>REQ-001 / REQ-003</td><td>E001</td></tr><tr><td>SCR-002</td><td>BF-001</td><td>UC-002 / UC-015</td><td>REQ-002 / REQ-020</td><td>E010</td></tr><tr><td>SCR-003</td><td>BF-002</td><td>UC-003 / UC-004</td><td>REQ-004 / REQ-005 / REQ-006</td><td>E003 / E004 / E005 / E010</td></tr><tr><td>SCR-004</td><td>BF-003</td><td>UC-005 / UC-009</td><td>REQ-007 / REQ-008 / REQ-012</td><td>E003 / E007 / E010</td></tr><tr><td>SCR-005</td><td>BF-004</td><td>UC-006 / UC-007</td><td>REQ-009 / REQ-010</td><td>E003 / E010</td></tr><tr><td>SCR-006</td><td>BF-005</td><td>UC-008</td><td>REQ-011</td><td>E002 / E006 / E010</td></tr><tr><td>SCR-007</td><td>BF-007</td><td>UC-012</td><td>REQ-015 / REQ-016 / REQ-017</td><td>E002 / E003 / E009 / E010</td></tr><tr><td>SCR-008</td><td>BF-008</td><td>UC-013</td><td>REQ-018</td><td>E002 / E003 / E009 / E010</td></tr><tr><td>SCR-009</td><td>BF-009</td><td>UC-014</td><td>REQ-019</td><td>E002 / E003 / E009 / E010</td></tr><tr><td>SCR-010</td><td>BF-006</td><td>UC-010 / UC-011</td><td>REQ-013 / REQ-014</td><td>E002 / E007 / E008 / E010</td></tr></tbody></table><div class="section-title">■ 11. まとめ</div><p>本書では、HR &amp; Attendance Systemの画面一覧、共通画面遷移、User / Manager / Admin別の画面遷移、権限別利用可能画面、例外時遷移、トレーサビリティを定義した。</p><p>本書の画面IDと遷移ルールを基準として、次工程の画面設計、API設計、テスト仕様書へ展開する。</p>
+</div>
+<div class="doc-footer">DOC-ID: DOC-005 ・ HR &amp; Attendance System ・ Draft</div>
+<div class="no-print"><a class="nav-back-top" href="#top">▲ ページ先頭へ</a></div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+</body>
+</html>

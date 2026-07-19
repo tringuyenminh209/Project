@@ -1,0 +1,303 @@
+/* HR & Attendance System — 設計書 印刷用スタイル
+   System Design Master Framework §7 準拠：白背景・黒文字・カラーなし・A4印刷対応 */
+
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+html, body {
+  background: #ffffff;
+  color: #000000;
+  font-family: "Yu Gothic", "Meiryo", "Hiragino Kaku Gothic ProN", sans-serif;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+body {
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 12mm 14mm 20mm;
+}
+
+/* ---------- ナビゲーションバー（画面表示のみ、印刷時は非表示） ---------- */
+.doc-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin: 0 0 8mm;
+  padding: 6px 8px;
+  background: #f7f7f7;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.nav-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-row-adjacent {
+  justify-content: space-between;
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed #cccccc;
+}
+
+.nav-adjacent {
+  flex: 1 1 0;
+  color: #000000;
+  text-decoration: none;
+  padding: 3px 6px;
+}
+
+.nav-adjacent:hover {
+  background: #e8e8e8;
+  border-radius: 3px;
+}
+
+.nav-adjacent.nav-disabled {
+  color: #999999;
+}
+
+.nav-index {
+  flex: 0 0 auto;
+  padding: 3px 10px;
+  background: #1a3a5c;
+  color: #ffffff !important;
+  text-decoration: none;
+  border-radius: 3px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.nav-row-chips {
+  gap: 4px;
+}
+
+.nav-chip {
+  display: inline-block;
+  min-width: 20px;
+  padding: 2px 5px;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  color: #000000;
+  text-decoration: none;
+  text-align: center;
+  font-size: 10.5px;
+}
+
+.nav-chip:hover {
+  background: #e8e8e8;
+}
+
+.nav-chip-current {
+  background: #1a3a5c;
+  border-color: #1a3a5c;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.nav-back-top {
+  display: inline-block;
+  margin-top: 6mm;
+  font-size: 10px;
+  color: #333333;
+  text-decoration: none;
+}
+
+.nav-back-top:hover {
+  text-decoration: underline;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ---------- 文書ヘッダーバー ---------- */
+.doc-header-bar {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10mm;
+  border: 1px solid #000000;
+  font-size: 12px;
+}
+
+.doc-header-bar td {
+  border: 1px solid #000000;
+  padding: 6px 10px;
+  vertical-align: middle;
+}
+
+.doc-header-bar .hb-type {
+  width: 18%;
+  font-weight: 700;
+  font-size: 14px;
+  background: #f0f0f0;
+}
+
+.doc-header-bar .hb-sys {
+  width: 32%;
+  font-weight: 700;
+}
+
+.doc-header-bar .hb-label {
+  width: 12%;
+  background: #e8e8e8;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.doc-header-bar .hb-val {
+  width: 19%;
+}
+
+/* ---------- タイトル / セクション ---------- */
+.doc-title {
+  margin: 0 0 8mm;
+  padding-bottom: 4px;
+  border-bottom: 3px solid #000000;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.section-title {
+  margin: 10mm 0 4mm;
+  padding: 6px 10px;
+  border-left: 3px solid #000000;
+  background: #f0f0f0;
+  font-size: 16px;
+  font-weight: 700;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.subsection-title {
+  margin: 6mm 0 3mm;
+  padding: 3px 8px;
+  border-left: 3px solid #666666;
+  background: #f7f7f7;
+  font-size: 14px;
+  font-weight: 700;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+h3 {
+  margin: 5mm 0 2mm;
+  font-size: 13px;
+  font-weight: 700;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+h4 {
+  margin: 4mm 0 2mm;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+p { margin: 2mm 0; }
+
+/* ---------- テーブル ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 3mm 0 6mm;
+  font-size: 11.5px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+th, td {
+  border: 1px solid #000000;
+  padding: 4px 7px;
+  vertical-align: top;
+  text-align: left;
+}
+
+th {
+  background: #e8e8e8;
+  font-weight: 700;
+}
+
+tbody tr:nth-child(even) td {
+  background: #fafafa;
+}
+
+/* ---------- リスト ---------- */
+ul, ol {
+  margin: 2mm 0 3mm;
+  padding-left: 6mm;
+}
+
+li { margin: 1mm 0; }
+
+/* ---------- コード / Mermaid ---------- */
+code {
+  padding: 0.1em 0.35em;
+  background: #f0f0f0;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  font-family: "Cascadia Code", Consolas, "Courier New", monospace;
+  font-size: 0.92em;
+}
+
+pre.ascii {
+  margin: 3mm 0 6mm;
+  padding: 8px 10px;
+  background: #f7f7f7;
+  border: 1px solid #cccccc;
+  overflow-x: auto;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+pre.ascii code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  white-space: pre;
+}
+
+.mermaid {
+  margin: 4mm 0 6mm;
+  padding: 6mm;
+  background: #ffffff;
+  border: 1px solid #000000;
+  text-align: center;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* ---------- フッター ---------- */
+.doc-footer {
+  margin-top: 10mm;
+  padding-top: 3mm;
+  border-top: 1px solid #000000;
+  font-size: 10px;
+  color: #333333;
+  text-align: right;
+}
+
+/* ---------- 印刷 (A4) ---------- */
+@page {
+  size: A4;
+  margin: 12mm;
+}
+
+@media print {
+  .doc-footer {
+    position: fixed;
+    bottom: 6mm;
+    left: 14mm;
+    right: 14mm;
+    margin-top: 0;
+    background: #ffffff;
+  }
+
+  body { padding-bottom: 20mm; }
+}
