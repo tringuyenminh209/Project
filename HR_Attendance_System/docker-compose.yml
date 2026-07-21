@@ -1,0 +1,48 @@
+# 3 container theo 13_インフラ設計 7.1: nginx / app / db
+services:
+
+  # ---------- Web Server ----------
+  nginx:
+    image: nginx:stable            # image chính thức, bản stable
+    restart: unless-stopped        # khớp 13_インフラ設計 7.4 — tự bật lại khi Docker Desktop khởi động, TRỪ khi bạn tự tay `docker compose stop`
+    ports:
+      - "8080:80"                  # máy bạn:8080 → container:80. Vào http://localhost:8080
+    volumes:
+      # mount = "chiếu" thư mục máy thật vào container (sửa file là thấy ngay, không cần rebuild)
+      - ./backend:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app                        # khởi động sau app (vì nginx cần chuyển việc cho app)
+
+  # ---------- Application (PHP-FPM + Laravel) ----------
+  app:
+    build: ./docker/php            # không dùng image có sẵn — tự build từ Dockerfile vì cần cài thêm extension
+    restart: unless-stopped
+    volumes:
+      - ./backend:/var/www/html    # code Laravel sẽ nằm ở backend/, mount vào đúng path chuẩn
+    depends_on:
+      db:
+        condition: service_healthy # chờ MySQL THẬT SỰ sẵn sàng (không chỉ "đã bật")
+
+  # ---------- Database ----------
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:                   # biến môi trường: MySQL đọc để tự tạo DB + user lần đầu chạy
+      MYSQL_DATABASE: ${DB_DATABASE}      # khớp 13_インフラ設計 10.2. Giá trị thật lấy từ .env, KHÔNG hardcode ở đây
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "33060:3306"               # mở ra ngoài để nối bằng IntelliJ/TablePlus. Cố tình KHÔNG dùng 3306 tránh đụng MySQL local
+    volumes:
+      - db-data:/var/lib/mysql     # named volume: dữ liệu sống sót khi container bị xoá
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  db-data:                         # khai báo named volume ở trên
