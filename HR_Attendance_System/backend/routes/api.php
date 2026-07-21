@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthController;
 
 Route::get('/health', function () {
     try {
@@ -27,4 +28,15 @@ Route::get('/health', function () {
             'timezone' => config('app.timezone'),
         ],
     ]);
+});
+
+// Public - chưa đăng nhập ai cũng gọi được
+Route::post('/auth/login', [AuthController::class, 'login']);
+
+// Bọc trong auth:sanctum - không có token hợp lệ thì 401 trước khi vào controller
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::get('/auth/me', [AuthController::class, 'me']);
+    Route::patch('/auth/password', [AuthController::class, 'updatePassword']);
+    Route::get('/auth/session', [AuthController::class, 'session']);
 });
