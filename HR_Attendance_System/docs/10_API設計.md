@@ -13,7 +13,7 @@ HR & Attendance System（勤怠管理システム）
 | 文書番号 | DOC-010 |
 | 作成者 | Nguyen Minh Tri |
 | 作成日 | 2026/07/02 |
-| バージョン | 1.2 |
+| バージョン | 1.3 |
 | ステータス | Draft |
 
 ---
@@ -25,6 +25,7 @@ HR & Attendance System（勤怠管理システム）
 | 1.0 | 2026/07/02 | Nguyen Minh Tri | 初版作成 |
 | 1.1 | 2026/07/02 | Nguyen Minh Tri | 整合性レビューによる修正：E003/E009のAPI対応範囲を修正、API-006にwork_hoursスナップショット方針を明記、BR-ATT-005追加、leave statusのCompletedを削除 |
 | 1.2 | 2026/07/16 | Nguyen Minh Tri | E007の対象API誤りを修正。E007はRoute Model Bindingの単一ID検索（ModelNotFoundException）専用であり、一覧取得系（`paginate()`/`get()`）では0件でも200を返す方針（ch06 API-007/008で確立済み）。この基準でAPI-007/008/010/012からE007を削除し、実装で既にRoute Model Bindingを使っているAPI-011へE007を追加（コード側は元々正しく、ドキュメントが未追随だった）。 |
+| 1.3 | 2026/07/21 | Nguyen Minh Tri | 6章のRequest/Response記載を全面的に`guide/`の実コードと突き合わせ、3件の実質的な問題を修正: ①フォーマット不統一（一部APIのみ literal JSON、他は項目名の表のみでenvelopeを示していなかった）を解消し、全APIをliteral JSON形式に統一。②API-008/010/011/014〜020にResponseが丸ごと欠落していたため追加。③API-003（`/auth/me`）が`role`をstring型と誤記していたが、実装は`role`/`department`/`shift`をネストしたオブジェクトとして返す（生モデルload）ため訂正。あわせて3.3.1節にページネーション共通形式を新設（API-007/008/010が参照）、API-015のRequestから未使用の`status`フィールドを削除、API-020が実はHTTPエンドポイントではなく`AuditLogService::record()`という内部メソッドである点を明記。 |
 
 ---
 
@@ -110,6 +111,28 @@ HR & Attendance System（勤怠管理システム）
 }
 ```
 
+## 3.3.1 一覧系APIの共通ページネーション形式
+
+一覧取得系（API-007/008/010等）はLaravelの`paginate()`をそのまま`data`に渡す実装のため、`data`は単純な配列ではなく以下の形（Laravel標準のページネーションJSON）になる。個々のAPI詳細（6章）では`items`部分の要素だけを示し、この形式は本節を参照する。
+
+```json
+{
+  "success": true,
+  "message": "OK",
+  "data": {
+    "current_page": 1,
+    "data": [ { "...": "1件分の要素（6章の該当APIで形を定義）" } ],
+    "first_page_url": "http://localhost/api/...?page=1",
+    "from": 1,
+    "last_page": 1,
+    "last_page_url": "http://localhost/api/...?page=1",
+    "per_page": 20,
+    "to": 12,
+    "total": 12
+  }
+}
+```
+
 ## 3.4 HTTP Status
 
 | Status | 用途 |
@@ -182,7 +205,7 @@ Laravel Sanctumまたは同等の認証方式を想定する。
 | API-017 | GET / POST / PUT / PATCH | `/departments` | 部署管理 | Admin | FUNC-017 | REQ-018 | SCR-008 |
 | API-018 | GET / POST / PUT / PATCH | `/shifts` | シフト管理 | Admin | FUNC-018 | REQ-019 | SCR-009 |
 | API-019 | PATCH | `/auth/password` | パスワード変更 | User / Manager / Admin | FUNC-019 | REQ-020 | SCR-002 |
-| API-020 | POST | `/audit-logs` | 操作ログ記録 | System | FUNC-020 | REQ-021 | - |
+| API-020 | (内部メソッド) | -（HTTPエンドポイントではない、6.20節参照） | 操作ログ記録 | System | FUNC-020 | REQ-021 | - |
 | API-021 | GET | `/auth/session` | セッション状態確認 | User / Manager / Admin | FUNC-021 | REQ-003 | SCR-001 / SCR-002 |
 
 ---
@@ -276,17 +299,55 @@ Query:
 | --- | --- | --- |
 | - | - | なし |
 
-Response Data:
+Response:
 
-| 項目 | 型 | 内容 |
-| --- | --- | --- |
-| id | number | 社員ID |
-| employee_id | string | 社員番号 |
-| name | string | 氏名 |
-| email | string | メールアドレス |
-| role | string | 権限 |
-| department | object | 部署 |
-| shift | object | シフト |
+```json
+{
+  "success": true,
+  "message": "OK",
+  "data": {
+    "id": 1,
+    "employee_id": "EMP001",
+    "name": "Yamada Taro",
+    "email": "user@example.com",
+    "role_id": 1,
+    "department_id": 2,
+    "shift_id": 1,
+    "status": "active",
+    "created_at": "2026-07-02T09:00:00+09:00",
+    "updated_at": "2026-07-02T09:00:00+09:00",
+    "role": {
+      "id": 1,
+      "role_code": "user",
+      "role_name": "User",
+      "status": "active",
+      "created_at": "2026-07-02T09:00:00+09:00",
+      "updated_at": "2026-07-02T09:00:00+09:00"
+    },
+    "department": {
+      "id": 2,
+      "department_code": "dept_dev",
+      "department_name": "開発部",
+      "status": "active",
+      "created_at": "2026-07-02T09:00:00+09:00",
+      "updated_at": "2026-07-02T09:00:00+09:00"
+    },
+    "shift": {
+      "id": 1,
+      "shift_code": "shift_normal",
+      "shift_name": "標準勤務",
+      "start_time": "09:00:00",
+      "end_time": "18:00:00",
+      "break_minutes": 60,
+      "status": "active",
+      "created_at": "2026-07-02T09:00:00+09:00",
+      "updated_at": "2026-07-02T09:00:00+09:00"
+    }
+  }
+}
+```
+
+**注（v1.3で訂正）**: 実装（`guide/04_認証_Auth.html` AuthController::me）は`$request->user()->load(['role','department','shift'])`をそのまま返す — Employeeモデルの全カラム（`password_hash`は`$hidden`により除外）+ ロード済み関連を**そのまま**返す設計であり、API-001（ログイン）のように`role`をコード文字列だけに絞った整形は行わない。したがって`role_id`/`department_id`/`shift_id`（生カラム）と`role`/`department`/`shift`（関連オブジェクト）が同時に存在する。API-001のレスポンスと`employee`/`role`の形が異なるのは意図的な差（ログイン=軽量、me=フルプロフィール）であり、フロントエンドは2つのAPIで異なる形を扱う前提で実装する（`public/js/app.js`は`me.data.role.role_code`のようにネストで参照している）。
 
 ## 6.4 API-004 出勤打刻
 
@@ -307,14 +368,27 @@ Request:
 }
 ```
 
-Response Data:
+Response:
 
-| 項目 | 型 | 内容 |
-| --- | --- | --- |
-| id | number | 勤怠記録ID |
-| work_date | date | 勤務日 |
-| check_in_time | time | 出勤時刻 |
-| status | string | `CheckedIn` |
+```json
+{
+  "success": true,
+  "message": "出勤打刻を登録しました。",
+  "data": {
+    "id": 10,
+    "employee_id": 1,
+    "work_date": "2026-07-02",
+    "check_in_time": "09:00:00",
+    "check_out_time": null,
+    "work_hours": null,
+    "status": "CheckedIn",
+    "created_at": "2026-07-02T09:00:00+09:00",
+    "updated_at": "2026-07-02T09:00:00+09:00"
+  }
+}
+```
+
+HTTP Status: 201（新規作成、`guide/06_勤怠打刻.html` AttendanceController::checkIn）
 
 Business Rule:
 
@@ -342,16 +416,27 @@ Request:
 }
 ```
 
-Response Data:
+Response:
 
-| 項目 | 型 | 内容 |
-| --- | --- | --- |
-| id | number | 勤怠記録ID |
-| work_date | date | 勤務日 |
-| check_in_time | time | 出勤時刻 |
-| check_out_time | time | 退勤時刻 |
-| work_hours | number | 勤務時間 |
-| status | string | `CheckedOut` |
+```json
+{
+  "success": true,
+  "message": "退勤打刻を登録しました。",
+  "data": {
+    "id": 10,
+    "employee_id": 1,
+    "work_date": "2026-07-02",
+    "check_in_time": "09:00:00",
+    "check_out_time": "18:00:00",
+    "work_hours": 8.00,
+    "status": "CheckedOut",
+    "created_at": "2026-07-02T09:00:00+09:00",
+    "updated_at": "2026-07-02T18:00:00+09:00"
+  }
+}
+```
+
+HTTP Status: 200（`guide/06_勤怠打刻.html` AttendanceController::checkOut）
 
 Business Rule:
 
@@ -377,13 +462,21 @@ Path:
 | --- | --- | --- |
 | id | 必須 | 勤怠記録ID |
 
-Response Data:
+Response:
 
-| 項目 | 型 | 内容 |
-| --- | --- | --- |
-| attendance_id | number | 勤怠記録ID |
-| work_hours | number | 勤務時間（退勤登録時にattendance_recordsへ保存された確定値。シフト変更後も再計算しない） |
-| break_minutes | number | 参考情報として現在のシフトの休憩時間を返す（work_hoursの再計算には使用しない） |
+```json
+{
+  "success": true,
+  "message": "OK",
+  "data": {
+    "attendance_id": 10,
+    "work_hours": 8.00,
+    "break_minutes": 60
+  }
+}
+```
+
+`work_hours`は退勤登録時にattendance_recordsへ保存された確定値（シフト変更後も再計算しない）。`break_minutes`は参考情報として現在のシフトの休憩時間を返すのみ（`work_hours`の再計算には使用しない、`guide/参考_完成コード_ch01-09.html` AttendanceController::workHours）。
 
 ## 6.7 API-007 自分の勤怠履歴取得
 
@@ -404,12 +497,36 @@ Query:
 | to_date | 任意 | 終了日 |
 | page | 任意 | ページ番号 |
 
-Response Data:
+Response:
 
-| 項目 | 型 | 内容 |
-| --- | --- | --- |
-| items | array | 勤怠履歴一覧 |
-| total | number | 件数 |
+3.3.1節のページネーション共通形式（`data.data`が配列本体）。1要素の形は6.4/6.5と同じ`attendance_records`の全カラム:
+
+```json
+{
+  "success": true,
+  "message": "OK",
+  "data": {
+    "current_page": 1,
+    "data": [
+      {
+        "id": 10,
+        "employee_id": 1,
+        "work_date": "2026-07-02",
+        "check_in_time": "09:00:00",
+        "check_out_time": "18:00:00",
+        "work_hours": 8.00,
+        "status": "CheckedOut",
+        "created_at": "2026-07-02T09:00:00+09:00",
+        "updated_at": "2026-07-02T18:00:00+09:00"
+      }
+    ],
+    "per_page": 20,
+    "total": 1
+  }
+}
+```
+
+（`guide/参考_完成コード_ch01-09.html` AttendanceService::myAttendance — `paginate(20)`）
 
 ## 6.8 API-008 勤怠検索
 
@@ -430,6 +547,36 @@ Query:
 | from_date | 任意 | 開始日 |
 | to_date | 任意 | 終了日 |
 | status | 任意 | 勤怠状態 |
+
+Response:
+
+3.3.1節のページネーション共通形式。1要素は6.7と同じ`attendance_records`カラムに`employee`（申請者情報）を追加:
+
+```json
+{
+  "success": true,
+  "message": "OK",
+  "data": {
+    "current_page": 1,
+    "data": [
+      {
+        "id": 10,
+        "employee_id": 1,
+        "work_date": "2026-07-02",
+        "check_in_time": "09:00:00",
+        "check_out_time": "18:00:00",
+        "work_hours": 8.00,
+        "status": "CheckedOut",
+        "employee": { "id": 1, "employee_id": "EMP001", "name": "Yamada Taro" }
+      }
+    ],
+    "per_page": 20,
+    "total": 1
+  }
+}
+```
+
+（`guide/参考_完成コード_ch01-09.html` AttendanceController::search — `AttendanceService::search()`が`with('employee')`）
 
 Authority Rule:
 
@@ -460,12 +607,30 @@ Request:
 }
 ```
 
-Response Data:
+Response:
 
-| 項目 | 型 | 内容 |
-| --- | --- | --- |
-| id | number | 休暇申請ID |
-| status | string | `Pending` |
+```json
+{
+  "success": true,
+  "message": "休暇申請を登録しました。",
+  "data": {
+    "id": 5,
+    "employee_id": 1,
+    "leave_type": "paid_leave",
+    "start_date": "2026-07-10",
+    "end_date": "2026-07-10",
+    "reason": "私用のため",
+    "status": "Pending",
+    "approved_by": null,
+    "approved_at": null,
+    "comment": null,
+    "created_at": "2026-07-02T09:00:00+09:00",
+    "updated_at": "2026-07-02T09:00:00+09:00"
+  }
+}
+```
+
+HTTP Status: 201（`guide/07_休暇申請.html` LeaveRequestController::store）
 
 Validation:
 
@@ -494,6 +659,40 @@ Query:
 | employee_id | 任意 | 社員ID |
 | from_date | 任意 | 開始日 |
 | to_date | 任意 | 終了日 |
+
+Response:
+
+3.3.1節のページネーション共通形式。1要素は6.9と同じ`leave_requests`カラムに`employee`（申請者）・`approver`（承認者、未承認はnull）を追加:
+
+```json
+{
+  "success": true,
+  "message": "OK",
+  "data": {
+    "current_page": 1,
+    "data": [
+      {
+        "id": 5,
+        "employee_id": 1,
+        "leave_type": "paid_leave",
+        "start_date": "2026-07-10",
+        "end_date": "2026-07-10",
+        "reason": "私用のため",
+        "status": "Pending",
+        "approved_by": null,
+        "approved_at": null,
+        "comment": null,
+        "employee": { "id": 1, "employee_id": "EMP001", "name": "Yamada Taro" },
+        "approver": null
+      }
+    ],
+    "per_page": 20,
+    "total": 1
+  }
+}
+```
+
+（`guide/参考_完成コード_ch01-09.html` LeaveRequestController::index — `LeaveRequestService::list()`が`with(['employee','approver'])`）
 
 Authority Rule:
 
@@ -529,6 +728,30 @@ Validation:
 | action | required / in:approve,reject |
 | comment | nullable / max:500 |
 
+Response:
+
+```json
+{
+  "success": true,
+  "message": "申請を承認しました。",
+  "data": {
+    "id": 5,
+    "employee_id": 1,
+    "leave_type": "paid_leave",
+    "start_date": "2026-07-10",
+    "end_date": "2026-07-10",
+    "reason": "私用のため",
+    "status": "Approved",
+    "approved_by": 2,
+    "approved_at": "2026-07-02T10:00:00+09:00",
+    "comment": "承認します。",
+    "updated_at": "2026-07-02T10:00:00+09:00"
+  }
+}
+```
+
+`message`は結果により動的に変わる（`action=reject`時は`"申請を却下しました。"`、`status`は`Rejected`）。`guide/参考_完成コード_ch01-09.html` LeaveRequestController::approval。
+
 Business Rule:
 
 | ルール | 内容 |
@@ -555,13 +778,35 @@ Query:
 | department_id | 任意 | 部署ID |
 | employee_id | 任意 | 社員ID |
 
-Response Data:
+Response:
 
-| 項目 | 型 | 内容 |
-| --- | --- | --- |
-| target_month | string | 対象月 |
-| summary | object | 集計情報 |
-| items | array | 社員別勤怠一覧 |
+```json
+{
+  "success": true,
+  "message": "OK",
+  "data": {
+    "target_month": "2026-07",
+    "summary": {
+      "employee_count": 2,
+      "total_work_days": 15,
+      "total_hours": 120.00
+    },
+    "items": [
+      {
+        "employee_id": "EMP001",
+        "name": "Yamada Taro",
+        "department": "開発部",
+        "work_days": 8,
+        "total_hours": 64.00,
+        "leave_days": 1,
+        "late_early_count": 0
+      }
+    ]
+  }
+}
+```
+
+`items`の各要素は都度DB集計した結果（`attendance_records`のスナップショット`work_hours`合算 + 承認済み`leave_requests`から算出、テーブルへの非正規化保存はしない）。`guide/参考_完成コード_ch01-09.html` ReportService::monthly / summarizeEmployee。
 
 ## 6.13 API-013 月次レポートCSV出力
 
@@ -624,6 +869,29 @@ Validation:
 | department_id | required / exists:departments,id |
 | shift_id | nullable / exists:shifts,id |
 
+Response:
+
+```json
+{
+  "success": true,
+  "message": "社員を登録しました。",
+  "data": {
+    "id": 5,
+    "employee_id": "EMP001",
+    "name": "Yamada Taro",
+    "email": "user@example.com",
+    "role_id": 1,
+    "department_id": 1,
+    "shift_id": 1,
+    "status": "active",
+    "created_at": "2026-07-02T09:00:00+09:00",
+    "updated_at": "2026-07-02T09:00:00+09:00"
+  }
+}
+```
+
+HTTP Status: 201。`password`/`password_hash`はレスポンスに含まれない（`$hidden`、`guide/参考_完成コード_ch01-09.html` EmployeeController::store）。
+
 ## 6.15 API-015 社員編集
 
 | 項目 | 内容 |
@@ -642,10 +910,44 @@ Request:
   "email": "user@example.com",
   "role_id": 1,
   "department_id": 1,
-  "shift_id": 1,
-  "status": "active"
+  "shift_id": 1
 }
 ```
+
+**注（v1.3で訂正）**: `status`は本APIのRequestに含めない — `UpdateEmployeeRequest::rules()`が検証対象にしておらず、`EmployeeService::update()`も`status`をセットしない（実装は`name`/`email`/`role_id`/`department_id`/`shift_id`のみ`forceFill`）。無効化・有効化は必ずAPI-016（別エンドポイント）を使う。
+
+Validation:
+
+| 項目 | ルール |
+| --- | --- |
+| name | required / max:100 |
+| email | required / email / max:255 / unique:employees（自分自身は除外） |
+| role_id | required / exists:roles,id |
+| department_id | required / exists:departments,id |
+| shift_id | nullable / exists:shifts,id |
+
+Response:
+
+```json
+{
+  "success": true,
+  "message": "社員情報を更新しました。",
+  "data": {
+    "id": 5,
+    "employee_id": "EMP001",
+    "name": "Yamada Taro",
+    "email": "user@example.com",
+    "role_id": 1,
+    "department_id": 1,
+    "shift_id": 1,
+    "status": "active",
+    "created_at": "2026-07-02T09:00:00+09:00",
+    "updated_at": "2026-07-02T10:00:00+09:00"
+  }
+}
+```
+
+（`guide/05_社員・部署・シフト管理.html` EmployeeController::update）
 
 ## 6.16 API-016 社員無効化・有効化
 
@@ -664,6 +966,29 @@ Request:
   "status": "inactive"
 }
 ```
+
+Response:
+
+```json
+{
+  "success": true,
+  "message": "社員の状態を更新しました。",
+  "data": {
+    "id": 5,
+    "employee_id": "EMP001",
+    "name": "Yamada Taro",
+    "email": "user@example.com",
+    "role_id": 1,
+    "department_id": 1,
+    "shift_id": 1,
+    "status": "inactive",
+    "created_at": "2026-07-02T09:00:00+09:00",
+    "updated_at": "2026-07-02T10:00:00+09:00"
+  }
+}
+```
+
+（`guide/05_社員・部署・シフト管理.html` EmployeeController::setStatus）
 
 Business Rule:
 
@@ -686,15 +1011,42 @@ Business Rule:
 | 関連テーブル | departments / audit_logs |
 | 主なエラー | E002 / E003 / E009 / E010 |
 
-Request Example:
+Request Example（登録・編集共通）:
 
 ```json
 {
   "department_code": "dept_hr",
-  "department_name": "人事部",
-  "status": "active"
+  "department_name": "人事部"
 }
 ```
+
+`status`は登録・編集のRequestに含めない（社員と同じ理由 — 無効化・有効化は必ず`PATCH .../status`専用で行う。`guide/参考_完成コード_ch01-09.html` DepartmentController）。
+
+Response（操作ごと）:
+
+| 操作 | message | HTTP Status |
+| --- | --- | --- |
+| 一覧取得 | `"OK"` | 200 |
+| 登録 | `"部署を登録しました。"` | 201 |
+| 編集 | `"部署情報を更新しました。"` | 200 |
+| 無効化・有効化 | `"部署の状態を更新しました。"` | 200 |
+
+```json
+{
+  "success": true,
+  "message": "部署を登録しました。",
+  "data": {
+    "id": 3,
+    "department_code": "dept_hr",
+    "department_name": "人事部",
+    "status": "active",
+    "created_at": "2026-07-02T09:00:00+09:00",
+    "updated_at": "2026-07-02T09:00:00+09:00"
+  }
+}
+```
+
+一覧取得の`data`は上記オブジェクトの配列（`Department::orderBy('department_name')->get()`、ページネーションなし — マスタ件数が少ないため）。
 
 ## 6.18 API-018 シフト管理
 
@@ -711,7 +1063,7 @@ Request Example:
 | 関連テーブル | shifts / audit_logs |
 | 主なエラー | E002 / E003 / E009 / E010 |
 
-Request Example:
+Request Example（登録・編集共通）:
 
 ```json
 {
@@ -719,10 +1071,40 @@ Request Example:
   "shift_name": "標準勤務",
   "start_time": "09:00:00",
   "end_time": "18:00:00",
-  "break_minutes": 60,
-  "status": "active"
+  "break_minutes": 60
 }
 ```
+
+`status`は登録・編集のRequestに含めない（部署と同じ理由。`guide/参考_完成コード_ch01-09.html` ShiftController）。
+
+Response（操作ごと）:
+
+| 操作 | message | HTTP Status |
+| --- | --- | --- |
+| 一覧取得 | `"OK"` | 200 |
+| 登録 | `"シフトを登録しました。"` | 201 |
+| 編集 | `"シフト情報を更新しました。"` | 200 |
+| 無効化・有効化 | `"シフトの状態を更新しました。"` | 200 |
+
+```json
+{
+  "success": true,
+  "message": "シフトを登録しました。",
+  "data": {
+    "id": 2,
+    "shift_code": "shift_normal",
+    "shift_name": "標準勤務",
+    "start_time": "09:00:00",
+    "end_time": "18:00:00",
+    "break_minutes": 60,
+    "status": "active",
+    "created_at": "2026-07-02T09:00:00+09:00",
+    "updated_at": "2026-07-02T09:00:00+09:00"
+  }
+}
+```
+
+一覧取得の`data`は上記オブジェクトの配列（`Shift::orderBy('start_time')->get()`、ページネーションなし）。
 
 ## 6.19 API-019 パスワード変更
 
@@ -751,35 +1133,42 @@ Validation:
 | current_password | required |
 | new_password | required / min:8 / max:20 / confirmed |
 
-## 6.20 API-020 操作ログ記録
-
-| 項目 | 内容 |
-| --- | --- |
-| Method | POST |
-| Endpoint | `/audit-logs` |
-| 権限 | System |
-| 関連テーブル | audit_logs |
-| 主なエラー | E009 |
-
-Request:
+Response:
 
 ```json
 {
-  "employee_id": 1,
-  "action": "leave_request_approved",
-  "target_type": "leave_requests",
-  "target_id": 10,
-  "result": "success",
-  "ip_address": "127.0.0.1"
+  "success": true,
+  "message": "パスワードを変更しました。",
+  "data": null
 }
 ```
 
-Note:
+`current_password`不一致時はE003（`guide/参考_完成コード_ch01-09.html` AuthController::updatePassword）。
+
+## 6.20 API-020 操作ログ記録
+
+**注（v1.3で訂正）**: 「API-020」という番号を便宜上振っているが、これはREST HTTPエンドポイントではない — `guide/`の実装には対応するController・route定義が一切存在しない。実体は`AuditLogService::record()`という**内部メソッド**で、各Serviceが業務処理の中から直接呼び出す（例: `MemberService`/`EmployeeService`/`LeaveRequestService`が`$this->auditLog->record($actor, 'employee_updated', 'employees', $employee->id)`のように使う）。HTTPリクエストとして外部から呼べる`POST /audit-logs`は存在しない。
 
 | 項目 | 内容 |
 | --- | --- |
-| 呼び出し元 | Controller / Service内部 |
-| 外部公開 | 原則公開しない |
+| 呼び出し形態 | 内部メソッド呼び出し（`AuditLogService::record()`）、HTTPエンドポイントではない |
+| 権限 | -（HTTP経由で外部公開しない） |
+| 関連テーブル | audit_logs |
+
+メソッドシグネチャ（`guide/参考_完成コード_ch01-09.html` AuditLogService::record、戻り値なし）:
+
+```php
+public function record(Employee $actor, string $action, string $targetType, int $targetId): void
+```
+
+| 引数 | 内容 |
+| --- | --- |
+| actor | 操作を行ったEmployee |
+| action | 例: `employee_updated` / `leave_request_approved` |
+| targetType | 対象テーブル名（例: `employees`） |
+| targetId | 対象レコードID |
+
+`ip_address`/`result`は現在の実装には存在しない（旧版のRequest例が想定していたが未実装。将来追加する場合は本節を更新すること）。
 
 ## 6.21 API-021 セッション状態確認
 
@@ -791,13 +1180,29 @@ Note:
 | 関連テーブル | employees |
 | 主なエラー | E010 |
 
-Response Data:
+Response:
 
-| 項目 | 型 | 内容 |
-| --- | --- | --- |
-| authenticated | boolean | 認証済みか |
-| expires_at | datetime | セッション期限 |
-| employee | object | ログインユーザー情報 |
+```json
+{
+  "success": true,
+  "message": "OK",
+  "data": {
+    "authenticated": true,
+    "employee": {
+      "id": 1,
+      "employee_id": "EMP001",
+      "name": "Yamada Taro",
+      "email": "user@example.com",
+      "role_id": 1,
+      "department_id": 2,
+      "shift_id": 1,
+      "status": "active"
+    }
+  }
+}
+```
+
+**注（v1.3で訂正）**: `expires_at`は現在の実装（`guide/参考_完成コード_ch01-09.html` AuthController::session）には存在しない — `authenticated`と`employee`（role/department/shiftはロードしない生モデル。6.3節`/auth/me`より軽量）の2項目のみを返す。`auth:sanctum`を通過できた時点で有効なので、期限を別途返す設計にしていない。トークン期限自体は4.1節の8時間固定であり、フロントは401（E010）を受けたら再ログインへ誘導する方式（`localStorage`のtoken削除 + `/login`へredirect）を取る。
 
 ---
 
