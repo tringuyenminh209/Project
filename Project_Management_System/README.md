@@ -45,12 +45,13 @@ notifications
 
 ### Database
 
-* MySQL
+* MySQL 8 (AWS RDS)
 
 ### Infrastructure
 
 * Docker
 * AWS EC2
+* AWS RDS
 * AWS S3
 
 ### Bonus
@@ -60,6 +61,6 @@ notifications
 
 ## Tài liệu thiết kế
 
-Bộ khung 21 tài liệu (PMS-000~PMS-020, cùng cấu trúc với Project 01/02) đã scaffold tại [`docs/`](docs/README.md) — **hiện mới là skeleton, chưa có nội dung** (2026/07/17). Sơ đồ `.drawio` sẽ đặt tại `diagrams/` (er / usecase / activity / class / screen-flow, theo layout của EC_Site).
+Bộ 21 tài liệu (PMS-000~PMS-020, cùng cấu trúc với Project 01/02) **đã hoàn thành toàn bộ nội dung** tại [`docs/`](docs/README.md) (2026/07/19), kèm bản HTML tại `docs/html/`. Mọi 論点 treo đều đã chốt (danh sách bảng cuối cùng = 7 bảng gồm `users`, xem `docs/08_ER図.md`/`docs/09_テーブル定義.md`). Sơ đồ `.drawio` sẽ đặt tại `diagrams/` (er / usecase / activity / class / screen-flow, theo layout của EC_Site) — chưa vẽ.
 
 ---

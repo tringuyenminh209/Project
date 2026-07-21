@@ -13,7 +13,7 @@ Project Management System（プロジェクト管理システム）
 | 文書番号 | PMS-010 |
 | 作成者 | Nguyen Minh Tri |
 | 作成日 | 2026/07/18 |
-| バージョン | 1.1 |
+| バージョン | 1.2 |
 | ステータス | Draft |
 
 ---
@@ -25,6 +25,7 @@ Project Management System（プロジェクト管理システム）
 | 0.0 | 2026/07/17 | Nguyen Minh Tri | スケルトン作成 |
 | 1.0 | 2026/07/18 | Nguyen Minh Tri | 初版作成（REST API 35本 + WebSocketイベント仕様。ネストされたルートによるメンバーシップスコープの明示を方針化） |
 | 1.1 | 2026/07/18 | Nguyen Minh Tri | 整合性監査による修正: ①API-028のproject_idがJOIN導出（TBL-007に列なし・タスク削除時null）であることを明記し、削除済み通知のクリック挙動を03/06と整合。②notification.createdペイロードにproject_idを追加。③3.4にステータス302を追加（API-026）。④API-007にAdmin作成不可（E002）を明記。 |
+| 1.2 | 2026/07/21 | Nguyen Minh Tri | guide/コード監査で発見: 3.4節が削除成功を204と記載していたが、実装（guide全Controller::destroy）はエンベロープ維持のため200+data:nullで返す設計。API-POL-009を新設し方針を明文化、3.4節を実装に合わせて訂正。 |
 
 ---
 
@@ -62,6 +63,7 @@ Project Management System（プロジェクト管理システム）
 | API-POL-006 | Audit | メンバー変更・削除系操作（API-012〜014, 020, 033, 035）はアプリケーションログに記録する（REQ-028 / FUNC-033）。 |
 | API-POL-007 | Validation | 入力値はLaravel FormRequestで検証する。ファイルは拡張子+MIMEの両方（BR-FIL-001）。 |
 | API-POL-008 | 命名規約の継続性 | Project 01/02と同じ規約（Base URLに`/v1`を付けない、フィールド名snake_case）を踏襲する。 |
+| API-POL-009 | 削除成功もエンベロープ形式を維持 | 削除成功は仕様上204（ボディなし）が一般的だが、本APIは全エンドポイントで`{success,message,data}`エンベロープ（3.3節）をフロントが一律解釈する契約のため、削除も200 + `data:null`で返す（204はボディを持てずエンベロープと両立しないため不採用）。実装は`guide/`の各Controller::destroyを正とする。 |
 
 ---
 
@@ -102,7 +104,7 @@ Project Management System（プロジェクト管理システム）
 | --- | --- |
 | 200 | 正常取得・正常更新 |
 | 201 | 作成成功 |
-| 204 | 削除成功 |
+| 200 | 削除成功（API-POL-009: エンベロープ維持のため204は不採用、`data:null`で返す） |
 | 302 | ファイルダウンロードのリダイレクト（presigned URL方式採用時のAPI-026。方式は`14_セキュリティ設計.md`で確定） |
 | 401 | E001（ログイン失敗）/ E010（未認証） |
 | 403 | E002（権限エラー） |
