@@ -267,6 +267,11 @@ notifications
 * Google Maps API
 * Mapbox
 
+### Bonus
+
+* Offline Geo-caching (Service Worker + IndexedDB — lưu bản đồ để dùng khi mất mạng)
+* Background Geolocation Sync (đồng bộ vị trí chạy ngầm, hàng đợi gửi lại khi có mạng trở lại)
+
 ---
 
 # Project 05 - E-Learning System
@@ -418,6 +423,7 @@ Senior
 
 * Large Scale Database Design
 * Module Architecture
+* Event-driven Architecture (Domain Events — vd `SalesOrderCreated` để Inventory/Accounting phản ứng, thay vì gọi thẳng DB của nhau, giữ các module độc lập)
 
 ## Modules
 
@@ -470,6 +476,7 @@ Senior
 * Python
 * AWS
 * Realtime
+* Time-series Data Optimization (TimescaleDB — extension của PostgreSQL, tối ưu ghi/truy vấn hàng loạt bản ghi sensor theo thời gian)
 
 ## Chức năng
 
@@ -496,7 +503,7 @@ users
 
 ### Database
 
-* PostgreSQL
+* PostgreSQL + TimescaleDB (time-series)
 
 ### Cloud
 
@@ -517,6 +524,8 @@ Senior
 
 * Mobile Development
 * API Integration
+* MVVM/MVI Architecture + Jetpack Compose (UI khai báo, thay cho XML/View truyền thống)
+* Encrypted Offline Storage (SQLCipher qua Room — bảo vệ dữ liệu đồng bộ offline)
 
 ## Chức năng
 
@@ -530,6 +539,8 @@ Senior
 ### Mobile
 
 * Kotlin Android
+* Jetpack Compose (MVVM/MVI)
+* Room + SQLCipher (offline storage mã hóa)
 
 ### Backend
 
