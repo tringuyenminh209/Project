@@ -2,7 +2,7 @@
 
 Portfolio Roadmap（SE/BrSE 2026-2027）Project 03。HR & Attendance System（Project 01）・EC Site（Project 02）と同じ21文書構成（PMS-000〜PMS-020）。
 
-**現在のステータス: 全21文書（PMS-000〜020）本文完成。** 設計フェーズ完了。00から持ち越されていた論点はすべて解消済み（14: トークン保管=localStorage+緩和策セット / ダウンロード=presigned URL 302 / Admin無効化=トークン即時失効）。`diagrams/er/pms_erd.drawio`は`/drawio-er`で生成可能。 コーディング前に読む最重要文書は`02_要件定義書.md`（8章 権限マトリクス / 9章 業務ルール）。 `/system-design`スキルで§19の依存順（企画→要件→ユースケース→…）に従い順次執筆する。00で確定済みの前提: フロントエンド=Vue 3、2層ロールモデル（`users.role`=admin/user × `project_members.role`=owner/member）、`tasks.status`=todo/in_progress/done、優先度=low/middle/high、通知3種（task_assigned/task_commented/task_due_soon）、トークン期限8時間 — 以降の全文書はこのenum・用語を統一して使うこと（§16）。
+**現在のステータス: 全21文書（PMS-000〜020）本文完成。** 設計フェーズ完了。00から持ち越されていた論点はすべて解消済み（14: トークン保管=localStorage+緩和策セット / ダウンロード=presigned URL 302 / Admin無効化=トークン即時失効）。`diagrams/er/pms_erd.drawio`は`/drawio-er`で生成可能。 コーディング前に読む最重要文書は02_要件定義書（8章 権限マトリクス / 9章 業務ルール）。 `/system-design`スキルで§19の依存順（企画→要件→ユースケース→…）に従い順次執筆する。00で確定済みの前提: フロントエンド=Vue 3、2層ロールモデル（`users.role`=admin/user × `project_members.role`=owner/member）、`tasks.status`=todo/in_progress/done、優先度=low/middle/high、通知3種（task_assigned/task_commented/task_due_soon）、トークン期限8時間 — 以降の全文書はこのenum・用語を統一して使うこと（§16）。
 
 ## 文書一覧
 
