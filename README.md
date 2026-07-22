@@ -103,10 +103,12 @@ Junior → Mid
 
 ## Mục tiêu học
 
-* Transaction
-* Payment
-* Inventory
-* Complex Database Design
+* Transaction & Pessimistic Locking
+* Payment Integration (Stripe Webhook)
+* Inventory Management (2-Step Control)
+* Complex Database Design (Snapshots)
+* Qualified Invoice System Compliance (Thuế suất sau giảm giá)
+* Stripe Minimum Charge Handling (Bypass đơn dưới ¥50)
 
 ## Chức năng
 
@@ -140,18 +142,9 @@ inventory_logs
 
 ## Tech Stack
 
-### Frontend
-
-* Laravel Blade
-* Tailwind CSS
-
-### Backend
-
-* Laravel API
-
-### Database
-
-* MySQL
+* Architecture: Monolith Hybrid (Laravel Blade + Tailwind CSS + API Endpoints)
+* Backend: Laravel 12 (PHP 8.4) + Stripe SDK
+* Database: MySQL 8 (InnoDB)
 
 ### Infrastructure
 
@@ -175,10 +168,12 @@ Mid-level
 
 ## Mục tiêu học
 
-* Permission
-* Team Development
-* Notification
-* File Upload
+* Permission (2-Layer Auth Matrix)
+* Team Development (Collaboration)
+* Notification (Fan-out & Realtime)
+* File Upload (Private S3 Storage)
+* Aggregate Root Locking Pattern (Khử Gap Lock Deadlock)
+* Task Rescheduling Notification (Quản lý trạng thái thông báo)
 
 ## Chức năng
 
@@ -200,17 +195,10 @@ notifications
 
 ## Tech Stack
 
-### Frontend
-
-* Vue.js hoặc React
-
-### Backend
-
-* Laravel API
-
-### Database
-
-* MySQL
+* Architecture: Decoupled SPA (Single Page Application)
+* Frontend: Vue 3 / React + TypeScript (Strict Mode)
+* Backend: Laravel 12 API + Laravel Reverb (WebSocket)
+* Database: MySQL 8 (InnoDB)
 
 ### Infrastructure
 
@@ -567,13 +555,16 @@ Senior
 * ERD
 * Database Design
 * API Design
+* UML Diagrams (Sequence & Activity Diagrams cho logic lõi)
+* Bilingual Design Specs (Tiếng Nhật/Anh - dành cho BrSE)
 
 ## Backend
 
 * REST API
 * Validation
-* Transaction
-* Error Handling
+* Transaction & Concurrency Control (Locking)
+* Error Handling (Consistent Exception)
+* Audit logging
 
 ## Frontend
 
@@ -585,8 +576,9 @@ Senior
 
 * PK
 * FK
-* Index
-* Normalization
+* Index (Composite, Cover Index)
+* Normalization & Intended De-normalization (Snapshots)
+* Check Constraints
 
 ## DevOps
 

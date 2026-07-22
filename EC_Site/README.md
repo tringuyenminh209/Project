@@ -10,6 +10,8 @@ Junior → Mid
 * Payment (Stripe Sandbox — PaymentIntent, Webhook)
 * Inventory (giữ chỗ / xác nhận / giải phóng tồn kho 2 giai đoạn)
 * Complex Database Design (snapshot giá/thuế tại thời điểm đặt hàng)
+* Qualified Invoice System Compliance (thuế tiêu thụ tính trên số tiền sau khi trừ coupon theo từng dòng sản phẩm — không phải trên giá gốc, đúng luật thuế Nhật Bản)
+* Stripe Minimum Charge Handling (bypass Stripe khi đơn hàng ¥0 hoặc dưới ¥50 — giới hạn課金 tối thiểu của Stripe cho JPY)
 
 ## Vai trò người dùng
 
@@ -68,10 +70,13 @@ Entity trung tâm là `orders`, nơi giao nhau của hai luồng: `users → car
 
 * **Snapshot giá/thuế**: tên, giá, thuế suất tại thời điểm xác nhận đơn được lưu cố định vào `order_items`, không bị ảnh hưởng khi giá sản phẩm thay đổi sau này.
 * **Tồn kho 2 giai đoạn**: giữ chỗ khi đặt hàng → xác nhận trừ kho khi thanh toán thành công → giải phóng khi thanh toán thất bại/hủy. Dùng transaction + pessimistic lock (`SELECT ... FOR UPDATE`) để tránh bán trùng khi có nhiều đơn đồng thời.
-* **Coupon**: kiểm tra thời hạn hiệu lực, số lần dùng tối đa, giá trị đơn tối thiểu.
+* **Coupon**: kiểm tra thời hạn hiệu lực, số lần dùng tối đa, giá trị đơn tối thiểu. Số tiền giảm được phân bổ theo tỷ lệ xuống từng dòng sản phẩm (`order_items.line_discount`) **trước khi** tính thuế của dòng đó (BR-TAX-005) — không tính thuế trên giá gốc rồi mới trừ giảm giá ở tổng cuối.
+* **Bypass Stripe cho đơn quá nhỏ**: nếu `grand_total` sau giảm giá là ¥0 hoặc dưới ¥50 (giới hạn課金 tối thiểu JPY của Stripe), hệ thống xác nhận thanh toán ngay mà không gọi Stripe (`payments.bypass_reason`), giữ nguyên số tiền giảm giá thật — không thổi phồng để ép về ¥0 (BR-PAY-004).
 * **Review**: chỉ cho phép đánh giá sản phẩm đã có trong `order_items` của chính người dùng (chống giả mạo).
 
 ## Tech Stack
+
+* Architecture: Monolith Hybrid (Laravel Blade render trang + gọi API Endpoints cho hành vi động: giỏ hàng, coupon preview, xác nhận đơn, Stripe Webhook)
 
 ### Frontend
 

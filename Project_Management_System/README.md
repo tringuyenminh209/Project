@@ -10,6 +10,8 @@ Mid-level
 * Team Development
 * Notification (in-app + realtime)
 * File Upload (S3)
+* Aggregate Root Locking Pattern (khoá dòng `projects` để tuần tự hoá thao tác trên `tasks`/`project_members` — loại bỏ Gap Lock Deadlock khi kéo thả vào cột Kanban trống và race condition khi gán task cho thành viên đang bị xoá, xem `docs/09_テーブル定義.md` 11章-6 / `docs/12_詳細設計書.md` 5.3〜5.6章)
+* Task Rescheduling Notification (cờ `tasks.is_due_soon_notified` reset khi đổi `due_date`, đảm bảo dời hạn vẫn được nhắc lại — `docs/02_要件定義書.md` BR-NTF-003)
 
 ## Chức năng
 
@@ -61,6 +63,6 @@ notifications
 
 ## Tài liệu thiết kế
 
-Bộ 21 tài liệu (PMS-000~PMS-020, cùng cấu trúc với Project 01/02) **đã hoàn thành toàn bộ nội dung** tại [`docs/`](docs/README.md) (2026/07/19), kèm bản HTML tại `docs/html/`. Mọi 論点 treo đều đã chốt (danh sách bảng cuối cùng = 7 bảng gồm `users`, xem `docs/08_ER図.md`/`docs/09_テーブル定義.md`). Sơ đồ `.drawio` sẽ đặt tại `diagrams/` (er / usecase / activity / class / screen-flow, theo layout của EC_Site) — chưa vẽ.
+Bộ 21 tài liệu (PMS-000~PMS-020, cùng cấu trúc với Project 01/02) **đã hoàn thành toàn bộ nội dung** tại [`docs/`](docs/README.md) (2026/07/19, cập nhật gần nhất 2026/07/22 — sửa 3 lỗi thiết kế đồng thời phát hiện qua audit), kèm bản HTML tại `docs/html/`. Mọi 論点 treo đều đã chốt (danh sách bảng cuối cùng = 7 bảng gồm `users`, xem `docs/08_ER図.md`/`docs/09_テーブル定義.md`). Sơ đồ `.drawio` đã có tại `diagrams/` (er / usecase / activity / class / screen-flow, theo layout của EC_Site, 2026/07/20〜21).
 
 ---
