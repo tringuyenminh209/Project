@@ -13,7 +13,7 @@ EC Site（ECサイト構築プロジェクト）
 | 文書番号 | EC-010 |
 | 作成者 | Nguyen Minh Tri |
 | 作成日 | 2026/07/13 |
-| バージョン | 1.3 |
+| バージョン | 1.4 |
 | ステータス | Draft |
 
 ---
@@ -26,6 +26,7 @@ EC Site（ECサイト構築プロジェクト）
 | 1.1 | 2026/07/14 | Nguyen Minh Tri | E006の一部ケースをE007/E011へ分離、Guest/Public表記統一、audit_logs記述の整合。 |
 | 1.2 | 2026/07/14 | Nguyen Minh Tri | 6章のAPI詳細を16件→全33件（API-001〜033）に拡充。コーディング開始前の完成度100%化のため。 |
 | 1.3 | 2026/07/17 | Nguyen Minh Tri | 6.2節API-002の主なエラーから誤記のE009を削除、6.11節のAttendanceService言及をProject 01由来と明記、6.15節の詳細設計書参照を6章→5.2節に訂正。 |
+| 1.4 | 2026/07/22 | Nguyen Minh Tri | 6.15節（API-015）のResponse例が数値的に不整合になっていた根本原因（tax_totalが割引前subtotalに対して計算されていた、BR-TAX-005）を修正し数値を再計算。Stripe ¥50下限バイパス時（BR-PAY-004）のResponse例を追加し、stripe_client_secret=nullの扱いを明記。 |
 
 ---
 
@@ -627,7 +628,7 @@ Request:
 
 カート内容自体はリクエストに含めず、サーバー側で現在のactiveカート（`carts.user_id`＝ログインユーザー）を参照する（改ざん防止のため）。
 
-Response（201 Created）:
+Response（201 Created、通常フロー＝grand_total >= ¥50）:
 
 ```json
 {
@@ -638,28 +639,51 @@ Response（201 Created）:
     "order_number": "ORD-20260713-0501",
     "status": "pending",
     "subtotal": 8500,
-    "tax_total": 850,
+    "tax_total": 765,
     "shipping_fee": 0,
     "discount_total": 850,
-    "grand_total": 8500,
+    "grand_total": 8415,
     "stripe_client_secret": "pi_xxx_secret_yyy"
   }
 }
 ```
 
-`grand_total = subtotal + tax_total + shipping_fee - discount_total`（09_テーブル定義4.11節）。この例では`tax_total`と`discount_total`がたまたま同額（850）なため`grand_total`が`subtotal`と一致して見えるが、通常は一致しない偶然の数値である。
+`grand_total = subtotal + tax_total + shipping_fee - discount_total`（09_テーブル定義4.11節）。`tax_total`はクーポン割引後の実売上額に対して計算する（BR-TAX-005）ため、この例では`subtotal`8500に対しクーポン割引850（10%）を適用した後の7650に標準税率10%を掛けた765となる（`subtotal`にそのまま10%を掛けた850ではない点に注意）。
+
+Response（201 Created、Stripeバイパス＝grand_total < ¥50、BR-PAY-004）:
+
+```json
+{
+  "success": true,
+  "message": "ご注文を受け付けました。",
+  "data": {
+    "order_id": 502,
+    "order_number": "ORD-20260713-0502",
+    "status": "paid",
+    "subtotal": 500,
+    "tax_total": 4,
+    "shipping_fee": 0,
+    "discount_total": 460,
+    "grand_total": 44,
+    "stripe_client_secret": null
+  }
+}
+```
+
+クーポン適用後の`grand_total`が¥50未満（この例は¥44、below_minimum）になった場合、Stripeを呼ばずその場で決済を`captured`確定する。フロントエンドは`stripe_client_secret`が`null`の場合、Stripe Elementsによる決済入力画面を一切表示せず、`status`（`paid`）をもって注文完了として扱う（`status`が`pending`のときのみ`stripe_client_secret`を使って決済へ進む、という分岐で十分でありAPI応答に専用フラグは追加しない）。`grand_total`が¥0（`zero_amount`）の場合も同様。
 
 処理内容（12_詳細設計書5.2節 OrderService::placeで詳述、ここでは概要のみ）:
 
 1. `SELECT ... FOR UPDATE`で対象バリエーションの在庫行をロックする（BR-INV-007）
 2. 在庫を確認し不足があればE004、トランザクション全体をロールバック
 3. `orders`をpendingで作成し、選択住所を`shipping_*`へスナップショット（BR-ORD-003）
-4. `order_items`へ商品名・単価・税率をスナップショット（BR-ORD-002, BR-TAX-002）
-5. 在庫を確保（`quantity_available -= N`, `quantity_reserved += N`、BR-INV-003）
-6. クーポンがあれば条件検証のうえ`used_count += 1`（BR-CPN-003）
-7. Stripe PaymentIntentを作成し`client_secret`を返す
+4. クーポンがあれば条件検証のうえ割引額を計算（BR-CPN-002）、各行へ按分してから税額を計算する（BR-TAX-005）
+5. `order_items`へ商品名・単価・税率・行別金額をスナップショット（BR-ORD-002, BR-TAX-002）
+6. 在庫を確保（`quantity_available -= N`, `quantity_reserved += N`、BR-INV-003）
+7. クーポンがあれば`used_count += 1`（BR-CPN-003）
+8. `grand_total`に応じ、Stripe PaymentIntentを作成する（通常）か、Stripeを呼ばず`captured`で即時確定する（BR-PAY-004、`grand_total`が¥50未満）
 
-Business Rule: BR-ORD-001〜003, BR-TAX-001〜004, BR-INV-001〜003, BR-CPN-001〜004（02_要件定義書9章）
+Business Rule: BR-ORD-001〜003, BR-TAX-001〜005, BR-INV-001〜003, BR-CPN-001〜004, BR-PAY-004（02_要件定義書9章）
 
 ---
 

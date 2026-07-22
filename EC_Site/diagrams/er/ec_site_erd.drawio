@@ -299,7 +299,7 @@
           <mxGeometry height="26" width="280" y="186" as="geometry" />
         </mxCell>
         <mxCell id="payments" parent="1" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" value="payments（決済）　（TBL-013 / トラン）" vertex="1">
-          <mxGeometry height="264" width="280" x="1120" y="896" as="geometry" />
+          <mxGeometry height="290" width="280" x="1120" y="896" as="geometry" />
         </mxCell>
         <mxCell id="payments_id" parent="payments" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" value="[PK] id : BIGINT UNSIGNED" vertex="1">
           <mxGeometry height="26" width="280" y="30" as="geometry" />
@@ -319,14 +319,17 @@
         <mxCell id="payments_stripe_payment_intent_id" parent="payments" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="stripe_payment_intent_id : VARCHAR(100) (UK)" vertex="1">
           <mxGeometry height="26" width="280" y="160" as="geometry" />
         </mxCell>
-        <mxCell id="payments_paid_at" parent="payments" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="paid_at : TIMESTAMP" vertex="1">
+        <mxCell id="payments_bypass_reason" parent="payments" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="bypass_reason : ENUM(&#39;zero_amount&#39;,&#39;below_minimum&#39;)" vertex="1">
           <mxGeometry height="26" width="280" y="186" as="geometry" />
         </mxCell>
-        <mxCell id="payments_created_at" parent="payments" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="created_at : TIMESTAMP" vertex="1">
+        <mxCell id="payments_paid_at" parent="payments" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="paid_at : TIMESTAMP" vertex="1">
           <mxGeometry height="26" width="280" y="212" as="geometry" />
         </mxCell>
-        <mxCell id="payments_updated_at" parent="payments" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="updated_at : TIMESTAMP" vertex="1">
+        <mxCell id="payments_created_at" parent="payments" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="created_at : TIMESTAMP" vertex="1">
           <mxGeometry height="26" width="280" y="238" as="geometry" />
+        </mxCell>
+        <mxCell id="payments_updated_at" parent="payments" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="updated_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="264" as="geometry" />
         </mxCell>
         <mxCell id="shipments" parent="1" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" value="shipments（配送）　（TBL-014 / トラン）" vertex="1">
           <mxGeometry height="264" width="280" x="1120" y="1220" as="geometry" />
@@ -428,7 +431,7 @@
           <mxGeometry height="26" width="280" y="160" as="geometry" />
         </mxCell>
         <mxCell id="order_items" parent="1" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" value="order_items（注文明細）　（TBL-012 / トラン）" vertex="1">
-          <mxGeometry height="368" width="280" x="1660" y="1090" as="geometry" />
+          <mxGeometry height="394" width="280" x="1660" y="1090" as="geometry" />
         </mxCell>
         <mxCell id="order_items_id" parent="order_items" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" value="[PK] id : BIGINT UNSIGNED" vertex="1">
           <mxGeometry height="26" width="280" y="30" as="geometry" />
@@ -460,14 +463,17 @@
         <mxCell id="order_items_line_subtotal" parent="order_items" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="line_subtotal : INT UNSIGNED" vertex="1">
           <mxGeometry height="26" width="280" y="264" as="geometry" />
         </mxCell>
-        <mxCell id="order_items_line_tax" parent="order_items" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="line_tax : INT UNSIGNED" vertex="1">
+        <mxCell id="order_items_line_discount" parent="order_items" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="line_discount : INT UNSIGNED" vertex="1">
           <mxGeometry height="26" width="280" y="290" as="geometry" />
         </mxCell>
-        <mxCell id="order_items_line_total" parent="order_items" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="line_total : INT UNSIGNED" vertex="1">
+        <mxCell id="order_items_line_tax" parent="order_items" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="line_tax : INT UNSIGNED" vertex="1">
           <mxGeometry height="26" width="280" y="316" as="geometry" />
         </mxCell>
-        <mxCell id="order_items_created_at" parent="order_items" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="created_at : TIMESTAMP" vertex="1">
+        <mxCell id="order_items_line_total" parent="order_items" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="line_total : INT UNSIGNED" vertex="1">
           <mxGeometry height="26" width="280" y="342" as="geometry" />
+        </mxCell>
+        <mxCell id="order_items_created_at" parent="order_items" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="created_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="368" as="geometry" />
         </mxCell>
         <mxCell id="reviews" parent="1" style="swimlane;html=1;startSize=30;fillColor=#4a1a5c;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#4a1a5c;swimlaneFillColor=#ffffff;rounded=0;" value="reviews（レビュー）　（TBL-016 / サポート）" vertex="1">
           <mxGeometry height="264" width="280" x="2200" y="300" as="geometry" />
