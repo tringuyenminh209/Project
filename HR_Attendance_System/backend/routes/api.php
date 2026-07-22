@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ShiftController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -39,4 +42,27 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/auth/me', [AuthController::class, 'me']);
     Route::patch('/auth/password', [AuthController::class, 'updatePassword']);
     Route::get('/auth/session', [AuthController::class, 'session']);
+});
+
+// Group RIÊNG, gắn thêm 'role:admin' — khác nhóm auth:sanctum trần của chương 04.
+// Middleware chạy nối tiếp: auth:sanctum check trước (401 nếu chưa login),
+// role:admin check sau (403 nếu không phải Admin).
+// auth:sanctum chạy trước (401), role:admin chạy sau (403)
+Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+    // Employee — API-014〜016 (không có GET danh sách theo spec)
+    Route::post('/employees', [EmployeeController::class, 'store']);
+    Route::put('/employees/{employee}', [EmployeeController::class, 'update']);
+    Route::patch('/employees/{employee}/status', [EmployeeController::class, 'setStatus']);
+
+    // Department — API-017 (4 route theo bảng 10_API設計 6.17)
+    Route::get('/departments', [DepartmentController::class, 'index']);
+    Route::post('/departments', [DepartmentController::class, 'store']);
+    Route::put('/departments/{department}', [DepartmentController::class, 'update']);
+    Route::patch('/departments/{department}/status', [DepartmentController::class, 'setStatus']);
+
+    // Shift — API-018
+    Route::get('/shifts', [ShiftController::class, 'index']);
+    Route::post('/shifts', [ShiftController::class, 'store']);
+    Route::put('/shifts/{shift}', [ShiftController::class, 'update']);
+    Route::patch('/shifts/{shift}/status', [ShiftController::class, 'setStatus']);
 });

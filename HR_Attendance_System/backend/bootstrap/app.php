@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsureRole;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -40,6 +41,16 @@ return Application::configure(basePath: dirname(__DIR__))
                         'details' => $e->errors(),   // {"email": ["..."], "password": ["..."]}
                     ],
                 ], 422);
+            }
+        });
+
+        // Route Model Binding không tìm thấy ID → E007 (12_詳細設計書 11章)
+        $exceptions->render(function (ModelNotFoundException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'success' => false,
+                    'error' => ['code' => 'E007', 'message' => '対象データが見つかりません。'],
+                ], 404);
             }
         });
     })->create();
