@@ -1,0 +1,126 @@
+<mxfile host="claude-code">
+    <diagram id="pms-activity-v1" name="アクティビティ図">
+        <mxGraphModel dx="1400" dy="1500" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1220" pageHeight="1414" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Project Management System アクティビティ図（BF-003 タスク運用業務フロー — 通知fan-out）" style="text;html=1;fontSize=20;fontStyle=1;fontColor=#1a3a5c;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="0" width="1000" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="lane_originator" value="起票者（Owner / Member）" style="swimlane;html=1;startSize=30;fillColor=#eef2f6;strokeColor=#1a3a5c;fontStyle=1;fontSize=13;fontColor=#1a3a5c;horizontal=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="60" width="380" height="1194" as="geometry"/>
+        </mxCell>
+        <mxCell id="lane_system" value="System" style="swimlane;html=1;startSize=30;fillColor=#eef2f6;strokeColor=#1a3a5c;fontStyle=1;fontSize=13;fontColor=#1a3a5c;horizontal=1;" vertex="1" parent="1">
+          <mxGeometry x="420" y="60" width="380" height="1194" as="geometry"/>
+        </mxCell>
+        <mxCell id="lane_assignee" value="担当者（メンバーB）" style="swimlane;html=1;startSize=30;fillColor=#eef2f6;strokeColor=#1a3a5c;fontStyle=1;fontSize=13;fontColor=#1a3a5c;horizontal=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="60" width="380" height="1194" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_start" value="" style="ellipse;html=1;fillColor=#1a3a5c;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="213" y="110" width="34" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_A" value="タスクを作成
+（タイトル・期限・優先度）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1a3a5c;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="100" y="210" width="260" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_B" value="担当者にメンバーBを指定" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1a3a5c;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="100" y="310" width="260" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_C" value="tasksをstatus=todoで作成" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1a3a5c;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="480" y="410" width="260" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_D" value="担当者は
+起票者本人？" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff9c4;strokeColor=#d4c76a;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="480" y="510" width="260" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_E" value="task_assigned通知を作成
+（BR-NTF-001）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1a3a5c;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="480" y="630" width="260" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_F" value="（bonus）Reverbで
+リアルタイム配信（UC-021）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1a3a5c;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="480" y="730" width="260" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_G" value="通知を受信・確認（UC-015）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1a3a5c;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="860" y="830" width="260" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_H" value="タスク詳細を確認し、
+カンバンでin_progressへ移動" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1a3a5c;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="860" y="930" width="260" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_I" value="作業完了後、doneへ移動" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1a3a5c;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="860" y="1030" width="260" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_end" value="" style="ellipse;html=1;shape=doubleEllipse;fillColor=#1a3a5c;strokeColor=#1a3a5c;" vertex="1" parent="1">
+          <mxGeometry x="973" y="1180" width="34" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="eflow_1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#1a3a5c;strokeWidth=2;exitDx=0;exitDy=0;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;labelBackgroundColor=#ffffff;fontSize=10;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="n_start" target="n_A">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="eflow_2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#1a3a5c;strokeWidth=2;exitDx=0;exitDy=0;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;labelBackgroundColor=#ffffff;fontSize=10;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="n_A" target="n_B">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="eflow_3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#1a3a5c;strokeWidth=2;exitDx=0;exitDy=0;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;labelBackgroundColor=#ffffff;fontSize=10;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="n_B" target="n_C">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="eflow_4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#1a3a5c;strokeWidth=2;exitDx=0;exitDy=0;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;labelBackgroundColor=#ffffff;fontSize=10;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="n_C" target="n_D">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="eflow_5" value="No（他人に割当）" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#1a3a5c;strokeWidth=2;exitDx=0;exitDy=0;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;labelBackgroundColor=#ffffff;fontSize=10;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="n_D" target="n_E">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="eflow_6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#1a3a5c;strokeWidth=2;exitDx=0;exitDy=0;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;labelBackgroundColor=#ffffff;fontSize=10;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="n_E" target="n_F">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="eflow_7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#1a3a5c;strokeWidth=2;exitDx=0;exitDy=0;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;labelBackgroundColor=#ffffff;fontSize=10;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="n_F" target="n_G">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="eflow_8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#1a3a5c;strokeWidth=2;exitDx=0;exitDy=0;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;labelBackgroundColor=#ffffff;fontSize=10;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="n_G" target="n_H">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="eflow_9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#1a3a5c;strokeWidth=2;exitDx=0;exitDy=0;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;labelBackgroundColor=#ffffff;fontSize=10;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="n_H" target="n_I">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="eflow_10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#1a3a5c;strokeWidth=2;exitDx=0;exitDy=0;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;labelBackgroundColor=#ffffff;fontSize=10;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="n_I" target="n_end">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="eflow_11" value="Yes（自分に割当）" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#1a3a5c;strokeWidth=2;exitDx=0;exitDy=0;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;labelBackgroundColor=#ffffff;fontSize=10;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="n_D" target="n_H">
+          <mxGeometry x="0" y="0" relative="1" as="geometry">
+            <Array as="points"><mxPoint x="780" y="545"/><mxPoint x="780" y="955"/></Array>
+            <mxPoint as="offset" x="0" y="-20"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend_title" value="■ 凡例（system-design §4 標準記号）" style="text;html=1;fontSize=13;fontStyle=1;fontColor=#1a3a5c;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1294" width="400" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="lg_start_box" value="" style="ellipse;html=1;fillColor=#1a3a5c;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1324" width="24" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="lg_start_label" value="○ 開始" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="72" y="1324" width="100" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="lg_end_box" value="" style="ellipse;html=1;shape=doubleEllipse;fillColor=#1a3a5c;strokeColor=#1a3a5c;" vertex="1" parent="1">
+          <mxGeometry x="180" y="1324" width="24" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="lg_end_label" value="● 終了" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="212" y="1324" width="100" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="lg_proc_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1a3a5c;" vertex="1" parent="1">
+          <mxGeometry x="320" y="1316" width="60" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="lg_proc_label" value="□ 処理" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="392" y="1324" width="100" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="lg_judge_box" value="" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="1">
+          <mxGeometry x="500" y="1310" width="70" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="lg_judge_label" value="◇ 判断" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="582" y="1324" width="100" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="lg_note" value="出典: 04_業務フロー.md 6章（BF-003）。通知は「他人への割当」でのみ発火（本人除外の原則）。他のBFフローは同章の各節を参照（別図）。" style="text;html=1;fontSize=11;fontColor=#666666;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1358" width="900" height="24" as="geometry"/>
+        </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

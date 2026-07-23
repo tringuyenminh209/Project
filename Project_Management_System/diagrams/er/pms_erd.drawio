@@ -1,0 +1,344 @@
+<mxfile host="claude-code">
+    <diagram id="pms-er-v1" name="ER図">
+        <mxGraphModel dx="1400" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1440" pageHeight="1196" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Project Management System ER図（7テーブル / 11リレーション）" style="text;html=1;fontSize=22;fontStyle=1;fontColor=#1a3a5c;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="800" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="subtitle" value="上部の迂回線はプロジェクト×タスクの列をまたぐ外部キー関係（task_comments/task_files/notifications → users）。project_membersはUNIQUE(project_id, user_id)が複合キー（本システム最重要インデックス、E011の実体）。notifications.task_idはON DELETE SET NULL（タスク削除後も通知は残る、REL-011）。" style="text;html=1;fontSize=11;fontColor=#666666;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="60" width="1100" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="users" value="users（ユーザー）　（TBL-001 / マスタ）" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="300" width="280" height="238" as="geometry"/>
+        </mxCell>
+        <mxCell id="users_id" value="[PK] id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="users">
+          <mxGeometry y="30" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="users_name" value="name : VARCHAR(100)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="users">
+          <mxGeometry y="56" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="users_email" value="email : VARCHAR(255) (UK)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="users">
+          <mxGeometry y="82" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="users_password_hash" value="password_hash : VARCHAR(255)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="users">
+          <mxGeometry y="108" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="users_role" value="role : ENUM('admin','user')" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="users">
+          <mxGeometry y="134" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="users_status" value="status : ENUM('active','inactive')" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="users">
+          <mxGeometry y="160" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="users_created_at" value="created_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="users">
+          <mxGeometry y="186" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="users_updated_at" value="updated_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="users">
+          <mxGeometry y="212" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="projects" value="projects（プロジェクト）　（TBL-002 / マスタ）" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="598" width="280" height="186" as="geometry"/>
+        </mxCell>
+        <mxCell id="projects_id" value="[PK] id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="projects">
+          <mxGeometry y="30" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="projects_name" value="name : VARCHAR(100)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="projects">
+          <mxGeometry y="56" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="projects_description" value="description : TEXT" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="projects">
+          <mxGeometry y="82" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="projects_status" value="status : ENUM('active','archived')" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="projects">
+          <mxGeometry y="108" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="projects_created_at" value="created_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="projects">
+          <mxGeometry y="134" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="projects_updated_at" value="updated_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="projects">
+          <mxGeometry y="160" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="project_members" value="project_members（プロジェクトメンバー）　（TBL-003 / トラン）" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="580" y="300" width="280" height="186" as="geometry"/>
+        </mxCell>
+        <mxCell id="project_members_id" value="[PK] id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="project_members">
+          <mxGeometry y="30" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="project_members_project_id" value="[FK] project_id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="project_members">
+          <mxGeometry y="56" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="project_members_user_id" value="[FK] user_id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="project_members">
+          <mxGeometry y="82" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="project_members_role" value="role : ENUM('owner','member')" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="project_members">
+          <mxGeometry y="108" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="project_members_created_at" value="created_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="project_members">
+          <mxGeometry y="134" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="project_members_updated_at" value="updated_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="project_members">
+          <mxGeometry y="160" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="tasks" value="tasks（タスク）　（TBL-004 / トラン）" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="580" y="546" width="280" height="368" as="geometry"/>
+        </mxCell>
+        <mxCell id="tasks_id" value="[PK] id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="tasks">
+          <mxGeometry y="30" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="tasks_project_id" value="[FK] project_id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="tasks">
+          <mxGeometry y="56" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="tasks_title" value="title : VARCHAR(200)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="tasks">
+          <mxGeometry y="82" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="tasks_description" value="description : TEXT" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="tasks">
+          <mxGeometry y="108" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="tasks_assignee_id" value="[FK] assignee_id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="tasks">
+          <mxGeometry y="134" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="tasks_created_by" value="[FK] created_by : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="tasks">
+          <mxGeometry y="160" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="tasks_due_date" value="due_date : DATE" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="tasks">
+          <mxGeometry y="186" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="tasks_priority" value="priority : ENUM('low','middle','high')" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="tasks">
+          <mxGeometry y="212" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="tasks_status" value="status : ENUM('todo','in_progress','done')" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="tasks">
+          <mxGeometry y="238" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="tasks_position" value="position : INT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="tasks">
+          <mxGeometry y="264" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="tasks_is_due_soon_notified" value="is_due_soon_notified : BOOLEAN" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="tasks">
+          <mxGeometry y="290" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="tasks_created_at" value="created_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="tasks">
+          <mxGeometry y="316" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="tasks_updated_at" value="updated_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="tasks">
+          <mxGeometry y="342" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="task_comments" value="task_comments（タスクコメント）　（TBL-005 / トラン）" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="300" width="280" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="task_comments_id" value="[PK] id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="task_comments">
+          <mxGeometry y="30" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="task_comments_task_id" value="[FK] task_id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="task_comments">
+          <mxGeometry y="56" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="task_comments_user_id" value="[FK] user_id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="task_comments">
+          <mxGeometry y="82" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="task_comments_body" value="body : VARCHAR(2000)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="task_comments">
+          <mxGeometry y="108" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="task_comments_created_at" value="created_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="task_comments">
+          <mxGeometry y="134" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="task_files" value="task_files（タスク添付ファイル）　（TBL-006 / トラン）" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="520" width="280" height="238" as="geometry"/>
+        </mxCell>
+        <mxCell id="task_files_id" value="[PK] id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="task_files">
+          <mxGeometry y="30" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="task_files_task_id" value="[FK] task_id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="task_files">
+          <mxGeometry y="56" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="task_files_uploaded_by" value="[FK] uploaded_by : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="task_files">
+          <mxGeometry y="82" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="task_files_original_name" value="original_name : VARCHAR(255)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="task_files">
+          <mxGeometry y="108" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="task_files_s3_key" value="s3_key : VARCHAR(500) (UK)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="task_files">
+          <mxGeometry y="134" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="task_files_size_bytes" value="size_bytes : INT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="task_files">
+          <mxGeometry y="160" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="task_files_mime_type" value="mime_type : VARCHAR(100)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="task_files">
+          <mxGeometry y="186" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="task_files_created_at" value="created_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="task_files">
+          <mxGeometry y="212" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="notifications" value="notifications（通知）　（TBL-007 / サポート）" style="swimlane;html=1;startSize=30;fillColor=#4a1a5c;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#4a1a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="818" width="280" height="238" as="geometry"/>
+        </mxCell>
+        <mxCell id="notifications_id" value="[PK] id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="notifications">
+          <mxGeometry y="30" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="notifications_user_id" value="[FK] user_id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="notifications">
+          <mxGeometry y="56" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="notifications_type" value="type : ENUM('task_assigned','task_commented','task_due_soon')" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="notifications">
+          <mxGeometry y="82" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="notifications_task_id" value="[FK] task_id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="notifications">
+          <mxGeometry y="108" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="notifications_task_title" value="task_title : VARCHAR(200)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="notifications">
+          <mxGeometry y="134" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="notifications_is_read" value="is_read : BOOLEAN" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="notifications">
+          <mxGeometry y="160" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="notifications_read_at" value="read_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="notifications">
+          <mxGeometry y="186" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="notifications_created_at" value="created_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="notifications">
+          <mxGeometry y="212" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="efwd_1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="projects_id" target="project_members_project_id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="340" y="641"/><mxPoint x="340" y="369"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_1_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_1">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="0"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_1_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_1">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="users_id" target="project_members_user_id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="365" y="343"/><mxPoint x="365" y="395"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_2_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_2">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="0"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_2_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_2">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="projects_id" target="tasks_project_id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="390" y="641"/><mxPoint x="390" y="615"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_3_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_3">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="0"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_3_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_3">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="users_id" target="tasks_assignee_id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="415" y="343"/><mxPoint x="415" y="693"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_4_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_4">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="0"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_4_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_4">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="users_id" target="tasks_created_by">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="440" y="343"/><mxPoint x="440" y="719"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_5_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_5">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="0"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_5_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_5">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="tasks_id" target="task_comments_task_id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="940" y="589"/><mxPoint x="940" y="369"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_6_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_6">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="0"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_6_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_6">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="tasks_id" target="task_files_task_id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="970" y="589"/><mxPoint x="970" y="589"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_7_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_7">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="0"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_7_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_7">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="tasks_id" target="notifications_task_id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="1000" y="589"/><mxPoint x="1000" y="939"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_8_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_8">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="0"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_8_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_8">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="ebyp_9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="users_id" target="task_comments_user_id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="490" y="343"/><mxPoint x="490" y="260"/><mxPoint x="1030" y="260"/><mxPoint x="1030" y="395"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ebyp_9_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="ebyp_9">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="0"/></mxGeometry>
+        </mxCell>
+        <mxCell id="ebyp_9_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="ebyp_9">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="ebyp_10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="users_id" target="task_files_uploaded_by">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="515" y="343"/><mxPoint x="515" y="220"/><mxPoint x="1060" y="220"/><mxPoint x="1060" y="615"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ebyp_10_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="ebyp_10">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="0"/></mxGeometry>
+        </mxCell>
+        <mxCell id="ebyp_10_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="ebyp_10">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="ebyp_11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="users_id" target="notifications_user_id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="540" y="343"/><mxPoint x="540" y="180"/><mxPoint x="1090" y="180"/><mxPoint x="1090" y="887"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ebyp_11_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="ebyp_11">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="0"/></mxGeometry>
+        </mxCell>
+        <mxCell id="ebyp_11_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="ebyp_11">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="legend_title" value="■ 凡例" style="text;html=1;fontSize=13;fontStyle=1;fontColor=#1a3a5c;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1116" width="200" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_pk_box" value="" style="rounded=0;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1146" width="24" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_pk_label" value="PK（主キー）" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="72" y="1146" width="140" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_fk_box" value="" style="rounded=0;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="1">
+          <mxGeometry x="240" y="1146" width="24" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_fk_label" value="FK（外部キー）" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="272" y="1146" width="140" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_normal_box" value="" style="rounded=0;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="1">
+          <mxGeometry x="440" y="1146" width="24" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_normal_label" value="通常列" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="472" y="1146" width="140" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_rel_label" value="→ 線の両端: 「1」側=親（PK）／「N」側=子（FK）。上部の弧は列をまたぐ関係の迂回線（task_id/user_id → users.id、span=2）。" style="text;html=1;fontSize=11;fontColor=#666666;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="600" y="1146" width="700" height="24" as="geometry"/>
+        </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
