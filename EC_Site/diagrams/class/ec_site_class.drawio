@@ -176,13 +176,16 @@
           <mxGeometry y="38" width="240" height="24" as="geometry"/>
         </mxCell>
         <mxCell id="InventoryService" value="InventoryService" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="2440" y="338" width="240" height="62" as="geometry"/>
+          <mxGeometry x="2440" y="338" width="240" height="86" as="geometry"/>
         </mxCell>
         <mxCell id="InventoryService_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#1a3a5c;" vertex="1" parent="InventoryService">
           <mxGeometry y="30" width="240" height="8" as="geometry"/>
         </mxCell>
         <mxCell id="InventoryService_m0" value="+ adjust(variant_id, qty_change, reason, admin_id)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="InventoryService">
           <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="InventoryService_m1" value="+ commitReservedForOrder(order)  (5.5.1)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="InventoryService">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
         </mxCell>
         <mxCell id="AdminOrderService" value="AdminOrderService" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="640" y="338" width="240" height="86" as="geometry"/>
@@ -564,6 +567,12 @@
         </mxCell>
         <mxCell id="esvc_8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;exitX=0.500;exitDx=0;exitDy=0;entryX=0.500;entryDx=0;entryDy=0;exitY=0;entryY=0;" edge="1" parent="1" source="OrderService" target="CouponService">
           <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1660" y="308"/><mxPoint x="1060" y="308"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="esvc_50" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;exitX=0.500;exitDx=0;exitDy=0;entryX=0.3;entryDx=0;entryDy=0;exitY=0;entryY=0;" edge="1" parent="1" source="OrderService" target="InventoryService">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1660" y="308"/><mxPoint x="2512" y="308"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="esvc_51" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;exitX=0.500;exitDx=0;exitDy=0;entryX=0.7;entryDx=0;entryDy=0;exitY=0;entryY=0;" edge="1" parent="1" source="PaymentWebhookService" target="InventoryService">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1960" y="278"/><mxPoint x="2608" y="278"/></Array></mxGeometry>
         </mxCell>
         <mxCell id="esvc_9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="AdminOrderService" target="PaymentService">
           <mxGeometry relative="1" as="geometry"></mxGeometry>

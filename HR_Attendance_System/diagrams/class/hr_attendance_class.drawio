@@ -1,0 +1,676 @@
+<mxfile host="claude-code">
+    <diagram id="hr-attendance-class" name="クラス図">
+        <mxGraphModel dx="1800" dy="1300" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4220" pageHeight="1464" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="HR &amp; Attendance System クラス図（Controller / Service+Policy / Model）" style="text;html=1;fontSize=18;fontStyle=1;fontColor=#1a3a5c;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="10" width="1100" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="subtitle" value="出典: 12_詳細設計書.md 4〜8章。クラス配置はbarycenter法で交差最小化。灰色=Policy（DD-POL-004: Middleware=role判定 / Policy=データ範囲判定）。" style="text;html=1;fontSize=11;fontColor=#666666;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="42" width="1100" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuthController" value="AuthController" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="640" y="70" width="240" height="158" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuthController_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#5b3a1a;" vertex="1" parent="AuthController">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuthController_m0" value="+ login()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuthController">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuthController_m1" value="+ logout()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuthController">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuthController_m2" value="+ me()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuthController">
+          <mxGeometry y="86" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuthController_m3" value="+ updatePassword()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuthController">
+          <mxGeometry y="110" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuthController_m4" value="+ session()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuthController">
+          <mxGeometry y="134" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceController" value="AttendanceController" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="940" y="70" width="240" height="158" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceController_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#5b3a1a;" vertex="1" parent="AttendanceController">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceController_m0" value="+ checkIn()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceController">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceController_m1" value="+ checkOut()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceController">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceController_m2" value="+ workHours()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceController">
+          <mxGeometry y="86" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceController_m3" value="+ myAttendance()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceController">
+          <mxGeometry y="110" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceController_m4" value="+ search()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceController">
+          <mxGeometry y="134" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequestController" value="LeaveRequestController" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1540" y="70" width="240" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequestController_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#5b3a1a;" vertex="1" parent="LeaveRequestController">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequestController_m0" value="+ store()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequestController">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequestController_m1" value="+ index()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequestController">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequestController_m2" value="+ approval()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequestController">
+          <mxGeometry y="86" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ReportController" value="ReportController" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1840" y="70" width="240" height="86" as="geometry"/>
+        </mxCell>
+        <mxCell id="ReportController_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#5b3a1a;" vertex="1" parent="ReportController">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="ReportController_m0" value="+ monthly()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="ReportController">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ReportController_m1" value="+ csv()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="ReportController">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="EmployeeController" value="EmployeeController" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="70" width="240" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="EmployeeController_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#5b3a1a;" vertex="1" parent="EmployeeController">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="EmployeeController_m0" value="+ store()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="EmployeeController">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="EmployeeController_m1" value="+ update()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="EmployeeController">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="EmployeeController_m2" value="+ setStatus()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="EmployeeController">
+          <mxGeometry y="86" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="DepartmentController" value="DepartmentController" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="70" width="240" height="134" as="geometry"/>
+        </mxCell>
+        <mxCell id="DepartmentController_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#5b3a1a;" vertex="1" parent="DepartmentController">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="DepartmentController_m0" value="+ index()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="DepartmentController">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="DepartmentController_m1" value="+ store()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="DepartmentController">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="DepartmentController_m2" value="+ update()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="DepartmentController">
+          <mxGeometry y="86" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="DepartmentController_m3" value="+ setStatus()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="DepartmentController">
+          <mxGeometry y="110" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ShiftController" value="ShiftController" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="340" y="70" width="240" height="134" as="geometry"/>
+        </mxCell>
+        <mxCell id="ShiftController_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#5b3a1a;" vertex="1" parent="ShiftController">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="ShiftController_m0" value="+ index()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="ShiftController">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ShiftController_m1" value="+ store()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="ShiftController">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ShiftController_m2" value="+ update()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="ShiftController">
+          <mxGeometry y="86" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ShiftController_m3" value="+ setStatus()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="ShiftController">
+          <mxGeometry y="110" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuthService" value="AuthService" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="640" y="338" width="240" height="134" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuthService_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#1a3a5c;" vertex="1" parent="AuthService">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuthService_m0" value="+ login(email, password)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuthService">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuthService_m1" value="+ logout(user)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuthService">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuthService_m2" value="+ me()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuthService">
+          <mxGeometry y="86" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuthService_m3" value="+ updatePassword()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuthService">
+          <mxGeometry y="110" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceService" value="AttendanceService" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="940" y="338" width="240" height="158" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceService_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#1a3a5c;" vertex="1" parent="AttendanceService">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceService_m0" value="+ checkIn(employee, workDate, time)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceService">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceService_m1" value="+ checkOut(employee, workDate, time)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceService">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceService_m2" value="+ getWorkHours(id)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceService">
+          <mxGeometry y="86" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceService_m3" value="+ myAttendance(criteria)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceService">
+          <mxGeometry y="110" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceService_m4" value="+ search(criteria)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceService">
+          <mxGeometry y="134" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequestService" value="LeaveRequestService" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1540" y="338" width="240" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequestService_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#1a3a5c;" vertex="1" parent="LeaveRequestService">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequestService_m0" value="+ create(employee, input)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequestService">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequestService_m1" value="+ list(criteria)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequestService">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequestService_m2" value="+ approve(manager, request, action)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequestService">
+          <mxGeometry y="86" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ReportService" value="ReportService" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1840" y="338" width="240" height="86" as="geometry"/>
+        </mxCell>
+        <mxCell id="ReportService_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#1a3a5c;" vertex="1" parent="ReportService">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="ReportService_m0" value="+ monthly(criteria)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="ReportService">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ReportService_m1" value="+ exportCsv(criteria)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="ReportService">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="EmployeeService" value="EmployeeService" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="338" width="240" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="EmployeeService_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#1a3a5c;" vertex="1" parent="EmployeeService">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="EmployeeService_m0" value="+ create(input)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="EmployeeService">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="EmployeeService_m1" value="+ update(employee, input)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="EmployeeService">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="EmployeeService_m2" value="+ setStatus(employee, status)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="EmployeeService">
+          <mxGeometry y="86" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="DepartmentService" value="DepartmentService" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="338" width="240" height="134" as="geometry"/>
+        </mxCell>
+        <mxCell id="DepartmentService_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#1a3a5c;" vertex="1" parent="DepartmentService">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="DepartmentService_m0" value="+ index()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="DepartmentService">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="DepartmentService_m1" value="+ create(input)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="DepartmentService">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="DepartmentService_m2" value="+ update(department, input)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="DepartmentService">
+          <mxGeometry y="86" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="DepartmentService_m3" value="+ setStatus(department, status)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="DepartmentService">
+          <mxGeometry y="110" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ShiftService" value="ShiftService" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="340" y="338" width="240" height="134" as="geometry"/>
+        </mxCell>
+        <mxCell id="ShiftService_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#1a3a5c;" vertex="1" parent="ShiftService">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="ShiftService_m0" value="+ index()" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="ShiftService">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ShiftService_m1" value="+ create(input)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="ShiftService">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ShiftService_m2" value="+ update(shift, input)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="ShiftService">
+          <mxGeometry y="86" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ShiftService_m3" value="+ setStatus(shift, status)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="ShiftService">
+          <mxGeometry y="110" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuditLogService" value="AuditLogService" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="2140" y="338" width="240" height="62" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuditLogService_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#1a3a5c;" vertex="1" parent="AuditLogService">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuditLogService_m0" value="+ record(actor, action, table, recordId, result)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuditLogService">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendancePolicy" value="AttendancePolicy" style="swimlane;html=1;startSize=30;fillColor=#5b5b5b;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#5b5b5b;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="2440" y="338" width="240" height="86" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendancePolicy_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#5b5b5b;" vertex="1" parent="AttendancePolicy">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendancePolicy_m0" value="+ view(employee, record)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendancePolicy">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendancePolicy_m1" value="+ search(employee, criteria)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendancePolicy">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequestPolicy" value="LeaveRequestPolicy" style="swimlane;html=1;startSize=30;fillColor=#5b5b5b;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#5b5b5b;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="2740" y="338" width="240" height="86" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequestPolicy_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#5b5b5b;" vertex="1" parent="LeaveRequestPolicy">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequestPolicy_m0" value="+ viewAny(employee)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequestPolicy">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequestPolicy_m1" value="+ approve(employee, request)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequestPolicy">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="EmployeePolicy" value="EmployeePolicy" style="swimlane;html=1;startSize=30;fillColor=#5b5b5b;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#5b5b5b;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="3040" y="338" width="240" height="62" as="geometry"/>
+        </mxCell>
+        <mxCell id="EmployeePolicy_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#5b5b5b;" vertex="1" parent="EmployeePolicy">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="EmployeePolicy_m0" value="+ any(employee)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="EmployeePolicy">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="DepartmentPolicy" value="DepartmentPolicy" style="swimlane;html=1;startSize=30;fillColor=#5b5b5b;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#5b5b5b;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="3340" y="338" width="240" height="62" as="geometry"/>
+        </mxCell>
+        <mxCell id="DepartmentPolicy_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#5b5b5b;" vertex="1" parent="DepartmentPolicy">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="DepartmentPolicy_m0" value="+ any(employee)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="DepartmentPolicy">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ShiftPolicy" value="ShiftPolicy" style="swimlane;html=1;startSize=30;fillColor=#5b5b5b;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#5b5b5b;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="3640" y="338" width="240" height="62" as="geometry"/>
+        </mxCell>
+        <mxCell id="ShiftPolicy_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#5b5b5b;" vertex="1" parent="ShiftPolicy">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="ShiftPolicy_m0" value="+ any(employee)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="ShiftPolicy">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ReportPolicy" value="ReportPolicy" style="swimlane;html=1;startSize=30;fillColor=#5b5b5b;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#5b5b5b;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="3940" y="338" width="240" height="86" as="geometry"/>
+        </mxCell>
+        <mxCell id="ReportPolicy_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#5b5b5b;" vertex="1" parent="ReportPolicy">
+          <mxGeometry y="30" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="ReportPolicy_m0" value="+ view(employee)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="ReportPolicy">
+          <mxGeometry y="38" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ReportPolicy_m1" value="+ export(employee)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="ReportPolicy">
+          <mxGeometry y="62" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee" value="Employee" style="swimlane;html=1;startSize=30;fillColor=#2e5c3a;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#2e5c3a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="940" y="606" width="240" height="398" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee_f0" value="- id" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Employee">
+          <mxGeometry y="30" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee_f1" value="- employee_id" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Employee">
+          <mxGeometry y="54" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee_f2" value="- name" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Employee">
+          <mxGeometry y="78" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee_f3" value="- email" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Employee">
+          <mxGeometry y="102" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee_f4" value="- password_hash (hidden)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Employee">
+          <mxGeometry y="126" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee_f5" value="- role_id" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Employee">
+          <mxGeometry y="150" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee_f6" value="- department_id" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Employee">
+          <mxGeometry y="174" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee_f7" value="- shift_id" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Employee">
+          <mxGeometry y="198" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee_f8" value="- status" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Employee">
+          <mxGeometry y="222" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#2e5c3a;" vertex="1" parent="Employee">
+          <mxGeometry y="246" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee_m0" value="+ role(): belongsTo" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Employee">
+          <mxGeometry y="254" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee_m1" value="+ department(): belongsTo" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Employee">
+          <mxGeometry y="278" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee_m2" value="+ shift(): belongsTo" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Employee">
+          <mxGeometry y="302" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee_m3" value="+ attendanceRecords(): hasMany" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Employee">
+          <mxGeometry y="326" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee_m4" value="+ leaveRequests(): hasMany" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Employee">
+          <mxGeometry y="350" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Employee_m5" value="+ auditLogs(): hasMany" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Employee">
+          <mxGeometry y="374" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Role" value="Role" style="swimlane;html=1;startSize=30;fillColor=#2e5c3a;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#2e5c3a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="640" y="606" width="240" height="158" as="geometry"/>
+        </mxCell>
+        <mxCell id="Role_f0" value="- id" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Role">
+          <mxGeometry y="30" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Role_f1" value="- role_code" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Role">
+          <mxGeometry y="54" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Role_f2" value="- role_name" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Role">
+          <mxGeometry y="78" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Role_f3" value="- status" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Role">
+          <mxGeometry y="102" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Role_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#2e5c3a;" vertex="1" parent="Role">
+          <mxGeometry y="126" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="Role_m0" value="+ employees(): hasMany" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Role">
+          <mxGeometry y="134" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Department" value="Department" style="swimlane;html=1;startSize=30;fillColor=#2e5c3a;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#2e5c3a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="606" width="240" height="158" as="geometry"/>
+        </mxCell>
+        <mxCell id="Department_f0" value="- id" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Department">
+          <mxGeometry y="30" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Department_f1" value="- department_code" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Department">
+          <mxGeometry y="54" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Department_f2" value="- department_name" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Department">
+          <mxGeometry y="78" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Department_f3" value="- status" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Department">
+          <mxGeometry y="102" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Department_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#2e5c3a;" vertex="1" parent="Department">
+          <mxGeometry y="126" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="Department_m0" value="+ employees(): hasMany" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Department">
+          <mxGeometry y="134" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Shift" value="Shift" style="swimlane;html=1;startSize=30;fillColor=#2e5c3a;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#2e5c3a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="340" y="606" width="240" height="230" as="geometry"/>
+        </mxCell>
+        <mxCell id="Shift_f0" value="- id" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Shift">
+          <mxGeometry y="30" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Shift_f1" value="- shift_code" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Shift">
+          <mxGeometry y="54" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Shift_f2" value="- shift_name" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Shift">
+          <mxGeometry y="78" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Shift_f3" value="- start_time" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Shift">
+          <mxGeometry y="102" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Shift_f4" value="- end_time" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Shift">
+          <mxGeometry y="126" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Shift_f5" value="- break_minutes" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Shift">
+          <mxGeometry y="150" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Shift_f6" value="- status" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Shift">
+          <mxGeometry y="174" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="Shift_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#2e5c3a;" vertex="1" parent="Shift">
+          <mxGeometry y="198" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="Shift_m0" value="+ employees(): hasMany" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="Shift">
+          <mxGeometry y="206" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceRecord" value="AttendanceRecord" style="swimlane;html=1;startSize=30;fillColor=#2e5c3a;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#2e5c3a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="606" width="240" height="230" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceRecord_f0" value="- id" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceRecord">
+          <mxGeometry y="30" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceRecord_f1" value="- employee_id" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceRecord">
+          <mxGeometry y="54" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceRecord_f2" value="- work_date" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceRecord">
+          <mxGeometry y="78" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceRecord_f3" value="- check_in_time" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceRecord">
+          <mxGeometry y="102" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceRecord_f4" value="- check_out_time" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceRecord">
+          <mxGeometry y="126" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceRecord_f5" value="- work_hours" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceRecord">
+          <mxGeometry y="150" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceRecord_f6" value="- status" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceRecord">
+          <mxGeometry y="174" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceRecord_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#2e5c3a;" vertex="1" parent="AttendanceRecord">
+          <mxGeometry y="198" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="AttendanceRecord_m0" value="+ employee(): belongsTo" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AttendanceRecord">
+          <mxGeometry y="206" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequest" value="LeaveRequest" style="swimlane;html=1;startSize=30;fillColor=#2e5c3a;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#2e5c3a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1540" y="606" width="240" height="326" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequest_f0" value="- id" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequest">
+          <mxGeometry y="30" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequest_f1" value="- employee_id" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequest">
+          <mxGeometry y="54" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequest_f2" value="- leave_type" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequest">
+          <mxGeometry y="78" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequest_f3" value="- start_date" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequest">
+          <mxGeometry y="102" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequest_f4" value="- end_date" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequest">
+          <mxGeometry y="126" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequest_f5" value="- reason" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequest">
+          <mxGeometry y="150" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequest_f6" value="- status" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequest">
+          <mxGeometry y="174" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequest_f7" value="- approved_by" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequest">
+          <mxGeometry y="198" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequest_f8" value="- approved_at" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequest">
+          <mxGeometry y="222" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequest_f9" value="- comment" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequest">
+          <mxGeometry y="246" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequest_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#2e5c3a;" vertex="1" parent="LeaveRequest">
+          <mxGeometry y="270" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequest_m0" value="+ employee(): belongsTo" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequest">
+          <mxGeometry y="278" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="LeaveRequest_m1" value="+ approver(): belongsTo" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="LeaveRequest">
+          <mxGeometry y="302" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuditLog" value="AuditLog" style="swimlane;html=1;startSize=30;fillColor=#2e5c3a;fontColor=#ffffff;fontStyle=1;fontSize=12;strokeColor=#2e5c3a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1840" y="606" width="240" height="230" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuditLog_f0" value="- id" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuditLog">
+          <mxGeometry y="30" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuditLog_f1" value="- employee_id" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuditLog">
+          <mxGeometry y="54" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuditLog_f2" value="- action" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuditLog">
+          <mxGeometry y="78" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuditLog_f3" value="- target_type" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuditLog">
+          <mxGeometry y="102" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuditLog_f4" value="- target_id" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuditLog">
+          <mxGeometry y="126" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuditLog_f5" value="- result" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuditLog">
+          <mxGeometry y="150" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuditLog_f6" value="- ip_address" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuditLog">
+          <mxGeometry y="174" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuditLog_div" value="" style="line;strokeWidth=1;html=1;fillColor=none;strokeColor=#2e5c3a;" vertex="1" parent="AuditLog">
+          <mxGeometry y="198" width="240" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="AuditLog_m0" value="+ employee(): belongsTo" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="AuditLog">
+          <mxGeometry y="206" width="240" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ectrl_1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="AuthController" target="AuthService">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="ectrl_2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="AttendanceController" target="AttendanceService">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="ectrl_3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="LeaveRequestController" target="LeaveRequestService">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="ectrl_4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ReportController" target="ReportService">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="ectrl_5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="EmployeeController" target="EmployeeService">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="ectrl_6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="DepartmentController" target="DepartmentService">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="ectrl_7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ShiftController" target="ShiftService">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="ecp_8" value="authorize" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="AttendanceController" target="AttendancePolicy">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1060" y="283"/><mxPoint x="2560" y="283"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="ecp_9" value="authorize" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="LeaveRequestController" target="LeaveRequestPolicy">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1660" y="259"/><mxPoint x="2860" y="259"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="ecp_10" value="authorize" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="EmployeeController" target="EmployeePolicy">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1360" y="259"/><mxPoint x="3160" y="259"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="ecp_11" value="authorize" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="DepartmentController" target="DepartmentPolicy">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="160" y="271"/><mxPoint x="3460" y="271"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="ecp_12" value="authorize" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ShiftController" target="ShiftPolicy">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="460" y="271"/><mxPoint x="3760" y="271"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="ecp_13" value="authorize" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ReportController" target="ReportPolicy">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1960" y="247"/><mxPoint x="4060" y="247"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="esvc_14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.500;exitDx=0;exitDy=0;entryX=0.365;entryDx=0;entryDy=0;exitY=0;entryY=0;" edge="1" parent="1" source="LeaveRequestService" target="AuditLogService">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1660" y="308"/><mxPoint x="2227.6" y="308"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="esvc_15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ReportService" target="AuditLogService">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="esvc_16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.500;exitDx=0;exitDy=0;entryX=0.455;entryDx=0;entryDy=0;exitY=0;entryY=0;" edge="1" parent="1" source="EmployeeService" target="AuditLogService">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1360" y="283"/><mxPoint x="2249.2" y="283"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="esvc_17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.500;exitDx=0;exitDy=0;entryX=0.545;entryDx=0;entryDy=0;exitY=0;entryY=0;" edge="1" parent="1" source="DepartmentService" target="AuditLogService">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="160" y="258"/><mxPoint x="2270.8" y="258"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="esvc_18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.500;exitDx=0;exitDy=0;entryX=0.635;entryDx=0;entryDy=0;exitY=0;entryY=0;" edge="1" parent="1" source="ShiftService" target="AuditLogService">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="460" y="233"/><mxPoint x="2292.4" y="233"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="eassoc_19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;strokeColor=#1a3a5c;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="AuthService" target="Employee">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="760" y="539"/><mxPoint x="1060" y="539"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="eassoc_20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;strokeColor=#1a3a5c;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="AttendanceService" target="Employee">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="eassoc_21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;strokeColor=#1a3a5c;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="AttendanceService" target="AttendanceRecord">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1060" y="551"/><mxPoint x="1360" y="551"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="eassoc_22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;strokeColor=#1a3a5c;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="AttendanceService" target="Shift">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1060" y="551"/><mxPoint x="460" y="551"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="eassoc_23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;strokeColor=#1a3a5c;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="LeaveRequestService" target="LeaveRequest">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="eassoc_24" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;strokeColor=#1a3a5c;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="LeaveRequestService" target="Employee">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1660" y="527"/><mxPoint x="1060" y="527"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="eassoc_25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;strokeColor=#1a3a5c;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ReportService" target="AttendanceRecord">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1960" y="515"/><mxPoint x="1360" y="515"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="eassoc_26" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;strokeColor=#1a3a5c;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ReportService" target="LeaveRequest">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1960" y="515"/><mxPoint x="1660" y="515"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="eassoc_27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;strokeColor=#1a3a5c;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="EmployeeService" target="Employee">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1360" y="527"/><mxPoint x="1060" y="527"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="eassoc_28" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;strokeColor=#1a3a5c;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="DepartmentService" target="Department">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="eassoc_29" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;strokeColor=#1a3a5c;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ShiftService" target="Shift">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="eassoc_30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;strokeColor=#1a3a5c;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="AuditLogService" target="AuditLog">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="2260" y="503"/><mxPoint x="1960" y="503"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="emodel_31" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#2e5c3a;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;fontColor=#2e5c3a;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Role" target="Employee">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="emodel_32" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#2e5c3a;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;fontColor=#2e5c3a;exitX=0.500;exitDx=0;exitDy=0;entryX=0.365;entryDx=0;entryDy=0;exitY=1;entryY=1;" edge="1" parent="1" source="Department" target="Employee">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="160" y="1044"/><mxPoint x="1027.6" y="1044"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="emodel_33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#2e5c3a;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;fontColor=#2e5c3a;exitX=0.500;exitDx=0;exitDy=0;entryX=0.455;entryDx=0;entryDy=0;exitY=1;entryY=1;" edge="1" parent="1" source="Shift" target="Employee">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="460" y="1076"/><mxPoint x="1049.2" y="1076"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="emodel_34" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#2e5c3a;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;fontColor=#2e5c3a;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Employee" target="AttendanceRecord">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="emodel_35" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#2e5c3a;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;fontColor=#2e5c3a;exitX=0.545;exitDx=0;exitDy=0;entryX=0.500;entryDx=0;entryDy=0;exitY=1;entryY=1;" edge="1" parent="1" source="Employee" target="AuditLog">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1070.8" y="1108"/><mxPoint x="1960" y="1108"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="emodeln_36" value="申請者/承認者" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#2e5c3a;strokeWidth=1.5;jettySize=auto;orthogonalLoop=1;fontSize=10;labelBackgroundColor=#ffffff;fontColor=#2e5c3a;exitX=0.635;exitDx=0;exitDy=0;entryX=0.500;entryDx=0;entryDy=0;exitY=1;entryY=1;" edge="1" parent="1" source="Employee" target="LeaveRequest">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1092.4" y="1140"/><mxPoint x="1660" y="1140"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="legend_title" value="■ 凡例" style="text;html=1;fontSize=13;fontStyle=1;fontColor=#1a3a5c;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1244" width="200" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="lg1" value="点線矢印（依存）: Controller→Service, Controller→Policy(authorize), Service→Service" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1274" width="720" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="lg2" value="実線矢印（関連）: Service→Model" style="text;html=1;fontSize=11;fontColor=#1a3a5c;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1302" width="640" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="lg3" value="実線（矢印なし）: Model間の関連（1-N）。Employee-LeaveRequestは2本のFK（申請者/承認者）を1本に集約表記" style="text;html=1;fontSize=11;fontColor=#2e5c3a;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1330" width="900" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="lg5" value="色: 茶=Controller / 紺=Service / 灰=Policy / 緑=Model" style="text;html=1;fontSize=11;fontColor=#666666;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1358" width="700" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="lg6" value="配置: barycenter法で並べ替え、遠距離の関連は帯（gap band）越しに迂回配線。1class複数bypassは出入口を分散" style="text;html=1;fontSize=11;fontColor=#666666;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1386" width="800" height="24" as="geometry"/>
+        </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

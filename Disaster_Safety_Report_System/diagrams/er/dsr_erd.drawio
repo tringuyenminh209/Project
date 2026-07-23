@@ -1,0 +1,359 @@
+<mxfile host="Electron">
+  <diagram id="dsr-er-v1" name="ER図">
+    <mxGraphModel dx="2357" dy="1402" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="972" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=22;fontStyle=1;fontColor=#1a3a5c;align=left;verticalAlign=middle;" value="Disaster Safety Report System ER図（7テーブル / 7リレーション）" vertex="1">
+          <mxGeometry height="40" width="800" x="40" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" parent="1" style="text;html=1;fontSize=11;fontColor=#666666;align=left;verticalAlign=middle;" value="companiesは1行のみのプロフィール（他テーブルとのFK関係を持たない、単一企業モデル BR-ORG-001）。上部の迂回線はemployees→safety_reports/notificationsの2階層またぎのFK。" vertex="1">
+          <mxGeometry height="24" width="1100" x="40" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="companies" parent="1" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" value="companies（自社プロフィール・1行のみ）　" vertex="1">
+          <mxGeometry height="160" width="280" x="40" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="companies_id" parent="companies" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" value="[PK] id : BIGINT UNSIGNED" vertex="1">
+          <mxGeometry height="26" width="280" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="companies_name" parent="companies" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="name : VARCHAR(100)" vertex="1">
+          <mxGeometry height="26" width="280" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="companies_address" parent="companies" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="address : VARCHAR(255)" vertex="1">
+          <mxGeometry height="26" width="280" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="companies_created_at" parent="companies" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="created_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="companies_updated_at" parent="companies" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="updated_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="departments" parent="1" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" value="departments（部署）　（TBL-002 / マスタ）" vertex="1">
+          <mxGeometry height="160" width="280" x="40" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="departments_id" parent="departments" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" value="[PK] id : BIGINT UNSIGNED" vertex="1">
+          <mxGeometry height="26" width="280" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="departments_name" parent="departments" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="name : VARCHAR(100)" vertex="1">
+          <mxGeometry height="26" width="280" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="departments_status" parent="departments" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="status : ENUM(&#39;active&#39;,&#39;inactive&#39;)" vertex="1">
+          <mxGeometry height="26" width="280" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="departments_created_at" parent="departments" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="created_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="departments_updated_at" parent="departments" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="updated_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="locations" parent="1" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" value="locations（拠点マスタ）　（TBL-004 / マスタ）" vertex="1">
+          <mxGeometry height="212" width="280" x="40" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="locations_id" parent="locations" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" value="[PK] id : BIGINT UNSIGNED" vertex="1">
+          <mxGeometry height="26" width="280" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="locations_name" parent="locations" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="name : VARCHAR(100)" vertex="1">
+          <mxGeometry height="26" width="280" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="locations_address" parent="locations" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="address : VARCHAR(255)" vertex="1">
+          <mxGeometry height="26" width="280" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="locations_latitude" parent="locations" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="latitude : DECIMAL(10,7)" vertex="1">
+          <mxGeometry height="26" width="280" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="locations_longitude" parent="locations" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="longitude : DECIMAL(10,7)" vertex="1">
+          <mxGeometry height="26" width="280" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="locations_created_at" parent="locations" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="created_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="locations_updated_at" parent="locations" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="updated_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="186" as="geometry" />
+        </mxCell>
+        <mxCell id="employees" parent="1" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" value="employees（従業員）　（TBL-003 / マスタ）" vertex="1">
+          <mxGeometry height="342" width="280" x="520" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="employees_id" parent="employees" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" value="[PK] id : BIGINT UNSIGNED" vertex="1">
+          <mxGeometry height="26" width="280" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="employees_department_id" parent="employees" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" value="[FK] department_id : BIGINT UNSIGNED" vertex="1">
+          <mxGeometry height="26" width="280" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="employees_location_id" parent="employees" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" value="[FK] location_id : BIGINT UNSIGNED" vertex="1">
+          <mxGeometry height="26" width="280" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="employees_name" parent="employees" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="name : VARCHAR(100)" vertex="1">
+          <mxGeometry height="26" width="280" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="employees_name_kana" parent="employees" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="name_kana : VARCHAR(100)" vertex="1">
+          <mxGeometry height="26" width="280" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="employees_email" parent="employees" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="email : VARCHAR(255) (UK)" vertex="1">
+          <mxGeometry height="26" width="280" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="employees_password_hash" parent="employees" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="password_hash : VARCHAR(255)" vertex="1">
+          <mxGeometry height="26" width="280" y="186" as="geometry" />
+        </mxCell>
+        <mxCell id="employees_role" parent="employees" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="role : ENUM(&#39;admin&#39;,&#39;manager&#39;,&#39;staff&#39;)" vertex="1">
+          <mxGeometry height="26" width="280" y="212" as="geometry" />
+        </mxCell>
+        <mxCell id="employees_status" parent="employees" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="status : ENUM(&#39;active&#39;,&#39;inactive&#39;)" vertex="1">
+          <mxGeometry height="26" width="280" y="238" as="geometry" />
+        </mxCell>
+        <mxCell id="employees_last_login_at" parent="employees" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="last_login_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="264" as="geometry" />
+        </mxCell>
+        <mxCell id="employees_created_at" parent="employees" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="created_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="employees_updated_at" parent="employees" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="updated_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="316" as="geometry" />
+        </mxCell>
+        <mxCell id="disasters" parent="1" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" value="disasters（災害イベント）　（TBL-005 / トラン）" vertex="1">
+          <mxGeometry height="264" width="280" x="1060" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="disasters_id" parent="disasters" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" value="[PK] id : BIGINT UNSIGNED" vertex="1">
+          <mxGeometry height="26" width="280" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="disasters_type" parent="disasters" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="type : VARCHAR(50)" vertex="1">
+          <mxGeometry height="26" width="280" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="disasters_occurred_at" parent="disasters" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="occurred_at : DATETIME" vertex="1">
+          <mxGeometry height="26" width="280" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="disasters_target_scope" parent="disasters" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="target_scope : ENUM(&#39;all&#39;,&#39;specific&#39;)" vertex="1">
+          <mxGeometry height="26" width="280" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="disasters_target_department_ids" parent="disasters" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="target_department_ids : JSON" vertex="1">
+          <mxGeometry height="26" width="280" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="disasters_status" parent="disasters" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="status : ENUM(&#39;active&#39;,&#39;resolved&#39;)" vertex="1">
+          <mxGeometry height="26" width="280" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="disasters_created_by" parent="disasters" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" value="[FK] created_by : BIGINT UNSIGNED" vertex="1">
+          <mxGeometry height="26" width="280" y="186" as="geometry" />
+        </mxCell>
+        <mxCell id="disasters_created_at" parent="disasters" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="created_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="212" as="geometry" />
+        </mxCell>
+        <mxCell id="disasters_updated_at" parent="disasters" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="updated_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="238" as="geometry" />
+        </mxCell>
+        <mxCell id="safety_reports" parent="1" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" value="safety_reports（安全報告）　（TBL-006 / トラン）" vertex="1">
+          <mxGeometry height="316" width="280" x="1600" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="safety_reports_id" parent="safety_reports" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" value="[PK] id : BIGINT UNSIGNED" vertex="1">
+          <mxGeometry height="26" width="280" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="safety_reports_disaster_id" parent="safety_reports" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" value="[FK] disaster_id : BIGINT UNSIGNED (UK)" vertex="1">
+          <mxGeometry height="26" width="280" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="safety_reports_employee_id" parent="safety_reports" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" value="[FK] employee_id : BIGINT UNSIGNED (UK)" vertex="1">
+          <mxGeometry height="26" width="280" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="safety_reports_status" parent="safety_reports" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="status : ENUM(&#39;safe&#39;,&#39;needs_help&#39;)" vertex="1">
+          <mxGeometry height="26" width="280" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="safety_reports_comment" parent="safety_reports" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="comment : VARCHAR(500)" vertex="1">
+          <mxGeometry height="26" width="280" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="safety_reports_address_text" parent="safety_reports" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="address_text : VARCHAR(200)" vertex="1">
+          <mxGeometry height="26" width="280" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="safety_reports_latitude" parent="safety_reports" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="latitude : DECIMAL(10,7)" vertex="1">
+          <mxGeometry height="26" width="280" y="186" as="geometry" />
+        </mxCell>
+        <mxCell id="safety_reports_longitude" parent="safety_reports" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="longitude : DECIMAL(10,7)" vertex="1">
+          <mxGeometry height="26" width="280" y="212" as="geometry" />
+        </mxCell>
+        <mxCell id="safety_reports_reported_at" parent="safety_reports" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="reported_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="238" as="geometry" />
+        </mxCell>
+        <mxCell id="safety_reports_created_at" parent="safety_reports" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="created_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="264" as="geometry" />
+        </mxCell>
+        <mxCell id="safety_reports_updated_at" parent="safety_reports" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="updated_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="notifications" parent="1" style="swimlane;html=1;startSize=30;fillColor=#4a1a5c;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#4a1a5c;swimlaneFillColor=#ffffff;rounded=0;" value="notifications（通知）　（TBL-007 / サポート）" vertex="1">
+          <mxGeometry height="212" width="280" x="1600" y="576" as="geometry" />
+        </mxCell>
+        <mxCell id="notifications_id" parent="notifications" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" value="[PK] id : BIGINT UNSIGNED" vertex="1">
+          <mxGeometry height="26" width="280" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="notifications_employee_id" parent="notifications" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" value="[FK] employee_id : BIGINT UNSIGNED" vertex="1">
+          <mxGeometry height="26" width="280" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="notifications_disaster_id" parent="notifications" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" value="[FK] disaster_id : BIGINT UNSIGNED" vertex="1">
+          <mxGeometry height="26" width="280" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="notifications_type" parent="notifications" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="type : ENUM(&#39;disaster_alert&#39;,&#39;report_reminder&#39;)" vertex="1">
+          <mxGeometry height="26" width="280" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="notifications_is_read" parent="notifications" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="is_read : BOOLEAN" vertex="1">
+          <mxGeometry height="26" width="280" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="notifications_read_at" parent="notifications" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="read_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="notifications_created_at" parent="notifications" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" value="created_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="26" width="280" y="186" as="geometry" />
+        </mxCell>
+        <mxCell id="efwd_1" edge="1" parent="1" source="departments_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" target="employees_department_id" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="370" y="463" />
+              <mxPoint x="370" y="289" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_1_l1" connectable="0" parent="efwd_1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.85" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_1_lN" connectable="0" parent="efwd_1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.85" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_2" edge="1" parent="1" source="locations_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" target="employees_location_id" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="410" y="663" />
+              <mxPoint x="410" y="315" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_2_l1" connectable="0" parent="efwd_2" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.85" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_2_lN" connectable="0" parent="efwd_2" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.85" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_3" edge="1" parent="1" source="employees_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" target="disasters_created_by" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="900" y="263" />
+              <mxPoint x="900" y="419" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_3_l1" connectable="0" parent="efwd_3" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.85" as="geometry">
+            <mxPoint y="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_3_lN" connectable="0" parent="efwd_3" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.85" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_4" edge="1" parent="1" source="disasters_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" target="safety_reports_disaster_id" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1400" y="263" />
+              <mxPoint x="1400" y="289" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_4_l1" connectable="0" parent="efwd_4" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.85" as="geometry">
+            <mxPoint y="-7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_4_lN" connectable="0" parent="efwd_4" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.85" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_5" edge="1" parent="1" source="disasters_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" target="notifications_disaster_id" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1440" y="263" />
+              <mxPoint x="1440" y="671" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_5_l1" connectable="0" parent="efwd_5" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.85" as="geometry">
+            <mxPoint y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_5_lN" connectable="0" parent="efwd_5" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.85" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ebyp_6" edge="1" parent="1" source="employees_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" target="safety_reports_employee_id" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="840" y="263" />
+              <mxPoint x="840" y="120" />
+              <mxPoint x="1480" y="120" />
+              <mxPoint x="1480" y="315" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ebyp_6_l1" connectable="0" parent="ebyp_6" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.85" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ebyp_6_lN" connectable="0" parent="ebyp_6" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.85" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ebyp_7" edge="1" parent="1" source="employees_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" target="notifications_employee_id" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="960" y="263" />
+              <mxPoint x="960" y="160" />
+              <mxPoint x="1520" y="160" />
+              <mxPoint x="1520" y="645" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ebyp_7_l1" connectable="0" parent="ebyp_7" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.85" as="geometry">
+            <mxPoint y="14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ebyp_7_lN" connectable="0" parent="ebyp_7" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.85" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend_title" parent="1" style="text;html=1;fontSize=13;fontStyle=1;fontColor=#1a3a5c;align=left;verticalAlign=middle;" value="■ 凡例" vertex="1">
+          <mxGeometry height="24" width="200" x="40" y="892" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_pk_box" parent="1" style="rounded=0;fillColor=#fff9c4;strokeColor=#d4c76a;" value="" vertex="1">
+          <mxGeometry height="24" width="24" x="40" y="922" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_pk_label" parent="1" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" value="PK（主キー）" vertex="1">
+          <mxGeometry height="24" width="140" x="72" y="922" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_fk_box" parent="1" style="rounded=0;fillColor=#d1ecf1;strokeColor=#9fcfdc;" value="" vertex="1">
+          <mxGeometry height="24" width="24" x="240" y="922" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_fk_label" parent="1" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" value="FK（外部キー）" vertex="1">
+          <mxGeometry height="24" width="140" x="272" y="922" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_normal_box" parent="1" style="rounded=0;fillColor=#ffffff;strokeColor=#dddddd;" value="" vertex="1">
+          <mxGeometry height="24" width="24" x="440" y="922" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_normal_label" parent="1" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" value="通常列" vertex="1">
+          <mxGeometry height="24" width="140" x="472" y="922" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_rel_label" parent="1" style="text;html=1;fontSize=11;fontColor=#666666;align=left;verticalAlign=middle;" value="→ 線の両端: 「1」側=親（PK）／「N」側=子（FK）。safety_reports/notificationsの(UK)はdisaster_id/employee_idの複合UNIQUE・複合INDEXの一部であることを示す。" vertex="1">
+          <mxGeometry height="24" width="700" x="600" y="922" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

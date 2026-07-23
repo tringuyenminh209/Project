@@ -1,0 +1,324 @@
+<mxfile host="claude-code">
+    <diagram id="hr-attendance-er" name="ER図">
+        <mxGraphModel dx="1400" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1480" pageHeight="1224" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="HR &amp; Attendance System ER図（7テーブル / 7リレーション）" style="text;html=1;fontSize=22;fontStyle=1;fontColor=#1a3a5c;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="800" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="subtitle" value="大分類: マスタ / トラン / サポート（ログ）。leave_requestsはemployeesへ2本のFK（申請者=employee_id / 承認者=approved_by）を持つ。" style="text;html=1;fontSize=11;fontColor=#666666;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="60" width="1000" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="subtitle2" value="全リレーションが隣接列間のforward-edge（列をまたぐ関係なし）— bypass laneは不要。employees.idは4リレーションの親のため「1」ラベルを縦に分散配置。" style="text;html=1;fontSize=11;fontColor=#666666;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="82" width="1000" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="roles" value="roles（権限）　（TBL-001 / マスタ）" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="140" width="320" height="186" as="geometry"/>
+        </mxCell>
+        <mxCell id="roles_id" value="[PK] id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="roles">
+          <mxGeometry y="30" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="roles_role_code" value="role_code : VARCHAR(50) (UK)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="roles">
+          <mxGeometry y="56" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="roles_role_name" value="role_name : VARCHAR(100)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="roles">
+          <mxGeometry y="82" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="roles_status" value="status : ENUM('active','inactive')" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="roles">
+          <mxGeometry y="108" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="roles_created_at" value="created_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="roles">
+          <mxGeometry y="134" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="roles_updated_at" value="updated_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="roles">
+          <mxGeometry y="160" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="departments" value="departments（部署）　（TBL-002 / マスタ）" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="376" width="320" height="186" as="geometry"/>
+        </mxCell>
+        <mxCell id="departments_id" value="[PK] id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="departments">
+          <mxGeometry y="30" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="departments_department_code" value="department_code : VARCHAR(50) (UK)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="departments">
+          <mxGeometry y="56" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="departments_department_name" value="department_name : VARCHAR(100) (UK)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="departments">
+          <mxGeometry y="82" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="departments_status" value="status : ENUM('active','inactive')" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="departments">
+          <mxGeometry y="108" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="departments_created_at" value="created_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="departments">
+          <mxGeometry y="134" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="departments_updated_at" value="updated_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="departments">
+          <mxGeometry y="160" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="shifts" value="shifts（シフト）　（TBL-003 / マスタ）" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="612" width="320" height="264" as="geometry"/>
+        </mxCell>
+        <mxCell id="shifts_id" value="[PK] id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="shifts">
+          <mxGeometry y="30" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="shifts_shift_code" value="shift_code : VARCHAR(50) (UK)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="shifts">
+          <mxGeometry y="56" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="shifts_shift_name" value="shift_name : VARCHAR(100)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="shifts">
+          <mxGeometry y="82" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="shifts_start_time" value="start_time : TIME" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="shifts">
+          <mxGeometry y="108" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="shifts_end_time" value="end_time : TIME" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="shifts">
+          <mxGeometry y="134" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="shifts_break_minutes" value="break_minutes : INT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="shifts">
+          <mxGeometry y="160" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="shifts_status" value="status : ENUM('active','inactive')" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="shifts">
+          <mxGeometry y="186" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="shifts_created_at" value="created_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="shifts">
+          <mxGeometry y="212" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="shifts_updated_at" value="updated_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="shifts">
+          <mxGeometry y="238" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="employees" value="employees（社員）　（TBL-004 / マスタ）" style="swimlane;html=1;startSize=30;fillColor=#1a3a5c;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#1a3a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="580" y="140" width="320" height="316" as="geometry"/>
+        </mxCell>
+        <mxCell id="employees_id" value="[PK] id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="employees">
+          <mxGeometry y="30" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="employees_employee_id" value="employee_id : VARCHAR(50) (UK)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="employees">
+          <mxGeometry y="56" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="employees_name" value="name : VARCHAR(100)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="employees">
+          <mxGeometry y="82" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="employees_email" value="email : VARCHAR(255) (UK)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="employees">
+          <mxGeometry y="108" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="employees_password_hash" value="password_hash : VARCHAR(255)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="employees">
+          <mxGeometry y="134" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="employees_role_id" value="[FK] role_id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="employees">
+          <mxGeometry y="160" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="employees_department_id" value="[FK] department_id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="employees">
+          <mxGeometry y="186" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="employees_shift_id" value="[FK] shift_id : BIGINT UNSIGNED (nullable)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="employees">
+          <mxGeometry y="212" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="employees_status" value="status : ENUM('active','inactive')" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="employees">
+          <mxGeometry y="238" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="employees_created_at" value="created_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="employees">
+          <mxGeometry y="264" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="employees_updated_at" value="updated_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="employees">
+          <mxGeometry y="290" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="attendance_records" value="attendance_records（勤怠記録）　（TBL-005 / トラン）" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="140" width="320" height="264" as="geometry"/>
+        </mxCell>
+        <mxCell id="attendance_records_id" value="[PK] id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="attendance_records">
+          <mxGeometry y="30" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="attendance_records_employee_id" value="[FK] employee_id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="attendance_records">
+          <mxGeometry y="56" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="attendance_records_work_date" value="work_date : DATE (composite UK)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="attendance_records">
+          <mxGeometry y="82" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="attendance_records_check_in_time" value="check_in_time : TIME (nullable)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="attendance_records">
+          <mxGeometry y="108" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="attendance_records_check_out_time" value="check_out_time : TIME (nullable)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="attendance_records">
+          <mxGeometry y="134" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="attendance_records_work_hours" value="work_hours : DECIMAL(5,2) (nullable)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="attendance_records">
+          <mxGeometry y="160" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="attendance_records_status" value="status : ENUM('CheckedIn','CheckedOut','Fixed')" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="attendance_records">
+          <mxGeometry y="186" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="attendance_records_created_at" value="created_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="attendance_records">
+          <mxGeometry y="212" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="attendance_records_updated_at" value="updated_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="attendance_records">
+          <mxGeometry y="238" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="leave_requests" value="leave_requests（休暇申請）　（TBL-006 / トラン）" style="swimlane;html=1;startSize=30;fillColor=#5b3a1a;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#5b3a1a;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="454" width="320" height="342" as="geometry"/>
+        </mxCell>
+        <mxCell id="leave_requests_id" value="[PK] id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="leave_requests">
+          <mxGeometry y="30" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="leave_requests_employee_id" value="[FK] employee_id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="leave_requests">
+          <mxGeometry y="56" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="leave_requests_leave_type" value="leave_type : ENUM('paid_leave','absence','late','early_leave')" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="leave_requests">
+          <mxGeometry y="82" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="leave_requests_start_date" value="start_date : DATE" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="leave_requests">
+          <mxGeometry y="108" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="leave_requests_end_date" value="end_date : DATE" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="leave_requests">
+          <mxGeometry y="134" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="leave_requests_reason" value="reason : VARCHAR(500)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="leave_requests">
+          <mxGeometry y="160" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="leave_requests_status" value="status : ENUM('Pending','Approved','Rejected')" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="leave_requests">
+          <mxGeometry y="186" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="leave_requests_approved_by" value="[FK] approved_by : BIGINT UNSIGNED (nullable)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="leave_requests">
+          <mxGeometry y="212" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="leave_requests_approved_at" value="approved_at : TIMESTAMP (nullable)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="leave_requests">
+          <mxGeometry y="238" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="leave_requests_comment" value="comment : VARCHAR(500) (nullable)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="leave_requests">
+          <mxGeometry y="264" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="leave_requests_created_at" value="created_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="leave_requests">
+          <mxGeometry y="290" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="leave_requests_updated_at" value="updated_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="leave_requests">
+          <mxGeometry y="316" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="audit_logs" value="audit_logs（操作ログ）　（TBL-007 / サポート）" style="swimlane;html=1;startSize=30;fillColor=#4a1a5c;fontColor=#ffffff;fontStyle=1;fontSize=13;strokeColor=#4a1a5c;swimlaneFillColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="846" width="320" height="238" as="geometry"/>
+        </mxCell>
+        <mxCell id="audit_logs_id" value="[PK] id : BIGINT UNSIGNED" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="audit_logs">
+          <mxGeometry y="30" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="audit_logs_employee_id" value="[FK] employee_id : BIGINT UNSIGNED (nullable)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="audit_logs">
+          <mxGeometry y="56" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="audit_logs_action" value="action : VARCHAR(100)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="audit_logs">
+          <mxGeometry y="82" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="audit_logs_target_type" value="target_type : VARCHAR(100) (nullable)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="audit_logs">
+          <mxGeometry y="108" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="audit_logs_target_id" value="target_id : BIGINT UNSIGNED (nullable)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="audit_logs">
+          <mxGeometry y="134" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="audit_logs_result" value="result : ENUM('success','failure')" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="audit_logs">
+          <mxGeometry y="160" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="audit_logs_ip_address" value="ip_address : VARCHAR(45) (nullable)" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="audit_logs">
+          <mxGeometry y="186" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="audit_logs_created_at" value="created_at : TIMESTAMP" style="rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;fontSize=11;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="audit_logs">
+          <mxGeometry y="212" width="320" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="efwd_1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="roles_id" target="employees_role_id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="400" y="183"/><mxPoint x="400" y="313"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_1_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_1">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="0"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_1_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_1">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="departments_id" target="employees_department_id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="430" y="419"/><mxPoint x="430" y="339"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_2_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_2">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="0"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_2_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_2">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="shifts_id" target="employees_shift_id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="460" y="655"/><mxPoint x="460" y="365"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_3_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_3">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="0"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_3_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_3">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="employees_id" target="attendance_records_employee_id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="940" y="183"/><mxPoint x="940" y="209"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_4_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_4">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="-21"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_4_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_4">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_5" value="申請者" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="employees_id" target="leave_requests_employee_id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="970" y="183"/><mxPoint x="970" y="523"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_5_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_5">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="-7"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_5_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_5">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_6" value="承認者" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="employees_id" target="leave_requests_approved_by">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="1000" y="183"/><mxPoint x="1000" y="679"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_6_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_6">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="7"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_6_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_6">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#1a3a5c;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="employees_id" target="audit_logs_employee_id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="1030" y="183"/><mxPoint x="1030" y="915"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_7_l1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_7">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint as="offset" x="0" y="21"/></mxGeometry>
+        </mxCell>
+        <mxCell id="efwd_7_lN" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="efwd_7">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="legend_title" value="■ 凡例" style="text;html=1;fontSize=13;fontStyle=1;fontColor=#1a3a5c;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1144" width="200" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_pk_box" value="" style="rounded=0;fillColor=#fff9c4;strokeColor=#d4c76a;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1174" width="24" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_pk_label" value="PK（主キー）" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="72" y="1174" width="140" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_fk_box" value="" style="rounded=0;fillColor=#d1ecf1;strokeColor=#9fcfdc;" vertex="1" parent="1">
+          <mxGeometry x="240" y="1174" width="24" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_fk_label" value="FK（外部キー）" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="272" y="1174" width="140" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_normal_box" value="" style="rounded=0;fillColor=#ffffff;strokeColor=#dddddd;" vertex="1" parent="1">
+          <mxGeometry x="440" y="1174" width="24" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_normal_label" value="通常列" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="472" y="1174" width="140" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_rel_label" value="→ 線の両端: 「1」側=親（PK）／「N」側=子（FK）。leave_requestsの2本線は「申請者」「承認者」で区別。" style="text;html=1;fontSize=11;fontColor=#666666;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="600" y="1174" width="700" height="24" as="geometry"/>
+        </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
