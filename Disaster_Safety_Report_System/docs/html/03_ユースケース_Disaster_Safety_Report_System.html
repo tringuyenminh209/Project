@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ユースケース - Disaster Safety Report System</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/mermaid.min.js"></script>
+</head>
+<body id="top">
+<nav class="doc-nav no-print">
+  <div class="nav-row nav-row-adjacent">
+    <a class="nav-adjacent" href="02_要件定義書_Disaster_Safety_Report_System.html">← 02 要件定義書</a>
+    <a class="nav-index" href="index.html">目次</a>
+    <a class="nav-adjacent" href="04_業務フロー_Disaster_Safety_Report_System.html">04 業務フロー →</a>
+  </div>
+  <div class="nav-row nav-row-chips"><a class="nav-chip" href="00_開発計画書_Disaster_Safety_Report_System.html" title="開発計画書">00</a><a class="nav-chip" href="01_企画書_Disaster_Safety_Report_System.html" title="企画書">01</a><a class="nav-chip" href="02_要件定義書_Disaster_Safety_Report_System.html" title="要件定義書">02</a><a class="nav-chip nav-chip-current" href="03_ユースケース_Disaster_Safety_Report_System.html" title="ユースケース">03</a><a class="nav-chip" href="04_業務フロー_Disaster_Safety_Report_System.html" title="業務フロー">04</a><a class="nav-chip" href="05_画面遷移図_Disaster_Safety_Report_System.html" title="画面遷移図">05</a><a class="nav-chip" href="06_画面設計_Disaster_Safety_Report_System.html" title="画面設計">06</a><a class="nav-chip" href="07_機能一覧_Disaster_Safety_Report_System.html" title="機能一覧">07</a><a class="nav-chip" href="08_ER図_Disaster_Safety_Report_System.html" title="ER図">08</a><a class="nav-chip" href="09_テーブル定義_Disaster_Safety_Report_System.html" title="テーブル定義">09</a><a class="nav-chip" href="10_API設計_Disaster_Safety_Report_System.html" title="API設計">10</a><a class="nav-chip" href="11_基本設計書_Disaster_Safety_Report_System.html" title="基本設計書">11</a><a class="nav-chip" href="12_詳細設計書_Disaster_Safety_Report_System.html" title="詳細設計書">12</a><a class="nav-chip" href="13_インフラ設計_Disaster_Safety_Report_System.html" title="インフラ設計">13</a><a class="nav-chip" href="14_セキュリティ設計_Disaster_Safety_Report_System.html" title="セキュリティ設計">14</a><a class="nav-chip" href="15_単体試験仕様書_Disaster_Safety_Report_System.html" title="単体試験仕様書">15</a><a class="nav-chip" href="16_結合試験仕様書_Disaster_Safety_Report_System.html" title="結合試験仕様書">16</a><a class="nav-chip" href="17_システム試験仕様書_Disaster_Safety_Report_System.html" title="システム試験仕様書">17</a><a class="nav-chip" href="18_UAT_Disaster_Safety_Report_System.html" title="UAT">18</a><a class="nav-chip" href="19_リリース手順書_Disaster_Safety_Report_System.html" title="リリース手順書">19</a><a class="nav-chip" href="20_運用保守手順書_Disaster_Safety_Report_System.html" title="運用保守手順書">20</a></div>
+</nav>
+<table class="doc-header-bar">
+  <tr>
+    <td class="hb-type" rowspan="2">ユースケース</td>
+    <td class="hb-sys" rowspan="2">Disaster Safety Report System</td>
+    <td class="hb-label">文書番号</td>
+    <td class="hb-val">DSR-03</td>
+    <td class="hb-label">バージョン</td>
+    <td class="hb-val">1.1</td>
+  </tr>
+  <tr>
+    <td class="hb-label">作成日</td>
+    <td class="hb-val">2026/07/22</td>
+    <td class="hb-label">作成者</td>
+    <td class="hb-val">Nguyen Minh Tri</td>
+  </tr>
+</table>
+<div class="doc-body">
+<h1 class="doc-title">ユースケース</h1><p>Disaster Safety Report System（防災安全報告システム）</p><div class="section-title">■ 文書管理情報</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>システム名</td><td>Disaster Safety Report System</td></tr><tr><td>文書名</td><td>ユースケース</td></tr><tr><td>文書番号</td><td>DSR-03</td></tr><tr><td>作成者</td><td>Nguyen Minh Tri</td></tr><tr><td>作成日</td><td>2026/07/22</td></tr><tr><td>バージョン</td><td>1.1</td></tr><tr><td>ステータス</td><td>Draft</td></tr></tbody></table><div class="section-title">■ 改訂履歴</div><table><thead><tr><th>Version</th><th>日付</th><th>作成者</th><th>内容</th></tr></thead><tbody><tr><td>0.0</td><td>2026/07/22</td><td>Nguyen Minh Tri</td><td>スケルトン作成</td></tr><tr><td>1.0</td><td>2026/07/22</td><td>Nguyen Minh Tri</td><td>初版作成（全15ユースケース、02_要件定義書 v1.0の権限マトリクス・BR-IDと整合）</td></tr><tr><td>1.1</td><td>2026/07/22</td><td>Nguyen Minh Tri</td><td>整合性監査（02 v1.1と連動）: UC-008/009のアクターに部門管理者を追加（権限マトリクスでは当初から〇だったが本書が一般社員のみ記載で不整合だった）。ユースケース図にManager→UC-008/009の線を追加。</td></tr></tbody></table><div class="section-title">■ 目次</div><ol><li>本書の目的</li><li>アクター定義</li><li>ユースケース一覧</li><li>ユースケース図</li><li>Include / Extend 関係</li><li>共通事前条件・事後条件</li><li>ユースケース詳細</li><li>ユースケースと要件の対応</li><li>例外・共通ルール</li><li>まとめ</li></ol><div class="section-title">■ 1. 本書の目的</div><p>本書は、Disaster Safety Report Systemにおいて「誰が（WHO）」「何を行うか（WHAT）」をユースケースとして定義する。02_要件定義書の機能要件（REQ-001〜018）を利用者視点の振る舞いに変換し、04_業務フロー 05_画面遷移図 07_機能一覧の基準とする。</p><p>本システムのユースケースの特徴は、<strong>部門管理者の権限範囲が「自分の所属部署」という固定の帰属関係で決まる</strong>ことである（Project 03の「プロジェクトごとに変わるOwner/Member」という文脈依存とは異なり、1人の部門管理者は常に同じ部署のみを見る）。この境界判定はINC-003（部署スコープ確認）として全ダッシュボード系ユースケースに織り込む。</p><div class="section-title">■ 2. アクター定義</div><table><thead><tr><th>アクター</th><th>説明</th><th>対応ロール</th></tr></thead><tbody><tr><td>未認証ユーザー</td><td>ログイン前の利用者</td><td>-</td></tr><tr><td>一般社員</td><td>安全報告を行う従業員</td><td><code>employees.role=staff</code></td></tr><tr><td>部門管理者</td><td>自部署の状況を把握する管理職</td><td><code>employees.role=manager</code></td></tr><tr><td>Admin</td><td>BCP担当・危機管理部門。組織マスタ・災害イベントを管理する</td><td><code>employees.role=admin</code></td></tr><tr><td>System</td><td>同報通知の作成・未報告者への催促バッチ・ログ記録の実行主体</td><td>-</td></tr></tbody></table><p><strong>注意</strong>: 3層は<code>employees.role</code>のフラットな属性であり、Project 03のような「リソースごとに変わる」文脈依存の関係ではない（02_要件定義書 3章）。</p><div class="section-title">■ 3. ユースケース一覧</div><table><thead><tr><th>UC-ID</th><th>ユースケース名</th><th>主アクター</th><th>関連REQ</th><th>関連SCR</th><th>優先度</th></tr></thead><tbody><tr><td>UC-001</td><td>ログインする</td><td>全ユーザー</td><td>REQ-001</td><td>SCR-001</td><td>Must</td></tr><tr><td>UC-002</td><td>ログアウトする</td><td>認証済みユーザー</td><td>REQ-002</td><td>-</td><td>Must</td></tr><tr><td>UC-003</td><td>部署を管理する</td><td>Admin</td><td>REQ-004</td><td>SCR-007</td><td>Must</td></tr><tr><td>UC-004</td><td>従業員を管理する</td><td>Admin</td><td>REQ-005</td><td>SCR-008</td><td>Must</td></tr><tr><td>UC-005</td><td>災害イベントを作成する</td><td>Admin</td><td>REQ-006 / 011</td><td>SCR-006</td><td>Must</td></tr><tr><td>UC-006</td><td>災害イベントを編集・収束切替する</td><td>Admin</td><td>REQ-007</td><td>SCR-006</td><td>Must</td></tr><tr><td>UC-007</td><td>災害一覧・詳細を閲覧する</td><td>全ユーザー</td><td>REQ-008</td><td>SCR-011</td><td>Must</td></tr><tr><td>UC-008</td><td>安全報告を提出する</td><td>一般社員 / 部門管理者</td><td>REQ-009</td><td>SCR-003</td><td>Must</td></tr><tr><td>UC-009</td><td>安全報告を再報告する</td><td>一般社員 / 部門管理者</td><td>REQ-010</td><td>SCR-003</td><td>Must</td></tr><tr><td>UC-010</td><td>通知を確認する</td><td>認証済みユーザー</td><td>REQ-013</td><td>SCR-009</td><td>Must</td></tr><tr><td>UC-011</td><td>部署ダッシュボードを閲覧する（地図含む）</td><td>部門管理者</td><td>REQ-014 / 016</td><td>SCR-004</td><td>Must</td></tr><tr><td>UC-012</td><td>全社ダッシュボードを閲覧する（地図含む）</td><td>Admin</td><td>REQ-015 / 016</td><td>SCR-005</td><td>Must</td></tr><tr><td>UC-013</td><td>未報告者へ催促通知を送る</td><td>System</td><td>REQ-012</td><td>-</td><td>Must</td></tr><tr><td>UC-014</td><td>パスワードを変更する</td><td>認証済みユーザー</td><td>REQ-017</td><td>SCR-010</td><td>Should</td></tr><tr><td>UC-015</td><td>操作ログを記録する</td><td>System</td><td>REQ-018</td><td>-</td><td>Should</td></tr></tbody></table><p>REQ-003（権限制御）は特定のユースケースに紐づかない横断的要件であり、INC-001〜003（5章）として全ユースケースに織り込まれる（07_機能一覧で横断的機能として採番する）。</p><div class="section-title">■ 4. ユースケース図</div><div class="mermaid">
+flowchart LR
+    Guest["未認証ユーザー"]
+    Staff["一般社員"]
+    Manager["部門管理者"]
+    Admin["Admin"]
+    System["System"]
+
+    UC001["UC-001 ログインする"]
+    UC002["UC-002 ログアウトする"]
+    UC003["UC-003 部署を管理する"]
+    UC004["UC-004 従業員を管理する"]
+    UC005["UC-005 災害イベントを作成する"]
+    UC006["UC-006 災害イベントを編集・収束切替する"]
+    UC007["UC-007 災害一覧・詳細を閲覧する"]
+    UC008["UC-008 安全報告を提出する"]
+    UC009["UC-009 安全報告を再報告する"]
+    UC010["UC-010 通知を確認する"]
+    UC011["UC-011 部署ダッシュボードを閲覧する"]
+    UC012["UC-012 全社ダッシュボードを閲覧する"]
+    UC013["UC-013 未報告者へ催促通知を送る"]
+    UC014["UC-014 パスワードを変更する"]
+    UC015["UC-015 操作ログを記録する"]
+
+    SCOPE["include: 部署スコープ確認"]
+    ROLE["include: Adminロール確認"]
+    NTF["include: 同報通知作成"]
+
+    Guest --&gt; UC001
+
+    Staff --&gt; UC002
+    Staff --&gt; UC007
+    Staff --&gt; UC008
+    Staff --&gt; UC009
+    Staff --&gt; UC010
+    Staff --&gt; UC014
+
+    Manager --&gt; UC002
+    Manager --&gt; UC007
+    Manager --&gt; UC008
+    Manager --&gt; UC009
+    Manager --&gt; UC010
+    Manager --&gt; UC011
+    Manager --&gt; UC014
+
+    Admin --&gt; UC002
+    Admin --&gt; UC003
+    Admin --&gt; UC004
+    Admin --&gt; UC005
+    Admin --&gt; UC006
+    Admin --&gt; UC007
+    Admin --&gt; UC010
+    Admin --&gt; UC012
+    Admin --&gt; UC014
+
+    System --&gt; UC013
+    System --&gt; UC015
+
+    UC003 -.-&gt;|include| ROLE
+    UC004 -.-&gt;|include| ROLE
+    UC005 -.-&gt;|include| ROLE
+    UC006 -.-&gt;|include| ROLE
+    UC012 -.-&gt;|include| ROLE
+
+    UC011 -.-&gt;|include| SCOPE
+
+    UC005 -.-&gt;|include| NTF
+    UC013 -.-&gt;|include| NTF
+</div><div class="section-title">■ 5. Include / Extend 関係</div><div class="subsection-title">5.1 Include</div><table><thead><tr><th>Include ID</th><th>共通処理</th><th>対象ユースケース</th><th>内容</th></tr></thead><tbody><tr><td>INC-001</td><td>ログイン済み確認</td><td>UC-002〜UC-015（認証必須の全UC）</td><td>Sanctumトークンを検証する。無効ならE010。</td></tr><tr><td>INC-002</td><td>Adminロール確認</td><td>UC-003 / UC-004 / UC-005 / UC-006 / UC-012</td><td><code>employees.role=admin</code>を確認する（BR-PRM-003）。一般社員・部門管理者が実行するとE002。</td></tr><tr><td>INC-003</td><td>部署スコープ確認</td><td>UC-011（部署ダッシュボード）</td><td>対象部署が自分の<code>department_id</code>と一致することを確認する（BR-PRM-002）。<strong>本システムで最も重要な共通処理</strong>。他部署の指定はE007とする（他部署自体は存在が公知のため実質的にはE002でもよいが、02_要件定義書 8章の凡例「秘=存在秘匿（E007）」の表記に合わせ、本書でも一貫してE007とする）。</td></tr><tr><td>INC-004</td><td>入力チェック</td><td>入力を伴う全UC</td><td>必須・形式・桁数を確認する（12章）。違反はE003。</td></tr><tr><td>INC-005</td><td>同報通知作成</td><td>UC-005（作成時）/ UC-013（バッチ）</td><td>BR-NTF-001/002の条件を判定し、対象範囲の従業員へ<code>notifications</code>を作成する。</td></tr><tr><td>INC-006</td><td>操作ログ記録</td><td>UC-003 / UC-004 / UC-005 / UC-006</td><td>組織マスタ・災害の変更をアプリケーションログに記録する（REQ-018 → UC-015）。</td></tr></tbody></table><div class="subsection-title">5.2 Extend</div><table><thead><tr><th>Extend ID</th><th>拡張処理</th><th>発生条件</th><th>対象ユースケース</th></tr></thead><tbody><tr><td>EXT-001</td><td>セッションタイムアウト</td><td>未認証・トークン期限切れ（8時間）</td><td>認証必須の全UC</td></tr><tr><td>EXT-002</td><td>権限エラー（E002）</td><td>Admin専用操作を一般社員/部門管理者が実行</td><td>UC-003 / UC-004 / UC-005 / UC-006 / UC-012</td></tr><tr><td>EXT-003</td><td>部署外アクセス拒否（E007）</td><td>部門管理者が自部署以外を指定</td><td>UC-011</td></tr><tr><td>EXT-004</td><td>状態不整合（E006）</td><td>収束済み災害への新規報告、対象外の災害への報告</td><td>UC-008</td></tr><tr><td>EXT-005</td><td>バリデーションエラー（E003）</td><td>入力値不正</td><td>入力を伴う全UC</td></tr><tr><td>EXT-006</td><td>外部API障害への耐性</td><td>Google Geocoding APIのタイムアウト・エラー</td><td>UC-008 / UC-009（位置情報なしで受理を継続）</td></tr></tbody></table><div class="section-title">■ 6. 共通事前条件・事後条件</div><div class="subsection-title">6.1 共通事前条件</div><table><thead><tr><th>条件ID</th><th>内容</th></tr></thead><tbody><tr><td>PRE-001</td><td>従業員がシステムに登録されていること。</td></tr><tr><td>PRE-002</td><td>従業員が有効状態（<code>employees.status=active</code>）であること。</td></tr><tr><td>PRE-003</td><td>認証必須のUCでは、ログイン済み（有効なトークン保持）であること。</td></tr><tr><td>PRE-004</td><td>Admin専用UC（UC-003〜006/012）では、<code>role=admin</code>であること（INC-002）。</td></tr><tr><td>PRE-005</td><td>部署ダッシュボード（UC-011）では、対象部署が自分の所属部署であること（INC-003）。</td></tr></tbody></table><div class="subsection-title">6.2 共通事後条件</div><table><thead><tr><th>条件ID</th><th>内容</th></tr></thead><tbody><tr><td>POST-001</td><td>状態を変更する操作は、対応するテーブルに変更内容が保存される。</td></tr><tr><td>POST-002</td><td>複数テーブル・大量件数にまたがる操作（災害作成+同報通知）は、対象範囲の確定と通知作成が同一トランザクションで完結する。</td></tr><tr><td>POST-003</td><td>通知条件（BR-NTF-001/002）に合致する操作は、<code>notifications</code>が作成される。</td></tr><tr><td>POST-004</td><td>組織マスタ・災害の変更操作は操作ログに記録される（INC-006）。</td></tr></tbody></table><div class="section-title">■ 7. ユースケース詳細</div><div class="subsection-title">7.1 UC-001 ログインする</div><p><strong>アクター</strong>: 全ユーザー <strong>事前条件</strong>: PRE-001, PRE-002 <strong>事後条件</strong>: トークン発行（有効期限8時間）</p><h3>基本フロー</h3><ol><li>ログイン画面（SCR-001）でメールアドレスとパスワードを入力する</li><li>Systemが認証情報を検証する</li><li>トークンを発行し、ロールに応じたホーム画面（一般社員: SCR-002、部門管理者: SCR-004、Admin: SCR-005）へ遷移する</li></ol><h3>代替・例外フロー</h3><ul><li>2-a. 認証情報不一致・<code>status=inactive</code> → いずれも同一のE001（アカウント有無を推測させない）</li></ul><div class="subsection-title">7.2 UC-002 ログアウトする</div><p><strong>アクター</strong>: 認証済みユーザー <strong>事前条件</strong>: PRE-003 <strong>事後条件</strong>: トークン無効化</p><h3>基本フロー</h3><ol><li>ヘッダーの「ログアウト」を押す</li><li>Systemが現在のトークンを無効化し、ログイン画面へ遷移する</li></ol><h3>代替・例外フロー</h3><ul><li>なし</li></ul><div class="subsection-title">7.3 UC-003 部署を管理する</div><p><strong>アクター</strong>: Admin <strong>事前条件</strong>: PRE-001〜004、INC-002 <strong>事後条件</strong>: POST-001, POST-004</p><h3>基本フロー</h3><ol><li>部署管理画面（SCR-007）を開く</li><li>部署を作成・編集・無効化する</li><li>Systemが<code>departments</code>を更新し、操作をログに記録する（INC-006）</li></ol><h3>代替・例外フロー</h3><ul><li>1-a. 一般社員・部門管理者が実行 → E002（INC-002）</li><li>2-a. 名称未入力・桁数超過 → E003</li></ul><div class="subsection-title">7.4 UC-004 従業員を管理する</div><p><strong>アクター</strong>: Admin <strong>事前条件</strong>: PRE-001〜004、INC-002 <strong>事後条件</strong>: POST-001, POST-004</p><h3>基本フロー</h3><ol><li>従業員管理画面（SCR-008）を開く</li><li>従業員を作成・編集・無効化し、所属部署・ロールを設定する</li><li>Systemが<code>employees</code>を更新し、操作をログに記録する（INC-006）</li></ol><h3>代替・例外フロー</h3><ul><li>1-a. 一般社員・部門管理者が実行 → E002</li><li>2-a. 所属部署が存在しない、メール重複 → E003（BR-ORG-002）</li><li>2-b. 無効化された従業員は以後ログイン不可（E001）。過去の安全報告・監査ログは保持する（BR-ORG-003）</li></ul><div class="subsection-title">7.5 UC-005 災害イベントを作成する</div><p><strong>アクター</strong>: Admin <strong>事前条件</strong>: PRE-001〜004、INC-002 <strong>事後条件</strong>: POST-001, POST-002, POST-003, POST-004（<code>disasters</code>作成 + 対象範囲の従業員への<code>disaster_alert</code>同報通知、BR-NTF-001）</p><p>本システムの実装核心。同報通知の件数が多くなり得るため性能はNFR-001で規定する。</p><h3>基本フロー</h3><ol><li>災害管理画面（SCR-006）で「新規作成」を押す</li><li>種別・発生日時・対象範囲（全社または特定部署の集合、BR-DIS-001）を入力する</li><li>SystemがINC-004を実行し、<code>disasters</code>を<code>status=active</code>で作成する</li><li>同一トランザクションで対象範囲の従業員を抽出し、<code>disaster_alert</code>通知を一括作成する（INC-005）</li><li>操作をログに記録する（INC-006）</li></ol><h3>代替・例外フロー</h3><ul><li>2-a. 対象範囲未指定・発生日時不正 → E003</li><li>4-a. 対象人数が多い場合の性能はNFR-001（1,000人・60秒以内）を満たす。実装方式（同期/Queue）は12_詳細設計書で確定する</li></ul><div class="subsection-title">7.6 UC-006 災害イベントを編集・収束切替する</div><p><strong>アクター</strong>: Admin <strong>事前条件</strong>: PRE-001〜004、INC-002 <strong>事後条件</strong>: POST-001, POST-004</p><h3>基本フロー</h3><ol><li>災害管理画面（SCR-006）で対象災害の詳細を開く</li><li>詳細を編集する、または「収束」を押して<code>status=resolved</code>にする（BR-DIS-002）</li><li>誤操作の場合、「進行中に戻す」で<code>active</code>へ再度切り替える</li><li>Systemが<code>disasters</code>を更新し、操作をログに記録する（INC-006）</li></ol><h3>代替・例外フロー</h3><ul><li>1-a. 一般社員・部門管理者が実行 → E002</li></ul><div class="subsection-title">7.7 UC-007 災害一覧・詳細を閲覧する</div><p><strong>アクター</strong>: 全ユーザー <strong>事前条件</strong>: PRE-001〜003 <strong>事後条件</strong>: なし（閲覧のみ）</p><h3>基本フロー</h3><ol><li>災害一覧画面（SCR-011）を開く</li><li>Systemが進行中・過去の災害を一覧表示する</li><li>対象を選択すると、報告集計サマリを含む詳細を表示する</li></ol><h3>代替・例外フロー</h3><ul><li>なし（全従業員に公開、BR-DIS-001の対象範囲は通知の宛先を絞るものであり、災害情報自体の閲覧は制限しない）</li></ul><div class="subsection-title">7.8 UC-008 安全報告を提出する</div><p><strong>アクター</strong>: 一般社員 / 部門管理者（部門管理者も一従業員として自分の分を報告する、02_要件定義書 8章） <strong>事前条件</strong>: PRE-001〜003、対象の災害が<code>status=active</code>かつ自分の部署が対象範囲に含まれること <strong>事後条件</strong>: POST-001（<code>safety_reports</code>に<code>(disaster_id, employee_id)</code>一意で行を作成）</p><p>本システムのもう一つの実装核心。BR-RPT-001〜004に厳密に従う。</p><h3>基本フロー</h3><ol><li>ホーム画面（SCR-002）またはUC-010の通知から安全報告フォーム（SCR-003）を開く</li><li>安否状況（<code>safe</code>/<code>needs_help</code>）を選択する。コメント・位置情報は任意</li><li>位置情報を入力する場合、住所を入力するかGPS取得を選択する。Systemがジオコーディングを試みる（BR-RPT-003）</li><li>SystemがINC-004を実行し、<code>safety_reports</code>を作成する</li></ol><h3>代替・例外フロー</h3><ul><li>1-a. 収束済みの災害 → E006（BR-DIS-002）</li><li>1-b. 自分の部署が対象範囲に含まれない災害 → E006（BR-RPT-004）</li><li>3-a. ジオコーディング失敗・タイムアウト → 位置情報なしで報告を受理する（NFR-007、EXT-006）</li><li>4-a. 既に報告済み（<code>(disaster_id, employee_id)</code>重複） → UC-009（再報告）へ誘導する</li></ul><div class="subsection-title">7.9 UC-009 安全報告を再報告する</div><p><strong>アクター</strong>: 一般社員 / 部門管理者 <strong>事前条件</strong>: PRE-001〜003、当該災害へ既に報告済みであること <strong>事後条件</strong>: POST-001（既存<code>safety_reports</code>行のUPDATE、BR-RPT-002）</p><h3>基本フロー</h3><ol><li>安全報告フォーム（SCR-003）を再度開く。Systemは前回の報告内容を初期値として表示する</li><li>状況を更新する（例: <code>needs_help</code>→<code>safe</code>）</li><li>Systemが既存行をUPDATEする（新規行は作らない）。<code>reported_at</code>が最新報告時刻に更新される</li></ol><h3>代替・例外フロー</h3><ul><li>1-a. 対象災害が収束済み → E006（既存報告の閲覧は可能、更新は不可）</li></ul><div class="subsection-title">7.10 UC-010 通知を確認する</div><p><strong>アクター</strong>: 認証済みユーザー <strong>事前条件</strong>: PRE-001〜003 <strong>事後条件</strong>: POST-001（既読化時）</p><h3>基本フロー</h3><ol><li>ヘッダーの通知アイコン（未読件数バッジ）から通知一覧（SCR-009）を開く</li><li>Systemが自分宛の通知（<code>disaster_alert</code>/<code>report_reminder</code>）を新しい順で表示する</li><li>通知を選択すると対象災害の詳細（UC-007）またはUC-008（<code>disaster_alert</code>から未報告の場合）へ遷移し、当該通知が既読になる</li><li>「すべて既読にする」で一括既読化できる（BR-NTF-005）</li></ol><h3>代替・例外フロー</h3><ul><li>3-a. 他人の通知IDを直接指定した既読化 → E007</li></ul><div class="subsection-title">7.11 UC-011 部署ダッシュボードを閲覧する（地図含む）</div><p><strong>アクター</strong>: 部門管理者 <strong>事前条件</strong>: PRE-001〜003、INC-003（自部署であること） <strong>事後条件</strong>: なし（閲覧のみ）</p><h3>基本フロー</h3><ol><li>部署ダッシュボード（SCR-004）を開く</li><li>Systemが自部署の進行中の災害に対する報告状況（報告済み/要支援/未確認の人数）を集計表示する（応答NFR-002）</li><li>位置情報を伴う報告がある場合、統合された地図パネルにピン表示する（ステータスで色分け、REQ-016）</li></ol><h3>代替・例外フロー</h3><ul><li>1-a. 他部署のダッシュボードを直接指定 → E007（INC-003、EXT-003）</li><li>3-a. Google Maps API障害時、地図パネルはエラー状態を表示するが、集計数値（2.の部分）は表示を継続する</li></ul><div class="subsection-title">7.12 UC-012 全社ダッシュボードを閲覧する（地図含む）</div><p><strong>アクター</strong>: Admin <strong>事前条件</strong>: PRE-001〜004、INC-002 <strong>事後条件</strong>: なし（閲覧のみ）</p><h3>基本フロー</h3><ol><li>全社ダッシュボード（SCR-005）を開く</li><li>Systemが全社・部署別の報告状況を集計表示する</li><li>全社の位置情報を地図パネルに統合表示する</li></ol><h3>代替・例外フロー</h3><ul><li>1-a. 一般社員・部門管理者が実行 → E002</li></ul><div class="subsection-title">7.13 UC-013 未報告者へ催促通知を送る</div><p><strong>アクター</strong>: System（定期バッチ） <strong>事前条件</strong>: なし <strong>事後条件</strong>: POST-003</p><h3>基本フロー</h3><ol><li>Systemが進行中の災害それぞれについて、対象範囲の従業員のうち<code>safety_reports</code>に該当行がまだ存在しない者を抽出する（BR-NTF-002）</li><li>各対象者について、直近N時間以内に<code>report_reminder</code>を送信済みでないことを確認する（BR-NTF-004、時間窓方式）</li><li><code>report_reminder</code>通知を作成する（INC-005）</li></ol><h3>代替・例外フロー</h3><ul><li>2-a. 直近N時間以内に送信済み → スキップ（永続フラグではなく時間窓判定のため、条件が解消しない限り一定間隔で自然に再送される）</li><li>処理は失敗対象者を飛ばして継続する（1件の失敗が他に波及しない）</li></ul><div class="subsection-title">7.14 UC-014 パスワードを変更する</div><p><strong>アクター</strong>: 認証済みユーザー <strong>事前条件</strong>: PRE-001〜003、現在のパスワードを知っていること <strong>事後条件</strong>: POST-001（<code>password_hash</code>更新）</p><h3>基本フロー</h3><ol><li>マイページ（SCR-010）で現在のパスワードと新パスワードを入力する</li><li>Systemが現在のパスワードを検証し、新パスワードをハッシュ化して保存する</li></ol><h3>代替・例外フロー</h3><ul><li>2-a. 現在のパスワード不一致 → E003</li></ul><div class="subsection-title">7.15 UC-015 操作ログを記録する</div><p><strong>アクター</strong>: System <strong>事前条件</strong>: なし（他UCからincludeされる） <strong>事後条件</strong>: POST-004</p><h3>基本フロー</h3><ol><li>組織マスタ・災害の変更操作（UC-003/004/005/006）の完了時に呼び出される</li><li>実行者・対象・操作内容・日時をアプリケーションログに記録する</li></ol><h3>代替・例外フロー</h3><ul><li>ログ記録の失敗は業務操作自体を失敗させない（ログはベストエフォート、エラーログに残す）</li></ul><div class="section-title">■ 8. ユースケースと要件の対応</div><table><thead><tr><th>UC-ID</th><th>関連REQ</th><th>UC-ID</th><th>関連REQ</th></tr></thead><tbody><tr><td>UC-001</td><td>REQ-001</td><td>UC-009</td><td>REQ-010</td></tr><tr><td>UC-002</td><td>REQ-002</td><td>UC-010</td><td>REQ-013</td></tr><tr><td>UC-003</td><td>REQ-004</td><td>UC-011</td><td>REQ-014 / 016</td></tr><tr><td>UC-004</td><td>REQ-005</td><td>UC-012</td><td>REQ-015 / 016</td></tr><tr><td>UC-005</td><td>REQ-006 / 011</td><td>UC-013</td><td>REQ-012</td></tr><tr><td>UC-006</td><td>REQ-007</td><td>UC-014</td><td>REQ-017</td></tr><tr><td>UC-007</td><td>REQ-008</td><td>UC-015</td><td>REQ-018</td></tr><tr><td>UC-008</td><td>REQ-009</td><td>（INC-001〜003）</td><td>REQ-003</td></tr></tbody></table><div class="section-title">■ 9. 例外・共通ルール</div><ul><li>認証必須のUCで未認証・トークン失効の場合、常にE010を返しログイン画面へ誘導する（EXT-001）</li><li>Admin専用操作を一般社員・部門管理者が実行した場合、常にE002を返す（BR-PRM-003/004、INC-002）</li><li>部門管理者が自部署以外へアクセスした場合、常にE007を返す（BR-PRM-002、INC-003）</li><li>収束済み・対象範囲外の災害への新規安全報告は常にE006を返す（BR-DIS-002、BR-RPT-004）</li><li>Google Maps API（ジオコーディング）の障害は、安全報告の受理自体を妨げない（NFR-007、EXT-006）</li><li>エラーコードの意味は02_要件定義書 16章の定義に従う</li></ul><div class="section-title">■ 10. まとめ</div><p>全15ユースケースを定義した。本書の核心はUC-005（災害イベントを作成する、INC-005で同報通知を内包）とUC-008/009（安全報告の提出・再報告）であり、この2つが02_要件定義書のBR-DIS/BR-RPT/BR-NTFのほぼ全てを実行時に横断する。またUC-011（部署ダッシュボード）のINC-003（部署スコープ確認）は、Project 03のINC-002（メンバーシップ確認）に相当する本システム最重要の共通処理であり、12_詳細設計書でのPolicy一元化の根拠となる。</p>
+</div>
+<div class="doc-footer">DOC-ID: DSR-03 ・ Disaster Safety Report System ・ Draft</div>
+<div class="no-print"><a class="nav-back-top" href="#top">▲ ページ先頭へ</a></div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+</body>
+</html>

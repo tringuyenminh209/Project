@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>画面遷移図 - Disaster Safety Report System</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/mermaid.min.js"></script>
+</head>
+<body id="top">
+<nav class="doc-nav no-print">
+  <div class="nav-row nav-row-adjacent">
+    <a class="nav-adjacent" href="04_業務フロー_Disaster_Safety_Report_System.html">← 04 業務フロー</a>
+    <a class="nav-index" href="index.html">目次</a>
+    <a class="nav-adjacent" href="06_画面設計_Disaster_Safety_Report_System.html">06 画面設計 →</a>
+  </div>
+  <div class="nav-row nav-row-chips"><a class="nav-chip" href="00_開発計画書_Disaster_Safety_Report_System.html" title="開発計画書">00</a><a class="nav-chip" href="01_企画書_Disaster_Safety_Report_System.html" title="企画書">01</a><a class="nav-chip" href="02_要件定義書_Disaster_Safety_Report_System.html" title="要件定義書">02</a><a class="nav-chip" href="03_ユースケース_Disaster_Safety_Report_System.html" title="ユースケース">03</a><a class="nav-chip" href="04_業務フロー_Disaster_Safety_Report_System.html" title="業務フロー">04</a><a class="nav-chip nav-chip-current" href="05_画面遷移図_Disaster_Safety_Report_System.html" title="画面遷移図">05</a><a class="nav-chip" href="06_画面設計_Disaster_Safety_Report_System.html" title="画面設計">06</a><a class="nav-chip" href="07_機能一覧_Disaster_Safety_Report_System.html" title="機能一覧">07</a><a class="nav-chip" href="08_ER図_Disaster_Safety_Report_System.html" title="ER図">08</a><a class="nav-chip" href="09_テーブル定義_Disaster_Safety_Report_System.html" title="テーブル定義">09</a><a class="nav-chip" href="10_API設計_Disaster_Safety_Report_System.html" title="API設計">10</a><a class="nav-chip" href="11_基本設計書_Disaster_Safety_Report_System.html" title="基本設計書">11</a><a class="nav-chip" href="12_詳細設計書_Disaster_Safety_Report_System.html" title="詳細設計書">12</a><a class="nav-chip" href="13_インフラ設計_Disaster_Safety_Report_System.html" title="インフラ設計">13</a><a class="nav-chip" href="14_セキュリティ設計_Disaster_Safety_Report_System.html" title="セキュリティ設計">14</a><a class="nav-chip" href="15_単体試験仕様書_Disaster_Safety_Report_System.html" title="単体試験仕様書">15</a><a class="nav-chip" href="16_結合試験仕様書_Disaster_Safety_Report_System.html" title="結合試験仕様書">16</a><a class="nav-chip" href="17_システム試験仕様書_Disaster_Safety_Report_System.html" title="システム試験仕様書">17</a><a class="nav-chip" href="18_UAT_Disaster_Safety_Report_System.html" title="UAT">18</a><a class="nav-chip" href="19_リリース手順書_Disaster_Safety_Report_System.html" title="リリース手順書">19</a><a class="nav-chip" href="20_運用保守手順書_Disaster_Safety_Report_System.html" title="運用保守手順書">20</a></div>
+</nav>
+<table class="doc-header-bar">
+  <tr>
+    <td class="hb-type" rowspan="2">画面遷移図</td>
+    <td class="hb-sys" rowspan="2">Disaster Safety Report System</td>
+    <td class="hb-label">文書番号</td>
+    <td class="hb-val">DSR-05</td>
+    <td class="hb-label">バージョン</td>
+    <td class="hb-val">1.0</td>
+  </tr>
+  <tr>
+    <td class="hb-label">作成日</td>
+    <td class="hb-val">2026/07/22</td>
+    <td class="hb-label">作成者</td>
+    <td class="hb-val">Nguyen Minh Tri</td>
+  </tr>
+</table>
+<div class="doc-body">
+<h1 class="doc-title">画面遷移図</h1><p>Disaster Safety Report System（防災安全報告システム）</p><div class="section-title">■ 文書管理情報</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>システム名</td><td>Disaster Safety Report System</td></tr><tr><td>文書名</td><td>画面遷移図</td></tr><tr><td>文書番号</td><td>DSR-05</td></tr><tr><td>作成者</td><td>Nguyen Minh Tri</td></tr><tr><td>作成日</td><td>2026/07/22</td></tr><tr><td>バージョン</td><td>1.0</td></tr><tr><td>ステータス</td><td>Draft</td></tr></tbody></table><div class="section-title">■ 改訂履歴</div><table><thead><tr><th>Version</th><th>日付</th><th>作成者</th><th>内容</th></tr></thead><tbody><tr><td>0.0</td><td>2026/07/22</td><td>Nguyen Minh Tri</td><td>スケルトン作成</td></tr><tr><td>1.0</td><td>2026/07/22</td><td>Nguyen Minh Tri</td><td>初版作成（SPA前提のルートパス列を追加。SCR-003のURL直リンク化 — disaster_alert通知の遷移先要件 — を確定。ロール別ランディング3分岐を確定）</td></tr></tbody></table><div class="section-title">■ 目次</div><ol><li>本書の目的</li><li>画面ID一覧（ルートパス付き）</li><li>一般社員・部門管理者向け画面遷移図</li><li>Admin向け画面遷移図</li><li>Role別ナビゲーション</li><li>条件付き遷移（ナビゲーションガード）</li><li>まとめ</li></ol><div class="section-title">■ 1. 本書の目的</div><p>Disaster Safety Report Systemの全11画面について、画面ID・SPAルートパス・遷移条件を定義する。本システムはVue 3 SPAのため、「画面遷移」はVue Routerのルート遷移として実装される。ページ・モーダルの別と、ナビゲーションガード（6章）の適用条件を本書で確定する。</p><p>本システムの遷移設計の最優先事項は、<strong>災害通知の受信から安全報告の完了までを最短経路（通知タップ→報告フォーム→送信の実質2画面）で結ぶ</strong>ことである（NFR-021: 低操作コスト）。</p><div class="section-title">■ 2. 画面ID一覧（ルートパス付き）</div><table><thead><tr><th>画面ID</th><th>画面名</th><th>対象ユーザー</th><th>形態</th><th>ルートパス</th></tr></thead><tbody><tr><td>SCR-001</td><td>ログイン画面</td><td>全ユーザー</td><td>ページ</td><td><code>/login</code></td></tr><tr><td>SCR-002</td><td>ホーム（進行中の災害・自分の報告状況）</td><td>一般社員 / 部門管理者</td><td>ページ</td><td><code>/</code></td></tr><tr><td>SCR-003</td><td>安全報告フォーム</td><td>一般社員 / 部門管理者</td><td>ページ（<strong>URL直リンク可</strong>）</td><td><code>/disasters/:disasterId/report</code></td></tr><tr><td>SCR-004</td><td>部署ダッシュボード（地図含む）</td><td>部門管理者</td><td>ページ</td><td><code>/dashboard/department</code></td></tr><tr><td>SCR-005</td><td>全社ダッシュボード（地図含む）</td><td>Admin</td><td>ページ</td><td><code>/dashboard/company</code></td></tr><tr><td>SCR-006</td><td>災害管理一覧・作成・編集</td><td>Admin</td><td>ページ</td><td><code>/admin/disasters</code></td></tr><tr><td>SCR-007</td><td>部署管理</td><td>Admin</td><td>ページ</td><td><code>/admin/departments</code></td></tr><tr><td>SCR-008</td><td>従業員管理</td><td>Admin</td><td>ページ</td><td><code>/admin/employees</code></td></tr><tr><td>SCR-009</td><td>通知一覧</td><td>認証済みユーザー</td><td>ドロップダウン + ページ</td><td><code>/notifications</code></td></tr><tr><td>SCR-010</td><td>マイページ（パスワード変更）</td><td>認証済みユーザー</td><td>ページ</td><td><code>/mypage</code></td></tr><tr><td>SCR-011</td><td>災害詳細（報告一覧・集計サマリ）</td><td>全ユーザー（表示範囲は02_要件定義書 8章に従う）</td><td>ページ</td><td><code>/disasters/:disasterId</code></td></tr></tbody></table><p><strong>設計判断（SCR-003のURL直リンク化）</strong>: 安全報告フォームは<strong>独自のルートパスを持つ</strong>。理由: <code>disaster_alert</code>通知（UC-010）の遷移先として「特定災害の報告フォームへ直接飛べるURL」が必須であり、緊急時に通知タップ1回でフォームに到達できることがNFR-021の実現手段そのものであるため（Project 03のSCR-005 URL直リンク化と同じ判断構造 — 通知の遷移先はURLを持たなければならない）。</p><p><strong>設計判断（ロール別ランディング3分岐）</strong>: ログイン成功後の遷移先はロールで分岐する（03_ユースケース UC-001）— 一般社員は<code>/</code>（SCR-002）、部門管理者は<code>/dashboard/department</code>（SCR-004）、Adminは<code>/dashboard/company</code>（SCR-005）。緊急時に各ロールが最初に必要とする情報（自分の報告状況 / 自部署の状況 / 全社の状況）へ最短で到達させるため。</p><div class="section-title">■ 3. 一般社員・部門管理者向け画面遷移図</div><div class="mermaid">
+flowchart TD
+    SCR001["SCR-001 ログイン"]
+    SCR002["SCR-002 ホーム"]
+    SCR003["SCR-003 安全報告フォーム"]
+    SCR004["SCR-004 部署ダッシュボード（部門管理者のみ）"]
+    SCR009["SCR-009 通知一覧"]
+    SCR010["SCR-010 マイページ"]
+    SCR011["SCR-011 災害詳細"]
+
+    SCR001 --&gt;|"ログイン成功（一般社員）"| SCR002
+    SCR001 --&gt;|"ログイン成功（部門管理者）"| SCR004
+
+    SCR002 --&gt;|"進行中災害の「報告する」ボタン"| SCR003
+    SCR002 --&gt;|"災害を選択"| SCR011
+    SCR003 --&gt;|"報告完了 / 戻る"| SCR002
+    SCR011 --&gt;|"（未報告なら）報告するボタン"| SCR003
+
+    SCR009 --&gt;|"disaster_alert / report_reminder通知を選択（未報告時）"| SCR003
+    SCR009 --&gt;|"報告済みの災害の通知を選択"| SCR011
+
+    SCR004 --&gt;|"災害を選択"| SCR011
+    SCR004 --&gt;|"ホームへ（自分の報告状況）"| SCR002
+
+    SCR002 --&gt; SCR010
+    SCR002 --&gt; SCR009
+</div><p>ヘッダー（共通レイアウト、06_画面設計 3章）の通知アイコン・ユーザーメニューは全認証済み画面からSCR-009/SCR-010へ遷移できる（図では代表としてSCR-002からの線のみ記載）。部門管理者はSCR-004を起点としつつ、自分自身の安全報告（UC-008/009、02_要件定義書 8章）のためにSCR-002/003へも遷移できる。</p><div class="section-title">■ 4. Admin向け画面遷移図</div><div class="mermaid">
+flowchart TD
+    SCR001["SCR-001 ログイン"]
+    SCR005["SCR-005 全社ダッシュボード"]
+    SCR006["SCR-006 災害管理"]
+    SCR007["SCR-007 部署管理"]
+    SCR008["SCR-008 従業員管理"]
+    SCR009["SCR-009 通知一覧"]
+    SCR010["SCR-010 マイページ"]
+    SCR011["SCR-011 災害詳細"]
+
+    SCR001 --&gt;|"Adminログイン成功"| SCR005
+
+    SCR005 &lt;--&gt; SCR006
+    SCR006 &lt;--&gt; SCR007
+    SCR007 &lt;--&gt; SCR008
+
+    SCR005 --&gt;|"災害を選択"| SCR011
+    SCR006 --&gt;|"災害を選択（詳細確認）"| SCR011
+    SCR006 --&gt;|"災害作成完了 → 配信結果確認"| SCR005
+
+    SCR005 --&gt; SCR009
+    SCR005 --&gt; SCR010
+</div><p>Adminは安全報告フォーム（SCR-003）のナビゲーションを持たない（BR-PRM-003: Adminは報告対象外。URL直撃はE002 — 6章 G-05）。SCR-005〜008間はAdminサイドバー（06_画面設計 3.3節）で相互に遷移できる（図では隣接ペアのみ記載）。</p><div class="section-title">■ 5. Role別ナビゲーション</div><table><thead><tr><th>メニュー</th><th>未認証</th><th>一般社員</th><th>部門管理者</th><th>Admin</th></tr></thead><tbody><tr><td>ログイン</td><td>〇</td><td>-（ログアウト後に表示）</td><td>-</td><td>-</td></tr><tr><td>ホーム（自分の報告状況）</td><td>×</td><td>〇（ランディング）</td><td>〇</td><td>×</td></tr><tr><td>安全報告フォーム</td><td>×</td><td>〇</td><td>〇</td><td>×（BR-PRM-003）</td></tr><tr><td>部署ダッシュボード</td><td>×</td><td>×</td><td>〇（ランディング、自部署のみ）</td><td>×（全社ダッシュボードの部署別内訳で代替）</td></tr><tr><td>全社ダッシュボード</td><td>×</td><td>×</td><td>×</td><td>〇（ランディング）</td></tr><tr><td>災害管理 / 部署管理 / 従業員管理</td><td>×</td><td>×</td><td>×</td><td>〇</td></tr><tr><td>災害一覧・詳細</td><td>×</td><td>〇</td><td>〇</td><td>〇</td></tr><tr><td>通知 / マイページ</td><td>×</td><td>〇</td><td>〇</td><td>〇</td></tr></tbody></table><p><strong>注1</strong>: 「Adminの部署ダッシュボード」は独立ルートを設けない — 02_要件定義書 8章でAdminは部署ダッシュボード〇（全部署）だが、この要件はSCR-005（全社ダッシュボード）内の部署別内訳ビューで満たす（画面数を増やさず、Adminの動線を1画面に集約する）。</p><p><strong>注2</strong>: メニューの出し分けはUI上の配慮であり、権限の実体はAPI側の判定（06_画面設計 UI-004）。URLを直接叩いた場合のガードは6章に従う。</p><div class="section-title">■ 6. 条件付き遷移（ナビゲーションガード）</div><p>SPAのため、遷移条件はVue Routerのナビゲーションガード + API応答エラーの2段階で守る。ガードIDは12_詳細設計書（フロントエンド設計）で実装と対応付ける。</p><table><thead><tr><th>ガードID</th><th>対象ルート</th><th>条件</th><th>不成立時の挙動</th></tr></thead><tbody><tr><td>G-01</td><td><code>/login</code>以外の全ルート</td><td>認証済み（トークン保持）であること</td><td><code>/login</code>へリダイレクト。ログイン成功後、元のURLへ復帰（クエリ<code>redirect</code>。通知経由のSCR-003直リンクがログイン切れでも報告に到達できるようにする — NFR-021）</td></tr><tr><td>G-02</td><td><code>/login</code></td><td>未認証であること</td><td>認証済みならロール別ランディング（一般社員<code>/</code>・部門管理者<code>/dashboard/department</code>・Admin<code>/dashboard/company</code>）へリダイレクト</td></tr><tr><td>G-03</td><td><code>/admin/*</code>・<code>/dashboard/company</code></td><td><code>employees.role=admin</code>であること（INC-002）</td><td>E002。一般社員・部門管理者には管理メニュー自体を表示しない</td></tr><tr><td>G-04</td><td><code>/dashboard/department</code></td><td><code>employees.role=manager</code>であること（INC-003: 表示対象は常に自分の<code>department_id</code>）</td><td>一般社員・AdminはE002（Adminの部署別把握はSCR-005内で行う — 5章 注1）。他部署IDを指定するAPI呼び出しはE007（BR-PRM-002）</td></tr><tr><td>G-05</td><td><code>/disasters/:disasterId/report</code>（+ 送信操作）</td><td>①<code>role=staff</code>または<code>manager</code>であること（AdminはE002、BR-PRM-003）②対象災害が<code>status=active</code>かつ自分の部署が対象範囲に含まれること</td><td>②不成立はE006を受け、「この災害への報告はできません」を表示しSCR-011へ誘導（BR-DIS-002 / BR-RPT-004）</td></tr><tr><td>G-06</td><td><code>/disasters/:disasterId</code>（+配下）</td><td>災害が存在すること</td><td>E007を受け、災害一覧側へ戻し「対象のデータが見つかりません」を表示</td></tr><tr><td>G-07</td><td>位置情報入力（遷移ではなく操作ガード）</td><td>Google Geocoding APIが応答すること</td><td>失敗・タイムアウト時も報告フォームの送信は妨げない — 位置情報なしで送信を継続できる（NFR-007。ジオコーディング失敗はエラー扱いにしない）</td></tr></tbody></table><div class="section-title">■ 7. まとめ</div><p>全11画面のうち、一般社員・部門管理者の動線は「通知 → SCR-003（安全報告フォーム）」への最短経路を軸に設計し、SCR-003のURL直リンク化とG-01のredirect復帰により、ログイン切れ状態からでも「通知タップ→ログイン→フォーム復帰」で報告に到達できる（NFR-021の遷移設計上の実現）。Admin動線はSCR-005（全社ダッシュボード）を起点に管理3画面へ放射状に配置した。SPA特有の設計判断として、①ロール別ランディング3分岐、②Adminの部署別把握をSCR-005内の内訳ビューへ集約（独立ルートを増やさない）、③ガードを「フロントのルートガード + APIの判定」の二重防御とし権限の実体は常にAPI側に置くこと、の3点を確定した。</p>
+</div>
+<div class="doc-footer">DOC-ID: DSR-05 ・ Disaster Safety Report System ・ Draft</div>
+<div class="no-print"><a class="nav-back-top" href="#top">▲ ページ先頭へ</a></div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+</body>
+</html>

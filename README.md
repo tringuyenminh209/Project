@@ -264,8 +264,7 @@ notifications
 
 ### External
 
-* Google Maps API
-* Mapbox
+* Google Maps API (đã chốt — không dùng Mapbox, xem `Disaster_Safety_Report_System/docs/00_開発計画書.md` 6章)
 
 ### Bonus
 

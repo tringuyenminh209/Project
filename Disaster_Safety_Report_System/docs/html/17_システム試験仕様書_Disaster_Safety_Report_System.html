@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>システム試験仕様書 - Disaster Safety Report System</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/mermaid.min.js"></script>
+</head>
+<body id="top">
+<nav class="doc-nav no-print">
+  <div class="nav-row nav-row-adjacent">
+    <a class="nav-adjacent" href="16_結合試験仕様書_Disaster_Safety_Report_System.html">← 16 結合試験仕様書</a>
+    <a class="nav-index" href="index.html">目次</a>
+    <a class="nav-adjacent" href="18_UAT_Disaster_Safety_Report_System.html">18 UAT →</a>
+  </div>
+  <div class="nav-row nav-row-chips"><a class="nav-chip" href="00_開発計画書_Disaster_Safety_Report_System.html" title="開発計画書">00</a><a class="nav-chip" href="01_企画書_Disaster_Safety_Report_System.html" title="企画書">01</a><a class="nav-chip" href="02_要件定義書_Disaster_Safety_Report_System.html" title="要件定義書">02</a><a class="nav-chip" href="03_ユースケース_Disaster_Safety_Report_System.html" title="ユースケース">03</a><a class="nav-chip" href="04_業務フロー_Disaster_Safety_Report_System.html" title="業務フロー">04</a><a class="nav-chip" href="05_画面遷移図_Disaster_Safety_Report_System.html" title="画面遷移図">05</a><a class="nav-chip" href="06_画面設計_Disaster_Safety_Report_System.html" title="画面設計">06</a><a class="nav-chip" href="07_機能一覧_Disaster_Safety_Report_System.html" title="機能一覧">07</a><a class="nav-chip" href="08_ER図_Disaster_Safety_Report_System.html" title="ER図">08</a><a class="nav-chip" href="09_テーブル定義_Disaster_Safety_Report_System.html" title="テーブル定義">09</a><a class="nav-chip" href="10_API設計_Disaster_Safety_Report_System.html" title="API設計">10</a><a class="nav-chip" href="11_基本設計書_Disaster_Safety_Report_System.html" title="基本設計書">11</a><a class="nav-chip" href="12_詳細設計書_Disaster_Safety_Report_System.html" title="詳細設計書">12</a><a class="nav-chip" href="13_インフラ設計_Disaster_Safety_Report_System.html" title="インフラ設計">13</a><a class="nav-chip" href="14_セキュリティ設計_Disaster_Safety_Report_System.html" title="セキュリティ設計">14</a><a class="nav-chip" href="15_単体試験仕様書_Disaster_Safety_Report_System.html" title="単体試験仕様書">15</a><a class="nav-chip" href="16_結合試験仕様書_Disaster_Safety_Report_System.html" title="結合試験仕様書">16</a><a class="nav-chip nav-chip-current" href="17_システム試験仕様書_Disaster_Safety_Report_System.html" title="システム試験仕様書">17</a><a class="nav-chip" href="18_UAT_Disaster_Safety_Report_System.html" title="UAT">18</a><a class="nav-chip" href="19_リリース手順書_Disaster_Safety_Report_System.html" title="リリース手順書">19</a><a class="nav-chip" href="20_運用保守手順書_Disaster_Safety_Report_System.html" title="運用保守手順書">20</a></div>
+</nav>
+<table class="doc-header-bar">
+  <tr>
+    <td class="hb-type" rowspan="2">システム試験仕様書</td>
+    <td class="hb-sys" rowspan="2">Disaster Safety Report System</td>
+    <td class="hb-label">文書番号</td>
+    <td class="hb-val">DSR-17</td>
+    <td class="hb-label">バージョン</td>
+    <td class="hb-val">1.0</td>
+  </tr>
+  <tr>
+    <td class="hb-label">作成日</td>
+    <td class="hb-val">2026/07/23</td>
+    <td class="hb-label">作成者</td>
+    <td class="hb-val">Nguyen Minh Tri</td>
+  </tr>
+</table>
+<div class="doc-body">
+<h1 class="doc-title">システム試験仕様書</h1><p>Disaster Safety Report System（防災安全報告システム）</p><div class="section-title">■ 文書管理情報</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>システム名</td><td>Disaster Safety Report System</td></tr><tr><td>文書名</td><td>システム試験仕様書</td></tr><tr><td>文書番号</td><td>DSR-17</td></tr><tr><td>作成者</td><td>Nguyen Minh Tri</td></tr><tr><td>作成日</td><td>2026/07/23</td></tr><tr><td>バージョン</td><td>1.0</td></tr><tr><td>ステータス</td><td>Draft</td></tr></tbody></table><div class="section-title">■ 改訂履歴</div><table><thead><tr><th>Version</th><th>日付</th><th>作成者</th><th>内容</th></tr></thead><tbody><tr><td>0.0</td><td>2026/07/22</td><td>Nguyen Minh Tri</td><td>スケルトン作成</td></tr><tr><td>1.0</td><td>2026/07/23</td><td>Nguyen Minh Tri</td><td>初版作成。ST-SCN-001〜004で災害発生〜報告〜集計の一気通貫を、ロール別（Admin/部門管理者/一般社員）・障害回復（Google Maps API障害・同時送信）・簡易性能で全体像を検証。</td></tr></tbody></table><div class="section-title">■ 目次</div><ol><li>本書の目的</li><li>試験方針</li><li>試験環境</li><li>E2Eシナリオ試験</li><li>ロール別シナリオ試験</li><li>障害回復試験</li><li>性能試験（簡易）</li><li>障害一覧表</li><li>トレーサビリティ</li><li>まとめ</li></ol><div class="section-title">■ 1. 本書の目的</div><p>実際のブラウザ操作に近い形で、災害発生〜通知〜安全報告〜集計確認までの一連の業務フローが、SPA・API・DB・Google Maps/Geocoding APIを含めたシステム全体として期待通り動作することを確認する。15/16章で分解確認した要素を、実際の災害対応の時系列に沿って結合する最終段階である。</p><div class="section-title">■ 2. 試験方針</div><table><thead><tr><th>方針ID</th><th>方針</th><th>内容</th></tr></thead><tbody><tr><td>ST-POL-001</td><td>E2E</td><td>実際の画面操作の連鎖で確認する（APIを直接叩かず、SPA経由）。</td></tr><tr><td>ST-POL-002</td><td>Role Based</td><td>Admin / 部門管理者 / 一般社員それぞれの視点でシナリオを作成する。</td></tr><tr><td>ST-POL-003</td><td>Recovery</td><td>Google Maps/Geocoding API障害・安全報告の同時送信等の異常系からの継続動線を確認する。</td></tr><tr><td>ST-POL-004</td><td>Multi-Actor</td><td>災害対応の本質（複数従業員が同時に報告・複数の管理者が同時に閲覧）を反映し、可能な限り複数ブラウザ（Admin/部門管理者/一般社員）で並行実施する。</td></tr></tbody></table><div class="section-title">■ 3. 試験環境</div><p>Docker Composeのフルスタック環境（Local）またはAWS Development環境。13_インフラ設計の構成（nginx/app/db/scheduler/vite build）を使用し、16_結合試験仕様書と同一の環境を流用する。開発用Google Maps APIキー（リファラ制限を試験環境ドメインに限定）を使用する。</p><div class="section-title">■ 4. E2Eシナリオ試験</div><div class="subsection-title">ST-SCN-001 災害発生〜報告〜集計確認の一気通貫</div><pre class="ascii"><code>1. Adminとしてログインし、SCR-006（災害管理）で災害イベントを新規作成する（種別=地震、対象範囲=全社）
+2. 作成確認ダイアログに表示される配信対象人数を確認し、作成を確定する → 同報通知fan-outが発火する
+3. 一般社員として別ブラウザでログインする → SCR-002ホームにAlert Banner（安否報告のお願い）が表示される
+4. ヘッダーの通知ドロップダウンに disaster_alert 通知が表示されていることを確認する
+5. 通知をクリックする → SCR-003（安全報告フォーム）へ直リンク遷移する
+6. 「安全です」を選択し、コメントは空欄のまま、現在地取得（GPS）を試みて送信する
+7. 送信完了トーストを確認 → SCR-002へ戻り、当該災害カードの報告状況バッジが更新されていることを確認する
+8. 部門管理者として別ブラウザでログインし、SCR-004（部署ダッシュボード）を開く → 手順6の一般社員の報告が反映されている（安全カウント+1、位置情報があれば地図に緑ピン表示）
+9. Adminとして全社ダッシュボード（SCR-005）を開く → `by_department`に部門管理者が確認した内容と一致する内訳が表示される
+期待結果: 全ステップが例外なく完了する。各画面の表示内容がAPI応答・DB状態と一致する</code></pre><div class="subsection-title">ST-SCN-002 状況悪化の再報告と災害収束フロー</div><pre class="ascii"><code>1. ST-SCN-001の一般社員が再度SCR-003を開く（「報告を更新する」から遷移） → 前回の報告内容（安全）が初期値表示される
+2. 「支援が必要です」へ変更し、コメントに具体的な状況を記入、住所を入力してジオコーディングによる位置情報プレビューを確認して送信する
+3. 部門管理者のSCR-004で要支援者一覧に当該従業員が最優先表示（Safety-needs-help色）されることを確認する
+4. Adminが当該災害をSCR-006から収束へ切り替える（確認ダイアログ「新規の安否報告を受け付けなくなります」を確認）
+5. 収束後、まだ報告していない別の一般社員がSCR-003を開こうとする → E006が「この災害は収束済みのため、新しい報告はできません」の文脈文言で表示され、SCR-011へ誘導される
+期待結果: 状況変化（安全→要支援）が集計・地図に反映され、収束後の新規報告が画面上で正しく拒否される</code></pre><div class="subsection-title">ST-SCN-003 未報告者への催促バッチ〜報告完了</div><pre class="ascii"><code>1. 進行中の災害に対して未報告のままの一般社員を残しておく
+2. 催促バッチ（SendReportReminders）の実行を待つ、または手動実行する
+3. 当該一般社員でログインし、通知一覧に report_reminder が現れることを確認する
+4. 通知をクリックしてSCR-003へ遷移し、報告を完了する
+5. 再度バッチを実行する → 当該従業員は既に報告済みのため、次回の抽出対象から自然に外れる（催促が来ない）
+期待結果: 催促通知が作成され、報告完了後は同一災害について再度催促されない（BR-NTF-002の実地確認）</code></pre><div class="subsection-title">ST-SCN-004 部署スコープ越境の実地確認</div><pre class="ascii"><code>1. 部門管理者（営業部所属）としてログインし、SCR-004部署ダッシュボードを開く
+2. ブラウザの開発者ツールでAPI応答（`GET /dashboard/department`）を確認し、他部署（総務部等）の従業員・報告データが一切含まれないことを確認する
+3. 同ブラウザのURLを直接編集して他部署を示唆するパラメータを付与してみる（例: クエリ文字列に部署IDを追加）→ サーバー側がそもそもパラメータを解釈しないため、応答内容に変化がない（自部署の結果のみ）ことを確認する
+4. 一般社員としてログインし、他人の安全報告詳細を閲覧できる画面上の経路が存在しないことを確認する（SCR-011の集計サマリが自分の報告状況のみで、個人名一覧は表示されない）
+期待結果: 部署スコープ・個人スコープの越境が画面操作・API直接確認のいずれでも発生しない</code></pre><div class="section-title">■ 5. ロール別シナリオ試験</div><table><thead><tr><th>ロール</th><th>シナリオ</th><th>確認内容</th></tr></thead><tbody><tr><td>Admin</td><td>組織マスタ・災害の統括管理</td><td>部署/従業員/災害のCRUD、全社ダッシュボードの閲覧ができる。<strong>安全報告フォームへの導線がUI上に一切存在しない</strong>（BR-PRM-003、Report-CTAが表示されない）</td></tr><tr><td>部門管理者</td><td>自部署の把握 + 一従業員としての報告</td><td>SCR-004で自部署のみ把握でき、他部署のメニュー・データは一切表示されない。自分自身の安全報告（一従業員として）はSCR-002/003から通常どおり行える</td></tr><tr><td>一般社員</td><td>通知受信〜報告〜再報告</td><td>通知受信→報告→状況変化時の再報告のみが行え、管理画面（部署/従業員/災害管理・ダッシュボード）へのメニュー自体が表示されない</td></tr></tbody></table><div class="section-title">■ 6. 障害回復試験</div><table><thead><tr><th>Test ID</th><th>シナリオ</th><th>確認内容</th></tr></thead><tbody><tr><td>ST-REC-001</td><td>Google Maps APIキーを試験的に無効化した状態で部署ダッシュボードを開く</td><td>地図パネルのみ「地図を表示できません」のエラー表示となり、集計数値・要支援者一覧は通常どおり表示される（UI-005の実地確認）</td></tr><tr><td>ST-REC-002</td><td>ネットワークを一時切断した状態で安全報告フォームから住所によるジオコーディングを試みる</td><td>ジオコーディング失敗の警告表示（エラートーストではない）が出るが、送信ボタンは活性のままであり、位置情報なしで送信が成功する（NFR-007の実地確認）</td></tr><tr><td>ST-REC-003</td><td>2つのブラウザで同一の従業員として同一災害への初回報告をほぼ同時に送信する</td><td>一方が成功し、<code>safety_reports</code>に重複行が作成されない（atomic upsertの最終実地確認、15/16章の単体・結合試験の総仕上げ）</td></tr><tr><td>ST-REC-004</td><td>トークン期限切れ（8時間経過）の状態で操作を続ける</td><td>次のAPI呼び出しでログイン画面へ強制的に戻される</td></tr></tbody></table><div class="section-title">■ 7. 性能試験（簡易）</div><table><thead><tr><th>Test ID</th><th>シナリオ</th><th>期待結果</th></tr></thead><tbody><tr><td>ST-PERF-001</td><td>対象1,000人規模のデータを用意し、Adminが全社対象の災害を作成する</td><td>同報通知fan-outの完了までがNFR-001（60秒以内）を満たす</td></tr><tr><td>ST-PERF-002</td><td>対象範囲に数百件規模の安全報告が存在する状態で部署/全社ダッシュボードを開く</td><td>表示までの応答時間がNFR-002（3秒以内）を満たす</td></tr><tr><td>ST-PERF-003</td><td>安全報告フォームの送信操作</td><td>位置情報取得の待ち時間の有無にかかわらず、ステータス選択から送信完了まで数タップで完結する（NFR-021の体感確認）</td></tr></tbody></table><p>詳細な負荷試験（本格的な性能試験仕様書として独立させる規模の作業）は本プロジェクトのスコープ外とし、簡易確認に留める（学習用途のためSLA保証は対象外 — NFR-004。本プロジェクトの文書体系はDSR-00〜20の21文書構成で、独立した性能試験仕様書は持たない）。</p><div class="section-title">■ 8. 障害一覧表</div><table><thead><tr><th>No</th><th>発見者</th><th>発見日</th><th>内容</th><th>重要度</th><th>対応者</th><th>対応状況</th><th>修正日</th></tr></thead><tbody><tr><td>-</td><td>-</td><td>-</td><td>（実装・試験実施後に記入）</td><td>-</td><td>-</td><td>-</td><td>-</td></tr></tbody></table><div class="section-title">■ 9. トレーサビリティ</div><table><thead><tr><th>検証対象</th><th>本書の試験</th></tr></thead><tbody><tr><td>UC-001〜UC-015（全15ユースケース）</td><td>ST-SCN-001〜004でMust優先度のUCを一気通貫、5章のロール別表で残りを補完</td></tr><tr><td>NFR-001（同報通知の配信性能）</td><td>ST-PERF-001</td></tr><tr><td>NFR-002（ダッシュボード応答）</td><td>ST-PERF-002</td></tr><tr><td>NFR-007（外部API障害時の継続）</td><td>ST-REC-001/002</td></tr><tr><td>NFR-021（低操作コスト）</td><td>ST-PERF-003</td></tr><tr><td>BR-PRM-002（部門管理者の部署スコープ）</td><td>ST-SCN-004</td></tr><tr><td>BR-PRM-003（Adminの報告対象外）</td><td>5章 Adminシナリオ</td></tr><tr><td>BR-RPT-002（再報告=UPDATE、atomic upsert）</td><td>ST-REC-003</td></tr><tr><td>BR-DIS-002（収束後の新規報告拒否）</td><td>ST-SCN-002</td></tr><tr><td>BR-NTF-002（催促バッチの自然停止）</td><td>ST-SCN-003</td></tr></tbody></table><div class="section-title">■ 10. まとめ</div><p>本書は15_単体試験仕様書（ロジック網羅）・16_結合試験仕様書（実物境界の確認）に続く最終段階として、実際の災害対応シナリオでシステム全体を通しで確認する。特にST-SCN-004（部署スコープ越境の実地確認）は14_セキュリティ設計の部署スコープ対策がユーザー視点でも機能することの最終証跡であり、ST-REC-001（Google Maps API障害時の継続）は「地図は補助であり必須ではない」という設計方針（UI-005）が実際に効くことの証跡である。ST-REC-003（同時送信）はatomic upsert設計の総仕上げとして、単体（UT-RPT-007）・結合（IT-DB-001）に続く3段階目の確認となる。</p>
+</div>
+<div class="doc-footer">DOC-ID: DSR-17 ・ Disaster Safety Report System ・ Draft</div>
+<div class="no-print"><a class="nav-back-top" href="#top">▲ ページ先頭へ</a></div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+</body>
+</html>

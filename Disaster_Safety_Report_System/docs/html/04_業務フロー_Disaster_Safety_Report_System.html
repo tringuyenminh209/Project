@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>業務フロー - Disaster Safety Report System</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/mermaid.min.js"></script>
+</head>
+<body id="top">
+<nav class="doc-nav no-print">
+  <div class="nav-row nav-row-adjacent">
+    <a class="nav-adjacent" href="03_ユースケース_Disaster_Safety_Report_System.html">← 03 ユースケース</a>
+    <a class="nav-index" href="index.html">目次</a>
+    <a class="nav-adjacent" href="05_画面遷移図_Disaster_Safety_Report_System.html">05 画面遷移図 →</a>
+  </div>
+  <div class="nav-row nav-row-chips"><a class="nav-chip" href="00_開発計画書_Disaster_Safety_Report_System.html" title="開発計画書">00</a><a class="nav-chip" href="01_企画書_Disaster_Safety_Report_System.html" title="企画書">01</a><a class="nav-chip" href="02_要件定義書_Disaster_Safety_Report_System.html" title="要件定義書">02</a><a class="nav-chip" href="03_ユースケース_Disaster_Safety_Report_System.html" title="ユースケース">03</a><a class="nav-chip nav-chip-current" href="04_業務フロー_Disaster_Safety_Report_System.html" title="業務フロー">04</a><a class="nav-chip" href="05_画面遷移図_Disaster_Safety_Report_System.html" title="画面遷移図">05</a><a class="nav-chip" href="06_画面設計_Disaster_Safety_Report_System.html" title="画面設計">06</a><a class="nav-chip" href="07_機能一覧_Disaster_Safety_Report_System.html" title="機能一覧">07</a><a class="nav-chip" href="08_ER図_Disaster_Safety_Report_System.html" title="ER図">08</a><a class="nav-chip" href="09_テーブル定義_Disaster_Safety_Report_System.html" title="テーブル定義">09</a><a class="nav-chip" href="10_API設計_Disaster_Safety_Report_System.html" title="API設計">10</a><a class="nav-chip" href="11_基本設計書_Disaster_Safety_Report_System.html" title="基本設計書">11</a><a class="nav-chip" href="12_詳細設計書_Disaster_Safety_Report_System.html" title="詳細設計書">12</a><a class="nav-chip" href="13_インフラ設計_Disaster_Safety_Report_System.html" title="インフラ設計">13</a><a class="nav-chip" href="14_セキュリティ設計_Disaster_Safety_Report_System.html" title="セキュリティ設計">14</a><a class="nav-chip" href="15_単体試験仕様書_Disaster_Safety_Report_System.html" title="単体試験仕様書">15</a><a class="nav-chip" href="16_結合試験仕様書_Disaster_Safety_Report_System.html" title="結合試験仕様書">16</a><a class="nav-chip" href="17_システム試験仕様書_Disaster_Safety_Report_System.html" title="システム試験仕様書">17</a><a class="nav-chip" href="18_UAT_Disaster_Safety_Report_System.html" title="UAT">18</a><a class="nav-chip" href="19_リリース手順書_Disaster_Safety_Report_System.html" title="リリース手順書">19</a><a class="nav-chip" href="20_運用保守手順書_Disaster_Safety_Report_System.html" title="運用保守手順書">20</a></div>
+</nav>
+<table class="doc-header-bar">
+  <tr>
+    <td class="hb-type" rowspan="2">業務フロー</td>
+    <td class="hb-sys" rowspan="2">Disaster Safety Report System</td>
+    <td class="hb-label">文書番号</td>
+    <td class="hb-val">DSR-04</td>
+    <td class="hb-label">バージョン</td>
+    <td class="hb-val">1.1</td>
+  </tr>
+  <tr>
+    <td class="hb-label">作成日</td>
+    <td class="hb-val">2026/07/22</td>
+    <td class="hb-label">作成者</td>
+    <td class="hb-val">Nguyen Minh Tri</td>
+  </tr>
+</table>
+<div class="doc-body">
+<h1 class="doc-title">業務フロー</h1><p>Disaster Safety Report System（防災安全報告システム）</p><div class="section-title">■ 文書管理情報</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>システム名</td><td>Disaster Safety Report System</td></tr><tr><td>文書名</td><td>業務フロー</td></tr><tr><td>文書番号</td><td>DSR-04</td></tr><tr><td>作成者</td><td>Nguyen Minh Tri</td></tr><tr><td>作成日</td><td>2026/07/22</td></tr><tr><td>バージョン</td><td>1.1</td></tr><tr><td>ステータス</td><td>Draft</td></tr></tbody></table><div class="section-title">■ 改訂履歴</div><table><thead><tr><th>Version</th><th>日付</th><th>作成者</th><th>内容</th></tr></thead><tbody><tr><td>0.0</td><td>2026/07/22</td><td>Nguyen Minh Tri</td><td>スケルトン作成</td></tr><tr><td>1.0</td><td>2026/07/22</td><td>Nguyen Minh Tri</td><td>初版作成（BF-001〜006、03_ユースケース v1.0のUC-IDと整合）</td></tr><tr><td>1.1</td><td>2026/07/22</td><td>Nguyen Minh Tri</td><td>整合性監査（02 v1.1と連動）: BF-003のスイムレーンアクターを「従業員（一般社員・部門管理者）」に修正（部門管理者も自分の分を報告するため）。</td></tr></tbody></table><div class="section-title">■ 目次</div><ol><li>本書の目的</li><li>業務概要と業務フロー一覧</li><li>AS-IS 業務フロー（想定：システム化以前）</li><li>TO-BE 業務フロー（本システム導入後）</li><li>災害発生・同報通知フロー（BF-002）</li><li>安全報告フロー（BF-003）</li><li>未報告者フォローフロー（BF-004）</li><li>ダッシュボード監視フロー（BF-005）</li><li>組織・災害運用フロー（BF-006）</li><li>例外フロー</li><li>業務ルール対応</li><li>ユースケース対応</li><li>まとめ</li></ol><div class="section-title">■ 1. 本書の目的</div><p>本書は、Disaster Safety Report Systemが支える業務の流れを、アクター（スイムレーン）ごとの時系列で定義する。02_要件定義書の業務ルール（BR-ID）と03_ユースケースのUC-IDを業務の文脈に配置し、05_画面遷移図以降の設計の基準とする。</p><p>本システムの業務フローの特徴は、<strong>1件の災害イベントが大量の従業員への同報通知として一気に波及する</strong>（BF-002）ことと、<strong>「未報告」という状態がシステムとマネージャーの双方から継続的に監視される</strong>（BF-004/005）ことである。</p><div class="section-title">■ 2. 業務概要と業務フロー一覧</div><p>想定利用者は従業員数百〜千名規模の企業。従来は電話連絡網やExcelの手作業集計に頼っていた安否確認を、本システムに集約し「誰が・いつ・どんな状況か」をリアルタイムに可視化する。</p><table><thead><tr><th>BF-ID</th><th>業務フロー</th><th>主なアクター</th><th>関連UC</th><th>記載章</th></tr></thead><tbody><tr><td>BF-001</td><td>認証フロー</td><td>全ユーザー</td><td>UC-001 / 002</td><td>（単純なため図は省略。UC-001/002の基本フローを参照）</td></tr><tr><td>BF-002</td><td>災害発生・同報通知フロー</td><td>Admin / System / 全従業員</td><td>UC-005</td><td>5章</td></tr><tr><td>BF-003</td><td>安全報告フロー</td><td>従業員（一般社員・部門管理者） / System</td><td>UC-008 / 009 / 010</td><td>6章</td></tr><tr><td>BF-004</td><td>未報告者フォローフロー</td><td>System / 部門管理者</td><td>UC-013 / 011</td><td>7章</td></tr><tr><td>BF-005</td><td>ダッシュボード監視フロー</td><td>部門管理者 / Admin</td><td>UC-011 / 012</td><td>8章</td></tr><tr><td>BF-006</td><td>組織・災害運用フロー</td><td>Admin</td><td>UC-003 / 004 / 006</td><td>9章</td></tr></tbody></table><div class="section-title">■ 3. AS-IS 業務フロー（想定：システム化以前）</div><div class="mermaid">
+flowchart TD
+    A["災害発生"] --&gt; B["BCP担当が電話連絡網の起点へ連絡"]
+    B --&gt; C["各拠点・部署の責任者が部下へ順に電話"]
+    C --&gt; D{"電話が繋がる?"}
+    D --&gt;|No| E["回線混雑・不在で連絡が滞る"]
+    D --&gt;|Yes| F["口頭で安否を確認しメモに記録"]
+    F --&gt; G["責任者が手集計してExcelへ入力"]
+    G --&gt; H["BCP担当が各部署から個別に報告を受け全社集計"]
+    E --&gt; I["未確認者が誰か分からないまま時間が経過"]
+</div><div class="subsection-title">3.1 AS-IS 課題</div><ul><li>災害直後は電話回線が混雑・輻輳し、連絡網が機能しないことが多い</li><li>手作業の電話リレーは伝達漏れ・誤伝達が起きやすく、誰まで伝わったか把握できない</li><li>安否状況の集計がExcelの手作業で、全社集計までに数時間かかることがある</li><li>「まだ誰が未確認か」がリアルタイムに分からず、フォローの優先順位をつけられない</li><li>位置情報を伴わないため、要支援者がどこにいるかの初動把握に時間がかかる</li></ul><div class="section-title">■ 4. TO-BE 業務フロー（本システム導入後）</div><div class="mermaid">
+flowchart TD
+    A["Adminが災害イベントを作成（対象範囲指定）"] --&gt; B["対象従業員全員へアプリ内通知が一斉配信"]
+    B --&gt; C["従業員がスマートフォンから数タップで安否報告"]
+    C --&gt; D["部門管理者・Adminのダッシュボードにリアルタイムに近い形で反映"]
+    D --&gt; E["未報告者はSystemが定期的に催促、部門管理者も一覧で把握"]
+    E --&gt; F["位置情報のある報告は地図で可視化、要支援者を優先対応"]
+</div><div class="subsection-title">4.1 TO-BE 改善点</div><table><thead><tr><th>項目</th><th>AS-IS</th><th>TO-BE</th></tr></thead><tbody><tr><td>伝達手段</td><td>電話連絡網（回線混雑に弱い）</td><td>アプリ内通知の同報配信（BR-NTF-001）。回線混雑の影響を受けにくい</td></tr><tr><td>報告の記録</td><td>口頭 → 手書き/Excel転記</td><td><code>safety_reports</code>に直接記録、二重入力なし</td></tr><tr><td>集計</td><td>各部署からの個別報告をBCP担当が手集計</td><td>ダッシュボードが自動集計、リアルタイムに近い形で閲覧可能（NFR-002）</td></tr><tr><td>未確認者の把握</td><td>分からない、または人力で洗い出す</td><td>Systemが継続的に抽出し催促、部門管理者もダッシュボードで即座に把握</td></tr><tr><td>要支援者の位置</td><td>把握手段なし</td><td>地図上にピン表示（REQ-016）</td></tr></tbody></table><div class="section-title">■ 5. 災害発生・同報通知フロー（BF-002）</div><div class="mermaid">
+flowchart TD
+    subgraph Admin["Admin（BCP担当）"]
+        A["災害イベントを作成（種別・発生日時・対象範囲）"]
+    end
+    subgraph System
+        B["disastersをstatus=activeで作成"]
+        C["対象範囲の従業員を抽出（全社 or 特定部署、BR-DIS-001）"]
+        D["disaster_alert通知を一括作成（同一トランザクション、BR-NTF-001）"]
+        E["操作ログ記録（INC-006）"]
+    end
+    subgraph 対象従業員["対象範囲の全従業員"]
+        F["アプリ内通知を受信（UC-010）"]
+        G["安全報告フロー（BF-003）へ"]
+    end
+
+    A --&gt; B --&gt; C --&gt; D --&gt; F --&gt; G
+    D -.-&gt; E
+</div><p><strong>業務上のポイント</strong>: 対象範囲を「全社」または「特定部署」から選べるのは、局所的な災害（一部拠点の浸水等）で無関係な従業員に通知を送らないため（BR-DIS-001）。同報通知の件数が多い場合の性能はNFR-001（1,000人・60秒以内）で規定し、実装方式（同期/Queue）は12_詳細設計書の判断に委ねる。</p><div class="section-title">■ 6. 安全報告フロー（BF-003）</div><div class="mermaid">
+flowchart TD
+    subgraph 従業員["従業員（一般社員・部門管理者）"]
+        A["通知から安全報告フォームを開く"]
+        B["安否状況（安全/要支援）を選択"]
+        C["任意でコメント・位置情報を入力"]
+        H["状況が変化したら再度フォームを開く"]
+    end
+    subgraph System
+        D["ジオコーディングを試行（Google Geocoding API）"]
+        E{"成功?"}
+        F["位置情報付きでsafety_reportsを作成"]
+        G["位置情報なしでsafety_reportsを作成（NFR-007）"]
+        I{"既に報告済み?"}
+        J["既存行をUPDATE（BR-RPT-002、新規行は作らない）"]
+    end
+
+    A --&gt; B --&gt; C --&gt; D --&gt; E
+    E --&gt;|Yes| F
+    E --&gt;|No| G
+    H --&gt; I
+    I --&gt;|Yes| J
+    I --&gt;|No| B
+</div><p><strong>業務上のポイント</strong>: ジオコーディングの成否は報告の受理可否に一切影響しない（NFR-007）— 外部APIの障害が本質機能（安否報告）を止めてはならないという設計方針の業務上の現れ。再報告は新しい行を作らず上書きするため（BR-RPT-002）、ダッシュボードは常に「最新の状況」のみを見る。</p><div class="section-title">■ 7. 未報告者フォローフロー（BF-004）</div><div class="mermaid">
+flowchart TD
+    subgraph System["System（定期バッチ、UC-013）"]
+        A["進行中の災害ごとに、safety_reports未作成の対象者を抽出（BR-NTF-002）"]
+        B{"直近N時間以内に催促済み?（BR-NTF-004）"}
+        C["report_reminder通知を作成"]
+        D["スキップ（時間窓方式、永続フラグは使わない）"]
+    end
+    subgraph 部門管理者
+        E["部署ダッシュボードで未報告者一覧を確認（UC-011）"]
+        F["電話等、システム外の手段で個別に安否確認（AS-ISの手段を補助的に併用）"]
+    end
+    subgraph 未報告の従業員
+        G["催促通知を受信し、安全報告フロー（BF-003）へ"]
+    end
+
+    A --&gt; B
+    B --&gt;|No| C --&gt; G
+    B --&gt;|Yes| D
+    E --&gt; F --&gt; G
+</div><p><strong>業務上のポイント</strong>: BR-NTF-004はProject 03の<code>is_due_soon_notified</code>（永続フラグ）とは異なり時間窓方式を採用する。「未報告」という条件は従業員が報告すれば自然に解消するため、フラグをリセットする仕組みを別途用意する必要がない（02_要件定義書 BR-NTF-004参照）。部門管理者による電話等の手動フォロー（AS-ISの手段）は本システムの範囲外だが、ダッシュボードの未報告者一覧（UC-011）がその判断材料を提供する。</p><div class="section-title">■ 8. ダッシュボード監視フロー（BF-005）</div><div class="mermaid">
+flowchart TD
+    subgraph 部門管理者
+        A["部署ダッシュボードを開く（UC-011）"]
+    end
+    subgraph Admin
+        D["全社ダッシュボードを開く（UC-012）"]
+    end
+    subgraph System
+        B["自部署の報告状況（報告済み/要支援/未確認）を集計（INC-003で自部署にスコープ）"]
+        E["全社・部署別の報告状況を集計（スコープなし）"]
+        C["位置情報のある報告を地図パネルに表示"]
+    end
+
+    A --&gt; B --&gt; C
+    D --&gt; E --&gt; C
+</div><p><strong>業務上のポイント</strong>: 部門管理者は自部署のみ（INC-003、BR-PRM-002）、Adminは全社を見られる（8章の権限マトリクス）。同じ集計ロジックをスコープの有無だけで使い回す設計とすることで、12_詳細設計書のクエリ実装を一元化できる。</p><div class="section-title">■ 9. 組織・災害運用フロー（BF-006）</div><div class="mermaid">
+flowchart TD
+    subgraph Admin
+        A["部署・従業員マスタを整備（入社・異動・退職の反映）"]
+        B["災害イベントを編集・収束切替"]
+    end
+    subgraph System
+        C["departments/employeesを更新"]
+        D["disasters.statusをresolvedへ（BR-DIS-002）"]
+        E["誤操作時はactiveへ再度切替可能"]
+        F["操作ログ記録（INC-006）"]
+    end
+
+    A --&gt; C --&gt; F
+    B --&gt; D --&gt; F
+    D -.-&gt; E
+</div><p><strong>業務上のポイント</strong>: 従業員の退職は無効化（論理削除）のみとし、過去の安全報告・監査ログとの参照整合性を保つ（BR-ORG-003）。災害の収束は取り消し可能とし、Admin が状況を見誤って早期に収束させても訂正できる運用とする（REQ-007）。</p><div class="section-title">■ 10. 例外フロー</div><table><thead><tr><th>例外</th><th>発生フロー</th><th>システムの挙動</th><th>業務上の対応</th></tr></thead><tbody><tr><td>Admin専用操作を一般社員・部門管理者が実行</td><td>BF-002 / 006</td><td>E002（INC-002）</td><td>Adminに依頼する</td></tr><tr><td>部門管理者が他部署のダッシュボードへアクセス</td><td>BF-005</td><td>E007（INC-003）</td><td>自部署のダッシュボードのみ利用する</td></tr><tr><td>収束済み・対象外の災害への新規安全報告</td><td>BF-003</td><td>E006（BR-DIS-002 / BR-RPT-004）</td><td>既存報告の閲覧のみ可能。新しい災害の通知を待つ</td></tr><tr><td>Google Maps / Geocoding API障害</td><td>BF-003 / 005</td><td>安全報告は位置情報なしで受理を継続（NFR-007）。ダッシュボードの地図パネルのみエラー表示、集計数値は継続表示</td><td>復旧後は新しい報告から位置情報が反映される</td></tr><tr><td>大量同報通知の性能未達</td><td>BF-002</td><td>NFR-001の負荷試験で検出し、12_詳細設計書でQueue化を判断</td><td>運用開始前に性能試験で確認（17_システム試験仕様書）</td></tr></tbody></table><div class="section-title">■ 11. 業務ルール対応</div><table><thead><tr><th>BF-ID</th><th>主要な適用ルール</th></tr></thead><tbody><tr><td>BF-002</td><td>BR-DIS-001（対象範囲）/ BR-NTF-001（同報通知）</td></tr><tr><td>BF-003</td><td>BR-RPT-001（ステータス2値）/ BR-RPT-002（再報告UPDATE）/ BR-RPT-003（位置情報スナップショット）/ BR-RPT-004（拒否条件）</td></tr><tr><td>BF-004</td><td>BR-NTF-002（催促の抽出条件）/ BR-NTF-004（時間窓による再送制御）</td></tr><tr><td>BF-005</td><td>BR-PRM-002（部門管理者の部署スコープ）</td></tr><tr><td>BF-006</td><td>BR-ORG-002 / BR-ORG-003（部署必須・論理削除）/ BR-DIS-002（収束後の新規報告不可）</td></tr></tbody></table><div class="section-title">■ 12. ユースケース対応</div><p>2章の一覧表を参照（BF-ID ⇔ UC-IDの対応を記載済み）。逆引き: UC-010（通知確認）はBF-002/003/004に横断的に登場する。UC-015（操作ログ）はBF-006の各操作に付随する。</p><div class="section-title">■ 13. まとめ</div><p>本業務フローの核心は、AS-ISの「電話連絡網という輻輳に弱い伝達手段」を<strong>アプリ内通知の同報配信（BF-002）</strong>に、「手作業の全社集計」を<strong>ダッシュボードのリアルタイム集計（BF-005）</strong>に置き換えることである。さらに「未報告者の継続的なフォロー」（BF-004）は、Project 03で得た通知設計の教訓（識別子ベースの永続フラグが状態変化を追従できない罠）を踏まえ、時間窓方式という異なる設計を意図的に選んでいる。次工程の05_画面遷移図 06_画面設計は、緊急時にも迷わず数タップで安全報告が完了できることを最優先の基準として設計する（NFR-020/021）。</p>
+</div>
+<div class="doc-footer">DOC-ID: DSR-04 ・ Disaster Safety Report System ・ Draft</div>
+<div class="no-print"><a class="nav-back-top" href="#top">▲ ページ先頭へ</a></div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+</body>
+</html>

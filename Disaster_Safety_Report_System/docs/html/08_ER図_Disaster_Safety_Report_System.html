@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ER図 - Disaster Safety Report System</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/mermaid.min.js"></script>
+</head>
+<body id="top">
+<nav class="doc-nav no-print">
+  <div class="nav-row nav-row-adjacent">
+    <a class="nav-adjacent" href="07_機能一覧_Disaster_Safety_Report_System.html">← 07 機能一覧</a>
+    <a class="nav-index" href="index.html">目次</a>
+    <a class="nav-adjacent" href="09_テーブル定義_Disaster_Safety_Report_System.html">09 テーブル定義 →</a>
+  </div>
+  <div class="nav-row nav-row-chips"><a class="nav-chip" href="00_開発計画書_Disaster_Safety_Report_System.html" title="開発計画書">00</a><a class="nav-chip" href="01_企画書_Disaster_Safety_Report_System.html" title="企画書">01</a><a class="nav-chip" href="02_要件定義書_Disaster_Safety_Report_System.html" title="要件定義書">02</a><a class="nav-chip" href="03_ユースケース_Disaster_Safety_Report_System.html" title="ユースケース">03</a><a class="nav-chip" href="04_業務フロー_Disaster_Safety_Report_System.html" title="業務フロー">04</a><a class="nav-chip" href="05_画面遷移図_Disaster_Safety_Report_System.html" title="画面遷移図">05</a><a class="nav-chip" href="06_画面設計_Disaster_Safety_Report_System.html" title="画面設計">06</a><a class="nav-chip" href="07_機能一覧_Disaster_Safety_Report_System.html" title="機能一覧">07</a><a class="nav-chip nav-chip-current" href="08_ER図_Disaster_Safety_Report_System.html" title="ER図">08</a><a class="nav-chip" href="09_テーブル定義_Disaster_Safety_Report_System.html" title="テーブル定義">09</a><a class="nav-chip" href="10_API設計_Disaster_Safety_Report_System.html" title="API設計">10</a><a class="nav-chip" href="11_基本設計書_Disaster_Safety_Report_System.html" title="基本設計書">11</a><a class="nav-chip" href="12_詳細設計書_Disaster_Safety_Report_System.html" title="詳細設計書">12</a><a class="nav-chip" href="13_インフラ設計_Disaster_Safety_Report_System.html" title="インフラ設計">13</a><a class="nav-chip" href="14_セキュリティ設計_Disaster_Safety_Report_System.html" title="セキュリティ設計">14</a><a class="nav-chip" href="15_単体試験仕様書_Disaster_Safety_Report_System.html" title="単体試験仕様書">15</a><a class="nav-chip" href="16_結合試験仕様書_Disaster_Safety_Report_System.html" title="結合試験仕様書">16</a><a class="nav-chip" href="17_システム試験仕様書_Disaster_Safety_Report_System.html" title="システム試験仕様書">17</a><a class="nav-chip" href="18_UAT_Disaster_Safety_Report_System.html" title="UAT">18</a><a class="nav-chip" href="19_リリース手順書_Disaster_Safety_Report_System.html" title="リリース手順書">19</a><a class="nav-chip" href="20_運用保守手順書_Disaster_Safety_Report_System.html" title="運用保守手順書">20</a></div>
+</nav>
+<table class="doc-header-bar">
+  <tr>
+    <td class="hb-type" rowspan="2">ER図</td>
+    <td class="hb-sys" rowspan="2">Disaster Safety Report System</td>
+    <td class="hb-label">文書番号</td>
+    <td class="hb-val">DSR-08</td>
+    <td class="hb-label">バージョン</td>
+    <td class="hb-val">1.0</td>
+  </tr>
+  <tr>
+    <td class="hb-label">作成日</td>
+    <td class="hb-val">2026/07/23</td>
+    <td class="hb-label">作成者</td>
+    <td class="hb-val">Nguyen Minh Tri</td>
+  </tr>
+</table>
+<div class="doc-body">
+<h1 class="doc-title">ER図</h1><p>Disaster Safety Report System（防災安全報告システム）</p><div class="section-title">■ 文書管理情報</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>システム名</td><td>Disaster Safety Report System</td></tr><tr><td>文書名</td><td>ER図</td></tr><tr><td>文書番号</td><td>DSR-08</td></tr><tr><td>作成者</td><td>Nguyen Minh Tri</td></tr><tr><td>作成日</td><td>2026/07/23</td></tr><tr><td>バージョン</td><td>1.0</td></tr><tr><td>ステータス</td><td>Draft</td></tr></tbody></table><div class="section-title">■ 改訂履歴</div><table><thead><tr><th>Version</th><th>日付</th><th>作成者</th><th>内容</th></tr></thead><tbody><tr><td>0.0</td><td>2026/07/22</td><td>Nguyen Minh Tri</td><td>スケルトン作成</td></tr><tr><td>1.0</td><td>2026/07/23</td><td>Nguyen Minh Tri</td><td>初版作成。7テーブル・7リレーションを確定。00_開発計画書 9章が残していた論点（<code>target_scope</code>の部署指定方法）をJSON列方式で確定し、junction table追加によるテーブル数増加を回避した。</td></tr></tbody></table><div class="section-title">■ 目次</div><ol><li>本書の目的</li><li>ER設計方針</li><li>エンティティ一覧</li><li>ER図</li><li>リレーション定義</li><li>エンティティ詳細（業務上の要点）</li><li>主キー・外部キー一覧</li><li>インデックス方針</li><li>データ削除・保持方針</li><li>正規化方針とあえて非正規化した点</li><li>drawio図面ファイル</li><li>トレーサビリティ</li><li>まとめ</li></ol><div class="section-title">■ 1. 本書の目的</div><p>本書は、Disaster Safety Report Systemで利用するデータの論理構造とエンティティ間の関係を定義する。本書のエンティティ・リレーション・キー設計は、次工程の09_テーブル定義（物理設計）、10_API設計、実装、テスト仕様書の基準とする。</p><div class="section-title">■ 2. ER設計方針</div><table><thead><tr><th>方針ID</th><th>方針</th><th>内容</th></tr></thead><tbody><tr><td>ER-001</td><td>Logical First</td><td>本書では論理ERを定義し、物理カラム型・詳細制約は09_テーブル定義で定義する。</td></tr><tr><td>ER-002</td><td>Traceability</td><td>エンティティは要件（REQ）、機能（FUNC）、業務ルール（BR）と対応させる。</td></tr><tr><td>ER-003</td><td>単一企業モデルの徹底</td><td><code>companies</code>は1行のみのプロフィール情報として扱い、他の全テーブルとFK関係を持たせない。<code>company_id</code>によるテナントスコープ列はどのテーブルにも追加しない（00_開発計画書 9章、BR-ORG-001）。</td></tr><tr><td>ER-004</td><td>マスタとスナップショットの分離</td><td><code>locations</code>（従業員の通常の勤務地マスタ）と<code>safety_reports</code>の位置情報（報告時点の実際の居場所）は、同じ「緯度経度」という型を持ちながら意味の異なる別概念として明確に分離する。<code>safety_reports</code>は<code>locations</code>を参照しない（BR-RPT-003）。</td></tr><tr><td>ER-005</td><td>対象範囲はJSON列で表現</td><td><code>disasters</code>の対象部署範囲は中間テーブル（<code>disaster_target_departments</code>等）を追加せず、<code>target_department_ids</code>のJSON列で表現する。ロードマップで確定した「7テーブル」構成を維持するための意図的な選択であり、トレードオフは11章で詳述する。</td></tr><tr><td>ER-006</td><td>通知の参照は必須（NULL許容にしない）</td><td><code>notifications.disaster_id</code>はNOT NULLとする。Project 03の<code>notifications.task_id</code>はタスク削除に伴いSET NULLする設計だったが、本システムの<code>disasters</code>は削除機能を持たず収束後も永続保持する（11.2データ保持方針）ため、参照が失われるケースが存在しない。</td></tr><tr><td>ER-007</td><td>Normalization</td><td>第3正規形を基本とする。非正規化はJSON列（ER-005）のみで、他に意図的な非正規化は行わない（10章）。</td></tr></tbody></table><div class="section-title">■ 3. エンティティ一覧</div><p>テーブルIDは09_テーブル定義および<code>diagrams/er/dsr_erd.drawio</code>（11章）のTBL-IDと一致させる。</p><table><thead><tr><th>テーブルID</th><th>エンティティ</th><th>論理名</th><th>概要</th><th>主な関連機能</th></tr></thead><tbody><tr><td>TBL-001</td><td>companies</td><td>自社プロフィール</td><td>1行のみ。会社名・本社住所（地図初期表示位置）。他テーブルとFK関係を持たない（ER-003）。</td><td>-</td></tr><tr><td>TBL-002</td><td>departments</td><td>部署</td><td>部署マスタ。無効化のみ（物理削除しない）。</td><td>FUNC-004</td></tr><tr><td>TBL-003</td><td>employees</td><td>従業員</td><td>全利用者。3層フラットロール（admin/manager/staff）、所属部署、通常の勤務地を保持。</td><td>FUNC-001〜003 / 005 / 018</td></tr><tr><td>TBL-004</td><td>locations</td><td>拠点マスタ</td><td>従業員の通常の勤務地。UIからのCRUD機能を持たない初期シードデータ（6章）。</td><td>FUNC-017</td></tr><tr><td>TBL-005</td><td>disasters</td><td>災害イベント</td><td>種別・発生日時・対象範囲・状態（active/resolved）を保持。</td><td>FUNC-006 / 007 / 008 / 013</td></tr><tr><td>TBL-006</td><td>safety_reports</td><td>安全報告</td><td>従業員の安否状況。<code>UNIQUE(disaster_id, employee_id)</code>でUPDATE方式（BR-RPT-002）。</td><td>FUNC-009 / 010</td></tr><tr><td>TBL-007</td><td>notifications</td><td>通知</td><td>受信者・種別（2種）・参照災害・既読状態。</td><td>FUNC-011〜014</td></tr></tbody></table><div class="section-title">■ 4. ER図</div><div class="mermaid">
+erDiagram
+    departments ||--o{ employees : "belongs to"
+    locations ||--o{ employees : "normal work site (nullable)"
+    employees ||--o{ disasters : "created by (admin)"
+    employees ||--o{ safety_reports : "reports"
+    disasters ||--o{ safety_reports : "has reports"
+    employees ||--o{ notifications : "receives"
+    disasters ||--o{ notifications : "referenced by"
+
+    companies {
+        bigint id PK
+        string name
+        string address
+        datetime created_at
+        datetime updated_at
+    }
+
+    departments {
+        bigint id PK
+        string name
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+
+    employees {
+        bigint id PK
+        bigint department_id FK
+        bigint location_id FK
+        string name
+        string name_kana
+        string email UK
+        string password_hash
+        string role
+        string status
+        datetime last_login_at
+        datetime created_at
+        datetime updated_at
+    }
+
+    locations {
+        bigint id PK
+        string name
+        string address
+        decimal latitude
+        decimal longitude
+        datetime created_at
+        datetime updated_at
+    }
+
+    disasters {
+        bigint id PK
+        string type
+        datetime occurred_at
+        string target_scope
+        json target_department_ids
+        string status
+        bigint created_by FK
+        datetime created_at
+        datetime updated_at
+    }
+
+    safety_reports {
+        bigint id PK
+        bigint disaster_id FK
+        bigint employee_id FK
+        string status
+        string comment
+        string address_text
+        decimal latitude
+        decimal longitude
+        datetime reported_at
+        datetime created_at
+        datetime updated_at
+    }
+
+    notifications {
+        bigint id PK
+        bigint employee_id FK
+        bigint disaster_id FK
+        string type
+        boolean is_read
+        datetime read_at
+        datetime created_at
+    }
+</div><p><code>companies</code>はどのエンティティとも線を持たない孤立ノードである（ER-003）。図には掲載しているが、リレーション定義（5章）には現れない。</p><div class="section-title">■ 5. リレーション定義</div><table><thead><tr><th>リレーションID</th><th>親エンティティ</th><th>子エンティティ</th><th>多重度</th><th>内容</th></tr></thead><tbody><tr><td>REL-001</td><td>departments</td><td>employees</td><td>1:N</td><td>従業員は必ず1部署に所属する（<code>department_id</code>はNOT NULL、BR-ORG-002）。</td></tr><tr><td>REL-002</td><td>locations</td><td>employees</td><td>1:N（nullable）</td><td>従業員の通常の勤務地。未設定を許容する（6章）。</td></tr><tr><td>REL-003</td><td>employees</td><td>disasters</td><td>1:N</td><td>災害イベントの作成者（<code>created_by</code>）。Adminロールの従業員のみが実際に作成する（アプリ層で制御、BR-DIS-003で複数Admin登録を許可）。</td></tr><tr><td>REL-004</td><td>employees</td><td>safety_reports</td><td>1:N</td><td>安全報告の報告者。<code>UNIQUE(disaster_id, employee_id)</code>により1従業員は1災害につき1行のみ持つ（BR-RPT-002）。</td></tr><tr><td>REL-005</td><td>disasters</td><td>safety_reports</td><td>1:N</td><td>1つの災害イベントは複数の安全報告を持つ。</td></tr><tr><td>REL-006</td><td>employees</td><td>notifications</td><td>1:N</td><td>通知の受信者。本人のみ閲覧・既読化できる（BR-NTF-005）。</td></tr><tr><td>REL-007</td><td>disasters</td><td>notifications</td><td>1:N</td><td>通知が参照する災害イベント。<code>disaster_alert</code>・<code>report_reminder</code>のいずれも必ず1つの災害に紐づく（ER-006、NULL許容にしない）。</td></tr></tbody></table><p><code>companies</code>はいずれのリレーションにも登場しない（ER-003）。</p><div class="section-title">■ 6. エンティティ詳細（業務上の要点）</div><p>全カラム定義は09_テーブル定義を参照。本章では業務上の要点のみ補足する。</p><table><thead><tr><th>エンティティ</th><th>業務上の要点</th></tr></thead><tbody><tr><td>companies</td><td>1行のみのプロフィール。DBのCHECK制約では「行数1件」自体は表現できないため、Seeder投入後は新規作成APIを設けないことで担保する（アプリ層の保証、09_テーブル定義 11章）。</td></tr><tr><td>departments</td><td>REQ-004の「部署の無効化」要件を満たすため、<code>employees</code>向けに定義されたBR-ORG-003（無効化・物理削除しない）のパターンを<code>departments</code>にも同様に適用した（02_要件定義書では明示されていない拡張適用、09_テーブル定義 11章で明記）。</td></tr><tr><td>employees</td><td><code>role</code>列（admin/manager/staff）が全権限判定の唯一の根拠（BR-PRM-001、PMSの2層モデルとの対比が02_要件定義書 3章の学習ポイント）。<code>department_id</code>と<code>location_id</code>はどちらも従業員の「所属」を表すが意味が異なる — 前者は組織上の所属、後者は物理的な勤務地であり、1対1で対応するとは限らない（同じ部署でも拠点違いの従業員がいる、同じ拠点に複数部署の従業員がいる、を許容する設計）。</td></tr><tr><td>locations</td><td>拠点そのものを作成・編集するUI機能を持たない（07_機能一覧にFUNC無し）。初期シードデータとして投入するマスタであり、13章（今後の拡張予定）で拠点管理画面を将来追加する余地として独立テーブルにしている。</td></tr><tr><td>disasters</td><td><code>target_scope</code>（'all'/'specific'）と<code>target_department_ids</code>（JSON、specific時のみ使用）の組で対象範囲を表現する（BR-DIS-001）。DBのFK制約でJSON内の部署IDの実在性は保証できないため、アプリ層のバリデーションで保証する（09_テーブル定義 11章）。</td></tr><tr><td>safety_reports</td><td><code>UNIQUE(disaster_id, employee_id)</code>が本エンティティの核。再報告は新規行のINSERTではなく既存行のUPDATEであり（BR-RPT-002）、Project 02の<code>payments</code>（会計証憑として全件保持）と対照的な設計である。位置情報（<code>latitude</code>/<code>longitude</code>/<code>address_text</code>）は<code>locations</code>の複製ではなく、報告時点で個別に取得した値（BR-RPT-003）。</td></tr><tr><td>notifications</td><td><code>disaster_id</code>は必ず値を持つ（ER-006）。PMSの<code>notifications.task_id</code>のようなSET NULL・スナップショット列（<code>task_title</code>相当）は不要 — 参照先の<code>disasters</code>が削除されない（11.2データ保持方針）ため、参照の生存戦略そのものが不要になる、という設計上の単純化。</td></tr></tbody></table><div class="section-title">■ 7. 主キー・外部キー一覧</div><table><thead><tr><th>テーブル</th><th>PK</th><th>主なFK（ON DELETE）</th></tr></thead><tbody><tr><td>companies</td><td>id</td><td>-</td></tr><tr><td>departments</td><td>id</td><td>-</td></tr><tr><td>employees</td><td>id</td><td>department_id → departments.id（RESTRICT）、location_id → locations.id（SET NULL）</td></tr><tr><td>locations</td><td>id</td><td>-</td></tr><tr><td>disasters</td><td>id</td><td>created_by → employees.id（RESTRICT）</td></tr><tr><td>safety_reports</td><td>id</td><td>disaster_id → disasters.id（RESTRICT）、employee_id → employees.id（RESTRICT）</td></tr><tr><td>notifications</td><td>id</td><td>employee_id → employees.id（RESTRICT）、disaster_id → disasters.id（RESTRICT）</td></tr></tbody></table><p><strong>方針</strong>: 本システムには物理削除を伴う操作が1つも存在しない（部署・従業員は無効化のみ、災害は収束切替のみ、安全報告はUPDATEのみ、通知は削除機能なし）。そのためON DELETEはいずれも実運用上ほぼ発動しない。にもかかわらず全FKに明示的にRESTRICT（<code>location_id</code>のみSET NULL）を指定するのは、将来的に物理削除機能が追加された場合でも安全側のデフォルト（誤って親行を消せない）が効くようにするためである（09_テーブル定義 11章で詳述）。<code>location_id</code>だけSET NULLとするのは、拠点情報が組織運営上の必須情報ではなく（6章）、拠点未設定の従業員を許容する設計（REL-002）と整合させるため。</p><div class="section-title">■ 8. インデックス方針</div><table><thead><tr><th>対象</th><th>種別</th><th>用途</th></tr></thead><tbody><tr><td>employees.email</td><td>UNIQUE</td><td>ログイン検索</td></tr><tr><td>employees (department_id)</td><td>INDEX</td><td>部署別従業員一覧・部署ダッシュボードの母集団抽出（REQ-014）</td></tr><tr><td>employees (location_id)</td><td>INDEX</td><td>地図表示時の勤務地別従業員抽出（REQ-016）</td></tr><tr><td>employees (role, status)</td><td>INDEX</td><td>Admin/部門管理者一覧、ログイン可否判定（inactiveの除外）</td></tr><tr><td>disasters (status)</td><td>INDEX</td><td>進行中の災害一覧の抽出（REQ-008、最頻クエリ）</td></tr><tr><td>safety_reports (disaster_id, employee_id)</td><td>UNIQUE</td><td>再報告のUPDATE対象特定 + 重複報告防止（BR-RPT-002）— <strong>本システム最重要インデックス</strong></td></tr><tr><td>safety_reports (disaster_id, status)</td><td>INDEX</td><td>ダッシュボードの状況別集計（安全/要支援の人数、REQ-014/015）</td></tr><tr><td>notifications (employee_id, is_read, created_at)</td><td>INDEX</td><td>通知一覧・未読件数（REQ-013、最頻の読み取りクエリ）</td></tr><tr><td>notifications (employee_id, disaster_id, type, created_at)</td><td>INDEX</td><td><code>report_reminder</code>の再送間隔チェック（BR-NTF-004の時間窓方式、直近送信日時の参照）</td></tr></tbody></table><div class="section-title">■ 9. データ削除・保持方針</div><table><thead><tr><th>データ</th><th>方針</th></tr></thead><tbody><tr><td>companies</td><td>削除機能なし（1行のみ運用、ER-003）</td></tr><tr><td>departments / employees</td><td>物理削除しない。無効化（status=inactive）のみ（BR-ORG-003）</td></tr><tr><td>locations</td><td>UIからの削除機能なし（6章）。運用上はシードデータの入れ替えのみ</td></tr><tr><td>disasters</td><td>収束後も保持する。物理削除しない（11.2データ保持方針、02_要件定義書）</td></tr><tr><td>safety_reports</td><td>UPDATE方式（BR-RPT-002）。物理削除しない。履歴（過去の報告内容の変遷）も保持しない</td></tr><tr><td>notifications</td><td>削除機能なし（BR-NTF-006）</td></tr></tbody></table><div class="section-title">■ 10. 正規化方針とあえて非正規化した点</div><table><thead><tr><th>対象</th><th>状態</th><th>理由</th></tr></thead><tbody><tr><td>disasters.target_department_ids</td><td>意図的な非正規化（JSON列）</td><td>「対象部署の集合」という多値属性を、中間テーブル（<code>disaster_target_departments</code>）を新設せずJSON列で表現する。00_開発計画書で確定した「7テーブルをそのまま採用する」方針を維持するための選択であり、DBのFK制約による部署IDの実在性保証を放棄する代わりに、アプリ層バリデーションで代替する（09_テーブル定義 11章にトレードオフを詳述）。</td></tr><tr><td>safety_reportsの位置情報</td><td>非正規化ではない（別概念）</td><td><code>locations</code>と同じ「緯度経度」型を持つが、<code>locations</code>の複製（同じ事実の重複保持）ではなく、報告時点で個別に発生した別のデータである（ER-004、BR-RPT-003）。PMSの<code>notifications.task_title</code>（<code>tasks.title</code>と同じ事実のスナップショット）とは性質が異なる点に注意 — あちらは「同じ事実」の非正規化コピー、こちらは「そもそも別の事実」である。</td></tr><tr><td>それ以外</td><td>第3正規形</td><td>関数従属性に基づき正規化する。</td></tr></tbody></table><div class="section-title">■ 11. drawio図面ファイル</div><p><code>../diagrams/er/dsr_erd.drawio</code>（<strong>作成済み</strong> — <code>/drawio-er</code>スキルの規約でNode.jsスクリプト生成、7テーブル/7リレーション）。規約はEC Site・PMSと同一: swimlane形式、PK行=淡黄/FK行=淡青、FK依存レベル順の列配置、迂回レーン方式の配線。</p><p>FK依存レベル: Lv0=companies（孤立）, departments, locations / Lv1=employees / Lv2=disasters / Lv3=safety_reports, notifications。<code>employees</code>は<code>safety_reports</code>/<code>notifications</code>へ2階層(Lv1→Lv3)をまたいでFKを持つため（<code>disasters</code>列を飛び越える）、この2本は迂回レーン（bypass lane）で配線した。<code>employees</code>自身も<code>disasters.created_by</code>・<code>safety_reports.employee_id</code>・<code>notifications.employee_id</code>の3本のFKの起点となるため、「1」ラベルのオフセットを分散させている（EC Siteで確立した手法の再適用）。</p><div class="section-title">■ 12. トレーサビリティ</div><p>02_要件定義書の業務ルール（BR-ORG/PRM/DIS/RPT/NTF）→ 本書のリレーション定義（5章）→ 09_テーブル定義の物理制約、の順に一意に追跡できる。</p><div class="section-title">■ 13. まとめ</div><p>本ER図の核心は2点である。①<code>companies</code>を意図的に孤立ノードとして扱い、他の全テーブルから<code>company_id</code>スコープ列を排除したこと（ER-003）— 単一企業モデルという00_開発計画書の確定判断を、DB設計レベルで具体的に裏付けた。②対象範囲（<code>disasters.target_department_ids</code>）をJSON列で表現し、junction table追加によるテーブル数増加を避けたこと（ER-005）— 「DBで表現しきれないものは、理由と代替保証をセットで明記する」というPMSで確立した設計哲学（TBL-POL-005）を、本プロジェクトでも一貫して適用した。この2点を09_テーブル定義の物理制約として正確に落とし込むことが次工程の任務となる。</p>
+</div>
+<div class="doc-footer">DOC-ID: DSR-08 ・ Disaster Safety Report System ・ Draft</div>
+<div class="no-print"><a class="nav-back-top" href="#top">▲ ページ先頭へ</a></div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+</body>
+</html>

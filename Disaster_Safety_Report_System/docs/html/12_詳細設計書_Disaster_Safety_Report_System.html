@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>詳細設計書 - Disaster Safety Report System</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/mermaid.min.js"></script>
+</head>
+<body id="top">
+<nav class="doc-nav no-print">
+  <div class="nav-row nav-row-adjacent">
+    <a class="nav-adjacent" href="11_基本設計書_Disaster_Safety_Report_System.html">← 11 基本設計書</a>
+    <a class="nav-index" href="index.html">目次</a>
+    <a class="nav-adjacent" href="13_インフラ設計_Disaster_Safety_Report_System.html">13 インフラ設計 →</a>
+  </div>
+  <div class="nav-row nav-row-chips"><a class="nav-chip" href="00_開発計画書_Disaster_Safety_Report_System.html" title="開発計画書">00</a><a class="nav-chip" href="01_企画書_Disaster_Safety_Report_System.html" title="企画書">01</a><a class="nav-chip" href="02_要件定義書_Disaster_Safety_Report_System.html" title="要件定義書">02</a><a class="nav-chip" href="03_ユースケース_Disaster_Safety_Report_System.html" title="ユースケース">03</a><a class="nav-chip" href="04_業務フロー_Disaster_Safety_Report_System.html" title="業務フロー">04</a><a class="nav-chip" href="05_画面遷移図_Disaster_Safety_Report_System.html" title="画面遷移図">05</a><a class="nav-chip" href="06_画面設計_Disaster_Safety_Report_System.html" title="画面設計">06</a><a class="nav-chip" href="07_機能一覧_Disaster_Safety_Report_System.html" title="機能一覧">07</a><a class="nav-chip" href="08_ER図_Disaster_Safety_Report_System.html" title="ER図">08</a><a class="nav-chip" href="09_テーブル定義_Disaster_Safety_Report_System.html" title="テーブル定義">09</a><a class="nav-chip" href="10_API設計_Disaster_Safety_Report_System.html" title="API設計">10</a><a class="nav-chip" href="11_基本設計書_Disaster_Safety_Report_System.html" title="基本設計書">11</a><a class="nav-chip nav-chip-current" href="12_詳細設計書_Disaster_Safety_Report_System.html" title="詳細設計書">12</a><a class="nav-chip" href="13_インフラ設計_Disaster_Safety_Report_System.html" title="インフラ設計">13</a><a class="nav-chip" href="14_セキュリティ設計_Disaster_Safety_Report_System.html" title="セキュリティ設計">14</a><a class="nav-chip" href="15_単体試験仕様書_Disaster_Safety_Report_System.html" title="単体試験仕様書">15</a><a class="nav-chip" href="16_結合試験仕様書_Disaster_Safety_Report_System.html" title="結合試験仕様書">16</a><a class="nav-chip" href="17_システム試験仕様書_Disaster_Safety_Report_System.html" title="システム試験仕様書">17</a><a class="nav-chip" href="18_UAT_Disaster_Safety_Report_System.html" title="UAT">18</a><a class="nav-chip" href="19_リリース手順書_Disaster_Safety_Report_System.html" title="リリース手順書">19</a><a class="nav-chip" href="20_運用保守手順書_Disaster_Safety_Report_System.html" title="運用保守手順書">20</a></div>
+</nav>
+<table class="doc-header-bar">
+  <tr>
+    <td class="hb-type" rowspan="2">詳細設計書</td>
+    <td class="hb-sys" rowspan="2">Disaster Safety Report System</td>
+    <td class="hb-label">文書番号</td>
+    <td class="hb-val">DSR-12</td>
+    <td class="hb-label">バージョン</td>
+    <td class="hb-val">1.1</td>
+  </tr>
+  <tr>
+    <td class="hb-label">作成日</td>
+    <td class="hb-val">2026/07/23</td>
+    <td class="hb-label">作成者</td>
+    <td class="hb-val">Nguyen Minh Tri</td>
+  </tr>
+</table>
+<div class="doc-body">
+<h1 class="doc-title">詳細設計書</h1><p>Disaster Safety Report System（防災安全報告システム）</p><div class="section-title">■ 文書管理情報</div><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>システム名</td><td>Disaster Safety Report System</td></tr><tr><td>文書名</td><td>詳細設計書</td></tr><tr><td>文書番号</td><td>DSR-12</td></tr><tr><td>作成者</td><td>Nguyen Minh Tri</td></tr><tr><td>作成日</td><td>2026/07/23</td></tr><tr><td>バージョン</td><td>1.1</td></tr><tr><td>ステータス</td><td>Draft</td></tr></tbody></table><div class="section-title">■ 改訂履歴</div><table><thead><tr><th>Version</th><th>日付</th><th>作成者</th><th>内容</th></tr></thead><tbody><tr><td>0.0</td><td>2026/07/22</td><td>Nguyen Minh Tri</td><td>スケルトン作成</td></tr><tr><td>1.0</td><td>2026/07/23</td><td>Nguyen Minh Tri</td><td>初版作成。Service疑似コード9本を確定。安全報告のupsertはUNIQUE違反フォールバック方式とし、PMS/EC_Siteのような悲観的ロック（Aggregate Root Locking）が不要であることを明記。</td></tr><tr><td>1.1</td><td>2026/07/23</td><td>Nguyen Minh Tri</td><td>設計監査で発見した3件の性能課題と1件の重大な業務リスクを修正。①5.2節-5（DisasterService::store）: 対象従業員へのnotifications作成がN件の逐次INSERTになっていたため、1,000人規模でNFR-001（60秒以内）を超えるリスクがあった — bulk insert（1クエリ）に変更。②5.4節-4（DashboardService）: 位置情報を持たない安否報告を<code>locations</code>マスタ（通常勤務地）へフォールバック表示していたため、<code>needs_help</code>報告がジオコーディング失敗時に実際とは異なる場所（オフィス）で被災しているかのように地図上に誤表示される欠陥があった — map_pins（緯度経度を持つ報告＋未報告者の勤務地のみ）とunlocated_reports（位置情報を持たない報告済みリスト）を分離（06_画面設計 v1.1 UI-007、10_API設計 v1.1と連動）。③5.6節-5（SafetyReportService::upsertMine）: 事前SELECT＋PHP側UNIQUE違反キャッチという実装だったが、Eloquentのatomic <code>upsert()</code>（<code>INSERT ... ON DUPLICATE KEY UPDATE</code>）に置き換え、DB往復とPHP例外処理のオーバーヘッドを削減。④5.9節-2-c（SendReportReminders）: 未報告者N人ごとに<code>SELECT EXISTS</code>を発行していたN+1クエリを、直近4時間分の通知済みIDを1回のクエリで取得しPHP側でメモリ照合する方式に変更。02_要件定義書・07_機能一覧・08/09/10/11は本修正による影響を受けない（Service層の実装詳細のみの変更）。</td></tr></tbody></table><div class="section-title">■ 目次</div><ol><li>本書の目的</li><li>詳細設計方針</li><li>ディレクトリ構成</li><li>Controller詳細設計</li><li>Service詳細設計（主要処理ロジック）</li><li>Model詳細設計</li><li>FormRequest詳細設計（Validation）</li><li>Middleware・Policy詳細設計（認可の実装）</li><li>フロントエンド詳細設計</li><li>シーケンス図（主要フロー）</li><li>トランザクション設計</li><li>例外処理詳細設計</li><li>バッチ・スケジューラ方針</li><li>ログ出力詳細設計</li><li>トレーサビリティ</li><li>まとめ</li></ol><div class="section-title">■ 1. 本書の目的</div><p>本書は11_基本設計書の外部設計を、実装可能な単位（Controller/Service/Policy/Model/FormRequest/Exception + フロントエンド構成）まで分解する。特に5章（Service疑似コード）と8章（認可の実装構造）は、コーディング時に最も参照頻度の高いセクションである。</p><div class="section-title">■ 2. 詳細設計方針</div><table><thead><tr><th>方針ID</th><th>方針</th><th>内容</th></tr></thead><tbody><tr><td>DD-POL-001</td><td>Fat Service, Thin Controller</td><td>業務ロジックはServiceに集約し、Controllerは認可呼び出しと入出力整形のみ行う（Project 01〜03と同一方針）。</td></tr><tr><td>DD-POL-002</td><td>1業務=1トランザクション</td><td>境界は11_基本設計書 14.2節の表を正とする。複数テーブル更新は必ず<code>DB::transaction()</code>。</td></tr><tr><td>DD-POL-003</td><td>例外は業務ごとに1クラス</td><td>業務エラーはカスタムExceptionとして定義し、<code>render()</code>で共通エンベロープ+HTTPステータスを返す（Project 02の<code>ApiException</code>基底パターンを踏襲）。</td></tr><tr><td>DD-POL-004</td><td>認可の2段実装</td><td>ロール（8章の大半）=Middleware<code>role:xxx</code>でE002、所有関係が絡む箇所（安全報告・通知）のみPolicyでE002/E006。11_基本設計書 13.2節の判断をそのまま実装に落とす。</td></tr><tr><td>DD-POL-005</td><td>通知は業務と同一トランザクション</td><td>通知レコード作成は呼び出し元トランザクション内（同報通知fan-out・催促バッチとも）。本システムはWebSocket broadcastを持たないため、PMSのafterCommit broadcast相当の考慮は不要（10_API設計 9章）。</td></tr><tr><td>DD-POL-006</td><td>安全報告は悲観的ロック不要</td><td><code>safety_reports</code>は常に単一行（<code>UNIQUE(disaster_id, employee_id)</code>）へのUPSERTであり、兄弟レコード群を巻き込まないため、PMS（カンバンposition）・EC_Site（在庫）のようなAggregate Root Lockingは不要。並行書込の競合はUNIQUE制約違反からのフォールバックで吸収する（5.5節）。</td></tr><tr><td>DD-POL-007</td><td>FEはポーリングで最新化</td><td>ダッシュボード・未読件数は30秒間隔ポーリング（10_API設計 9章）。WebSocket/楽観的更新のロールバック機構は本システムには不要 — 安全報告フォームの送信はサーバー応答を待って完了表示する単純な同期UIで足りる。</td></tr></tbody></table><div class="section-title">■ 3. ディレクトリ構成</div><pre class="ascii"><code>Disaster_Safety_Report_System/
+├── frontend/                          # Vue 3 SPA
+│   └── src/
+│       ├── api/                       # fetchベース共通クライアント + リソース別API関数
+│       │   ├── client.ts              # エンベロープ解釈・E010→ログイン誘導の一元化
+│       │   └── {auth,departments,employees,disasters,safetyReports,notifications,dashboard}.ts
+│       ├── stores/                    # Pinia
+│       │   ├── auth.ts                # トークン・ロール・G-01/02の状態源
+│       │   ├── notifications.ts       # 未読件数・一覧（30秒ポーリング）
+│       │   └── dashboard.ts           # 部署/全社集計（30秒ポーリング）
+│       ├── composables/
+│       │   ├── useGoogleMaps.ts       # Maps/Geocoding APIラッパー（失敗時はnullを返しUIをブロックしない、NFR-007）
+│       │   └── useApiError.ts         # E00x→画面表示（06_画面設計 7章の文言）
+│       ├── router/
+│       │   ├── index.ts               # 11ルート（05_画面遷移図 2章）
+│       │   └── guards.ts              # G-01〜G-06（G-07は送信操作のガード）
+│       ├── views/                     # SCR-001〜011に1:1対応
+│       └── components/
+│           ├── report/                # StatusSelectButton, LocationPicker（SCR-003）
+│           ├── dashboard/              # SummaryCard, MapPanel（SCR-004/005）
+│           └── common/                # AppHeader, NotificationDropdown, 状態3態部品
+├── backend/                           # Laravel 12 API
+│   ├── app/
+│   │   ├── Http/
+│   │   │   ├── Controllers/
+│   │   │   │   ├── Auth/AuthController.php
+│   │   │   │   ├── DepartmentController.php
+│   │   │   │   ├── EmployeeController.php
+│   │   │   │   ├── DisasterController.php
+│   │   │   │   ├── SafetyReportController.php
+│   │   │   │   ├── NotificationController.php
+│   │   │   │   └── DashboardController.php
+│   │   │   ├── Requests/{Auth, Department, Employee, Disaster, SafetyReport}/...
+│   │   │   └── Middleware/EnsureRole.php        # role:admin / role:manager（Project 01のEnsureRole流用）
+│   │   ├── Policies/
+│   │   │   ├── SafetyReportPolicy.php           # viewOwn/upsertOwn/viewList
+│   │   │   └── NotificationPolicy.php           # view/read
+│   │   ├── Services/
+│   │   │   ├── AuthService.php
+│   │   │   ├── DepartmentService.php
+│   │   │   ├── EmployeeService.php
+│   │   │   ├── DisasterService.php              # store（fan-out含む）/ update / updateStatus（5.2〜5.4）
+│   │   │   ├── SafetyReportService.php          # listForDisaster / findMine / upsertMine（5.5〜5.7）
+│   │   │   ├── NotificationService.php          # fan-out共通（5.8）
+│   │   │   └── DashboardService.php             # departmentSummary / companySummary
+│   │   ├── Models/{Company, Department, Employee, Location, Disaster, SafetyReport, Notification}.php
+│   │   ├── Exceptions/
+│   │   │   ├── ApiException.php                 # 基底（code/httpStatus/render）
+│   │   │   ├── ResourceNotFoundException.php    # E007
+│   │   │   └── DisasterStateException.php       # E006（BR-DIS-002 / BR-RPT-004）
+│   │   └── Console/Commands/SendReportReminders.php   # BR-NTF-004バッチ（5.9）
+│   ├── routes/{api.php, console.php}
+│   └── tests/{Unit, Feature}/
+├── docker/{nginx, php}/
+├── docker-compose.yml
+└── docs/</code></pre><p><strong>注</strong>: PMSにあった<code>Reverb</code>コンテナ・<code>channels.php</code>・楽観的更新の巻き戻しロジックは本システムには存在しない（10_API設計 9章でポーリング方式を採用したため）。S3も現時点でどのServiceからも呼び出されない（11_基本設計書 3.1節）。</p><div class="section-title">■ 4. Controller詳細設計</div><table><thead><tr><th>Controller</th><th>主なメソッド</th><th>対応API</th></tr></thead><tbody><tr><td>Auth\AuthController</td><td>login, logout, me, updatePassword</td><td>API-001〜004</td></tr><tr><td>DepartmentController</td><td>index, store, update, updateStatus</td><td>API-005〜008</td></tr><tr><td>EmployeeController</td><td>index, store, update, updateStatus</td><td>API-009〜012</td></tr><tr><td>DisasterController</td><td>index, store, show, update, updateStatus</td><td>API-013〜017</td></tr><tr><td>SafetyReportController</td><td>index, showMine, upsertMine</td><td>API-018〜020</td></tr><tr><td>NotificationController</td><td>index, unreadCount, markRead, markAllRead</td><td>API-021〜024</td></tr><tr><td>DashboardController</td><td>department, company</td><td>API-025〜026</td></tr></tbody></table><p>Controllerの標準形（DD-POL-001/004）: <code>authorize()</code>（Policy対象のみ）→ <code>Service呼び出し</code> → <code>エンベロープ整形</code>の3行構成を守り、業務分岐を持たない。department/employee/disasterの各Controllerは<code>authorize()</code>を呼ばず、ルート自体に<code>role:admin</code>Middlewareを適用する（8章）。</p><div class="section-title">■ 5. Service詳細設計（主要処理ロジック）</div><div class="subsection-title">5.1 DepartmentService::store / update / updateStatus</div><pre class="ascii"><code>store 入力: {name}
+1. departments を status=active で作成
+戻り値: department
+
+update 入力: department, {name}
+1. departments を更新
+戻り値: department
+
+updateStatus 入力: department, {status}
+1. departments.status を更新（無効化された部署は5.2 DisasterService::storeの対象部署選択肢から除外されるが、
+   既存employees.department_idの参照自体は維持する — 09_テーブル定義 4.2節）</code></pre><p>EmployeeServiceも同型（store/update/updateStatus）のためコードは省略する。作成/編集時、<code>password</code>はハッシュ化して<code>password_hash</code>へ保存する（<code>role</code>/<code>status</code>/<code>password_hash</code>は<code>$fillable</code>から除外し、Service層から明示的に代入する — 14_セキュリティ設計で詳述）。</p><div class="subsection-title">5.2 DisasterService::store（BR-DIS-001 / BR-NTF-001、本システムの核心）</div><pre class="ascii"><code>入力: admin, {type, occurred_at, target_scope, target_department_ids?}
+1. target_scope=specific の場合: target_department_ids の全件が departments に実在し
+   status=active であることを確認する → 違反があれば E003（09_テーブル定義 11章-1）
+2. トランザクション開始
+3. disasters を status=active で作成
+4. 対象範囲の従業員を抽出する（5.2-a、DashboardServiceでも同一ロジックを再利用）:
+   target_scope=all → employees.status=active AND role IN (staff, manager) の全件
+   target_scope=specific → 4に加え department_id IN (target_department_ids)
+   ※role=adminの従業員は対象に含めない（BR-PRM-003、Adminは報告対象外）
+5. 抽出した従業員全員分の notifications 行データ（employee_id, disaster_id=disaster.id,
+   type=disaster_alert, is_read=false, created_at=now）を配列として組み立て、
+   1回のbulk insert（Eloquentの`insert()`）でまとめて書き込む。
+   ※本人除外の判定は不要（BR-NTF-003 — 本人操作起点の通知が存在しないシステム）
+   ※従業員をループして`create()`をN回呼ぶ実装は採用しない — N件のINSERT文を逐次発行すると
+   ネットワーク往復とロック保持時間がNに比例して増え、1,000人規模でHTTPタイムアウト
+   （NFR-001: 60秒以内）を超えるリスクがある（設計監査で発見）。対象人数が数千人規模に
+   達する場合は500〜1,000件単位でchunkし、複数回のbulk insertに分割する
+   （1回のクエリに含める行数の上限を超えないため）
+6. コミット
+戻り値: disaster（4で抽出した件数をnotified_countとして含む、10_API設計 6.4節）</code></pre><p>件数が多い場合（NFR-001: 1,000人・60秒以内）にステップ5のbulk insertでも性能を満たせない規模に達した場合、同期処理からQueue化するかは実装時に負荷試験（17_システム試験仕様書）で判断する。bulk insert化とQueue化は独立した対策であり、Queue化してもジョブ内で同じbulk insertロジックを呼ぶだけでよい。</p><div class="subsection-title">5.3 DisasterService::update / updateStatus（BR-DIS-002 / 003）</div><pre class="ascii"><code>update 入力: disaster, {type, occurred_at, target_scope, target_department_ids?}
+1. store と同じ部署実在性検証（5.2-1）
+2. disasters を更新（target_scope変更時、追加で対象になった従業員への再通知は行わない —
+   本スコープでは「対象範囲の事後変更に伴う追加通知」はOut Scope、13章で将来検討）
+
+updateStatus 入力: disaster, {status}
+1. disasters.status を更新（active→resolved、または取り消しでresolved→active、BR-DIS-002）
+   ※収束済みへの新規安全報告拒否は5.6（SafetyReportService::upsertMine）側でチェックする</code></pre><div class="subsection-title">5.4 DashboardService::departmentSummary / companySummary（FUNC-015〜017）</div><pre class="ascii"><code>departmentSummary 入力: manager（トークンから解決。department_idはパラメータで受け取らない — API-POL-004）
+1. manager.department_id を対象部署として固定
+2. 進行中の災害（status=active）ごとに、5.2-4と同じ抽出ロジックで対象範囲に
+   当該部署が含まれるものだけを対象にする
+3. 各災害について、対象部署の従業員数・safety_reportsの行数（status別）から
+   safe / needs_help / unreported を算出（unreportedは導出値、BR-RPT-001）
+4. 地図ピン用データ（map_pins）と位置情報未確定リスト（unlocated_reports）を分けて組み立てる
+   （10_API設計 6.7節v1.1、設計監査で修正 — UI-007）:
+   a. safety_reports のうち latitude/longitude を持つ行 → map_pins へ
+      { employee_id, status（safe/needs_help のまま）, latitude, longitude, source: safety_report }
+   b. 未報告（対象範囲の従業員のうち safety_reports 未存在）の者 → その employee.location_id から
+      locations を引き、存在すれば map_pins へ { status: unreported, source: location } として追加
+      （location_id が null の場合はピンなし。BR-RPT-001の「未確認」導出と整合）
+   c. safety_reports は存在するが latitude/longitude を持たない行（ジオコーディング/GPS失敗、
+      NFR-007で受理済み） → **map_pinsへは絶対に追加しない**。代わりに unlocated_reports へ
+      { employee_id, status, comment, reported_at } として追加する。
+      理由: bのフォールバック（locations＝通常勤務地）は「まだ報告していない人が本来いる場所」
+      という参考情報として意味を持つが、cは「実際に被災し申告した人」であり、
+      勤務地へのフォールバックは実際の被災地と異なる場所を救助対象として示す誤誘導になる
+      （設計監査で発見。10_API設計 6.7節に詳細）
+戻り値: { department, active_disasters, map_pins, unlocated_reports }
+
+companySummary 入力: admin
+1. 進行中の災害ごとに全社の集計（3と同じ算出、対象範囲は全部署）
+2. 部署ごとの内訳（by_department）を同じロジックで部署単位に算出
+3. map_pins / unlocated_reports は4のa〜cと同一ロジックを全部署分に適用
+戻り値: { company_summary, by_department, map_pins, unlocated_reports }</code></pre><p>departmentSummaryとcompanySummaryは対象範囲（自部署のみ/全部署）が異なるだけで集計ロジックは共通のため、実装では<code>SafetyReportService::summarize(disaster, departmentScope)</code>のような共通メソッドに切り出す（12.1節のリファクタリング方針、実装時に確定）。</p><div class="subsection-title">5.5 SafetyReportService::listForDisaster（8章権限マトリクス）</div><pre class="ascii"><code>入力: viewer（employee）, disaster
+1. viewer.role=admin → 対象範囲の全従業員の報告を返す
+2. viewer.role=manager → 対象範囲かつ viewer.department_id と一致する従業員の報告のみ返す
+   （BR-PRM-002。部署IDをパラメータで受け取らず、常にviewer自身のdepartment_idで絞る点が
+   DashboardServiceと同じ設計思想 — API-POL-004）
+3. viewer.role=staff → このメソッドは呼ばれない（自分の分はfindMineを使う、8章「一般社員は自分の分のみ」）
+戻り値: { summary: {safe, needs_help, unreported}, reports: [...] }（10_API設計 6.5節と同一形状）</code></pre><div class="subsection-title">5.6 SafetyReportService::upsertMine（BR-RPT-002、本システムの実装核心）</div><pre class="ascii"><code>入力: employee, disaster, {status, comment?, address_text?, latitude?, longitude?}
+1. employee.role=admin なら E002（BR-PRM-003、Adminは報告対象外 — Policyで事前拒否済みだが
+   Service側でも二重に確認する）
+2. disaster.status=active であることを確認 → 違えば E006（BR-DIS-002）
+3. disaster の対象範囲に employee.department_id が含まれることを確認
+   （target_scope=allなら常にtrue、specificならtarget_department_idsに含まれるか）→ 違えばE006（BR-RPT-004）
+4. latitude/longitudeは両方存在するか両方省略するかを確認 → 片方のみの送信はE003
+   （09_テーブル定義 8章のCHECK制約と同じ整合性をアプリ層でも検証する）
+5. safety_reports へ (disaster_id, employee_id) を一意キーとする**atomic upsert**を1回発行する
+   （Eloquentの`upsert()`メソッド — MySQLの`INSERT ... ON DUPLICATE KEY UPDATE`を利用）:
+   upsert対象列: disaster_id, employee_id, status, comment, address_text, latitude, longitude,
+   reported_at=now / 重複時の更新列: status, comment, address_text, latitude, longitude,
+   reported_at, updated_at
+   ※既存行の有無を事前にSELECTで確認する必要がない。2つのリクエストがほぼ同時に初回送信しても、
+   MySQLエンジン自身が一意キー競合をロックして直列に処理するため、PHP側でUNIQUE違反を
+   キャッチしてリトライするような分岐は不要（設計監査で修正 — v1.0の「SELECT→INSERT/UPDATE
+   分岐＋UNIQUE違反キャッチ」は2回のDB往復とPHP例外処理のオーバーヘッドを伴っていた）
+戻り値: safety_report（upsert後に (disaster_id, employee_id) で再取得）</code></pre><p><strong>並行処理設計上の注記</strong>: PMS（カンバンのposition採番）やEC_Site（在庫の増減）は「兄弟レコード群」を対象とするため、空集合への同時アクセス時のギャップロックデッドロックが起こり得、Aggregate Root Lockingのような悲観的ロックが必要だった（09_テーブル定義 11章-1相当）。本処理は常に単一行（<code>UNIQUE(disaster_id, employee_id)</code>で特定される自分の行）が対象であり、他の従業員の行と競合する余地が構造的に存在しない。そのためアプリ層でのロックは元より不要であり、atomic upsertを使えば「INSERTかUPDATEかの判定」自体もDBエンジンに委譲でき、PHP側の分岐・例外処理も一切不要になる — 11_基本設計書 14.2節で述べた設計判断（悲観的ロック不要）を、より単純な実装（1クエリのatomic upsert）でさらに徹底したものである。</p><div class="subsection-title">5.7 SafetyReportService::findMine（FUNC-009/010のフォーム初期表示用）</div><pre class="ascii"><code>入力: employee, disaster
+1. safety_reports を (disaster_id=disaster.id, employee_id=employee.id) で検索
+戻り値: 存在すればその行、なければ null（10_API設計 6.5節: dataがnullで返る）</code></pre><div class="subsection-title">5.8 NotificationService::notify（fan-out共通）</div><pre class="ascii"><code>入力: type（disaster_alert | report_reminder）, employee, disaster
+1. notifications を作成:
+   employee_id=employee.id, disaster_id=disaster.id, type, is_read=false
+   ※呼び出し元のトランザクション内で実行（DD-POL-005）。本システムに`task_title`
+   （PMS）のようなスナップショット列は不要 — disasterは削除されないため、
+   表示時に都度JOINで`disasters.type`等を取得すればよい（08_ER図 ER-006）</code></pre><div class="subsection-title">5.9 SendReportReminders（バッチ、BR-NTF-004）</div><pre class="ascii"><code>（Schedulerから定期実行。間隔は02_要件定義書 9.5節の目安（3〜6時間）を採用し、本書で4時間に確定）
+1. 進行中の災害（disasters.status=active）を全件抽出
+2. 各災害について:
+   a. 5.2-4と同じロジックで対象範囲の従業員を抽出する
+   b. そのうち safety_reports に該当行がまだ存在しない者を抽出する
+      （BR-NTF-002の「未報告」判定そのもの。「未報告」という条件自体が時間とともに
+      自然に変化する — 従業員が報告すればその時点で次回抽出から自動的に外れる）
+   c. 当該災害への report_reminder のうち直近4時間以内に作成されたもの**全件**を
+      1回のクエリでまとめて取得し、`employee_id`の集合（PHPの配列/セット）としてメモリに保持する
+      （時間窓方式、BR-NTF-004）。bで抽出した未報告者をこの集合と照合し（PHP側の`in_array`相当、
+      O(1)のハッシュ照合）、含まれる者を対象から除外する。**未報告者N人ごとに`SELECT EXISTS`を
+      N回発行する実装は採用しない**— バッチ対象人数が多い場合にクエリ発行数がNに比例して増加し、
+      スケジューラの実行時間が線形に悪化する（設計監査で発見）。永続フラグを使わない理由は
+      変更なし — 「未報告」自体が時間経過だけでは変わらない条件のため、フラグ方式では
+      PMSのtask_due_soonと同じ「リセットトリガーが必要になる」問題を抱え込まずに済む
+      （02_要件定義書 9.5節で確定済みの判断をそのまま実装する）
+   d. cで残った対象者へ1従業員=1トランザクションで
+      NotificationService::notify(report_reminder, employee, disaster)
+   e. 失敗はログに記録して次の従業員へ継続（1件の失敗を波及させない、PMSのバッチと同一方針）</code></pre><div class="section-title">■ 6. Model詳細設計</div><table><thead><tr><th>Model</th><th>主なリレーション</th><th>主なスコープ・アクセサ</th></tr></thead><tbody><tr><td>Company</td><td>なし（08_ER図 ER-003、孤立エンティティ）</td><td>-</td></tr><tr><td>Department</td><td>hasMany(Employee)</td><td>scopeActive</td></tr><tr><td>Employee</td><td>belongsTo(Department), belongsTo(Location, nullable), hasMany(SafetyReport), hasMany(Notification), hasMany(Disaster, foreignKey:created_by)</td><td>scopeActive, scopeInDepartment(id)</td></tr><tr><td>Location</td><td>hasMany(Employee)</td><td>-</td></tr><tr><td>Disaster</td><td>belongsTo(Employee, created_by), hasMany(SafetyReport), hasMany(Notification)</td><td>scopeActiveStatus（status=active）</td></tr><tr><td>SafetyReport</td><td>belongsTo(Disaster), belongsTo(Employee)</td><td>scopeForDisaster(disaster)</td></tr><tr><td>Notification</td><td>belongsTo(Employee), belongsTo(Disaster)</td><td>scopeOwnedBy(employee), scopeUnread</td></tr></tbody></table><p>キャスト方針: enum列はstringのまま、<code>is_read</code>はboolean、<code>target_department_ids</code>はarray（Laravelの<code>json</code> cast）、日時はdatetime。金額列は存在しない（EC_Siteとの差分）。</p><div class="section-title">■ 7. FormRequest詳細設計（Validation）</div><table><thead><tr><th>FormRequest</th><th>対象API</th><th>主なルール</th></tr></thead><tbody><tr><td>LoginRequest</td><td>API-001</td><td>email required/email、password required</td></tr><tr><td>UpdatePasswordRequest</td><td>API-004</td><td>current_password required、new_password required/min:8/max:20</td></tr><tr><td>StoreDepartmentRequest / UpdateDepartmentRequest</td><td>API-006 / 007</td><td>name required/max:100</td></tr><tr><td>UpdateStatusRequest（部署共通）</td><td>API-008</td><td>status required/in:active,inactive</td></tr><tr><td>StoreEmployeeRequest / UpdateEmployeeRequest</td><td>API-010 / 011</td><td>department_id required/exists:departments,id、location_id nullable/exists:locations,id、name required/max:100、name_kana nullable/max:100、email required/email/max:255/unique、password required（作成時）/nullable（編集時）/min:8/max:20、role required/in:admin,manager,staff</td></tr><tr><td>UpdateStatusRequest（従業員共通）</td><td>API-012</td><td>status required/in:active,inactive</td></tr><tr><td>StoreDisasterRequest / UpdateDisasterRequest</td><td>API-014 / 016</td><td>type required/max:50、occurred_at required/date、target_scope required/in:all,specific、target_department_ids required_if:target_scope,specific/array/min:1（実在性+active判定は09_テーブル定義 11章-1に従いDisasterServiceで行う、5.2-1）</td></tr><tr><td>UpdateDisasterStatusRequest</td><td>API-017</td><td>status required/in:active,resolved</td></tr><tr><td>UpsertSafetyReportRequest</td><td>API-020</td><td>status required/in:safe,needs_help、comment nullable/max:500、address_text nullable/max:200、latitude/longitude nullable/numeric（両方存在・両方省略の整合性はSafetyReportServiceで判定、5.6-4）</td></tr></tbody></table><p>Project 01〜03の方針を踏襲: 「形式チェック」はFormRequest、「DBの現在値に依存する判定」（部署の実在性+active、災害の状態、対象範囲の判定）はServiceで行う。</p><div class="section-title">■ 8. Middleware・Policy詳細設計（認可の実装）</div><p><strong>DD-POL-004の実装構造 — 11_基本設計書 13.2節の判定方式をそのまま実装に落とす:</strong></p><table><thead><tr><th>層</th><th>判定</th><th>不成立時</th><th>実装</th></tr></thead><tbody><tr><td>Middleware <code>auth:sanctum</code></td><td>認証</td><td>E010</td><td>全認証必須ルート</td></tr><tr><td>Middleware <code>role:admin</code></td><td>Admin確認</td><td>E002</td><td>部署/従業員/災害の作成・編集・状態変更、全社ダッシュボード</td></tr><tr><td>Middleware <code>role:manager</code></td><td>部門管理者確認</td><td>E002</td><td>部署ダッシュボード（対象部署はコントローラ内でトークンから解決、パラメータを受け取らない）</td></tr><tr><td><strong>SafetyReportPolicy</strong></td><td>所有関係の判定</td><td>E002 / E006</td><td>下表</td></tr><tr><td><strong>NotificationPolicy</strong></td><td>所有関係の判定</td><td>E007</td><td>下表</td></tr></tbody></table><div class="subsection-title">Policyメソッド一覧</div><table><thead><tr><th>Policy</th><th>メソッド</th><th>判定（true条件）</th></tr></thead><tbody><tr><td>SafetyReportPolicy</td><td>viewOwn / upsertOwn</td><td><code>employee.role != admin</code>（BR-PRM-003）</td></tr><tr><td>SafetyReportPolicy</td><td>viewList</td><td><code>employee.role in (admin, manager)</code>（一般社員はfindMineのみ使用、8章）</td></tr><tr><td>NotificationPolicy</td><td>view / read</td><td><code>notification.employee_id == employee.id</code>（BR-NTF-005）</td></tr></tbody></table><p><strong>存在秘匿の適用範囲について</strong>: PMSはメンバーシップ外への応答をE007（存在秘匿、PMS 02_要件定義書のBR-PRM-006）へ変換する構造を持っていたが、DSRにはこれに相当するルールID（BR-PRM-005/006等）は定義されていない（02_要件定義書 9.1節はBR-PRM-001〜004まで）。本システムでは部署スコープの防御がAPI-POL-004（URLに部署IDを持たせない設計）によって「入力経路自体をなくす」形で実現されているため、Policy拒否をE007へ変換するケースは通知の所有権チェック（BR-NTF-005）のみに限定される（4.3節、10_API設計）。</p><div class="section-title">■ 9. フロントエンド詳細設計</div><div class="subsection-title">9.1 ルーターガード（G-01〜07の実装位置）</div><table><thead><tr><th>ガード</th><th>実装</th></tr></thead><tbody><tr><td>G-01（要認証）</td><td><code>router.beforeEach</code>: auth store未認証→<code>/login?redirect=元URL</code>（SCR-003への通知直リンクもこの経路で復帰）</td></tr><tr><td>G-02（認証済みの逆流）</td><td><code>/login</code>: 認証済みならロール別ランディングへ</td></tr><tr><td>G-03（Admin）</td><td>route metaで<code>requiresAdmin</code>、非Adminはホームへ</td></tr><tr><td>G-04（部門管理者）</td><td>route metaで<code>requiresManager</code></td></tr><tr><td>G-05（安全報告フォーム）</td><td>フロントでは表示可否のみ判定（role=admin時は非表示）。対象範囲外・収束済みはAPI応答（E006）起点で誘導</td></tr><tr><td>G-06（災害詳細）</td><td>存在しないdisasterIdはAPI応答（E007）起点で一覧へ戻す</td></tr><tr><td>G-07（位置情報入力）</td><td><code>useGoogleMaps</code>がGeocoding失敗時にnullを返し、フォームの送信ボタンは常に活性のまま維持する（NFR-007）</td></tr></tbody></table><div class="subsection-title">9.2 stores設計</div><table><thead><tr><th>store</th><th>状態</th><th>要点</th></tr></thead><tbody><tr><td>auth</td><td>token, employee（role/department_id含む）</td><td>ロール別ランディングの判定源（05_画面遷移図 2章）</td></tr><tr><td>notifications</td><td>unreadCount, items</td><td>30秒ポーリング（10_API設計 9章）。WebSocket・楽観的更新は存在しない</td></tr><tr><td>dashboard</td><td>summary, mapPins</td><td>部署/全社ダッシュボード表示中のみ30秒ポーリング（非表示画面遷移時は停止）</td></tr></tbody></table><div class="subsection-title">9.3 API Client</div><ul><li>全応答をエンベロープ（success/error）で解釈し、<code>error.code</code>をそのまま<code>useApiError</code>へ渡す</li><li>E010受信時はauth storeをクリアして<code>/login?redirect=...</code>へ</li><li>multipartは使用しない（API-POL-002、ファイルアップロード機能なし）</li></ul><div class="section-title">■ 10. シーケンス図（主要フロー）</div><div class="subsection-title">10.1 災害イベント作成 → 同報通知fan-out（正常系）</div><div class="mermaid">
+sequenceDiagram
+    participant A as Admin（ブラウザ）
+    participant API as DisasterController::store
+    participant DS as DisasterService
+    participant DB as MySQL
+
+    A-&gt;&gt;API: POST /disasters {type, occurred_at, target_scope, target_department_ids?}
+    API-&gt;&gt;DS: store(admin, input)
+    DS-&gt;&gt;DB: target_department_ids の実在性+active確認（5.2-1）
+    DS-&gt;&gt;DB: BEGIN + INSERT disasters
+    DS-&gt;&gt;DB: 対象範囲の従業員を抽出（role!=admin, status=active、5.2-4）
+    DS-&gt;&gt;DS: notifications行データをPHP配列として組み立て（1,000件でも1回分）
+    DS-&gt;&gt;DB: bulk INSERT notifications（1クエリ。5.2-5、設計監査で修正）
+    DS-&gt;&gt;DB: COMMIT
+    API--&gt;&gt;A: 201 {disaster, notified_count: 128}
+</div><div class="subsection-title">10.2 安全報告の提出・再報告（正常系 + 異常系: 収束済み災害）</div><div class="mermaid">
+sequenceDiagram
+    participant E as 一般社員 / 部門管理者
+    participant API as SafetyReportController::upsertMine
+    participant SS as SafetyReportService
+    participant DB as MySQL
+
+    E-&gt;&gt;API: PUT /disasters/{id}/safety-reports/me {status, comment?, latitude?, longitude?}
+    API-&gt;&gt;SS: upsertMine(employee, disaster, input)
+    alt disaster.status = resolved
+        SS--&gt;&gt;API: DisasterStateException（E006、BR-DIS-002）
+        API--&gt;&gt;E: 409 E006「この災害への報告はできません」
+    else disaster.status = active かつ対象範囲内
+        SS-&gt;&gt;DB: atomic upsert safety_reports（(disaster_id, employee_id)一意キー、5.6-5）
+        Note over SS,DB: 事前SELECTなし。MySQLエンジンが1クエリでINSERT/UPDATEを判定
+        API--&gt;&gt;E: 200 safety_report
+    end
+</div><div class="section-title">■ 11. トランザクション設計</div><p>11_基本設計書 14.2節の境界表を正とし、本書で具体化する:</p><table><thead><tr><th>処理</th><th>トランザクション範囲</th><th>ロック</th><th>備考</th></tr></thead><tbody><tr><td>DisasterService::store</td><td>disasters + notifications（fan-out全件）</td><td>なし</td><td>「作成されたのに通知が1件も飛ばない」を防ぐ。件数が多い場合のQueue化は実装時判断（5.2）</td></tr><tr><td>SafetyReportService::upsertMine</td><td>safety_reports単体</td><td>なし（UNIQUE制約 + フォールバックで十分、DD-POL-006）</td><td>兄弟レコード群が存在しないため悲観的ロック不要（5.6）</td></tr><tr><td>SendReportReminders</td><td>1従業員=1トランザクション</td><td>なし</td><td>1件の失敗を波及させない（5.9）</td></tr><tr><td>その他（部署/従業員/災害の書込）</td><td>単一テーブル1行更新</td><td>なし</td><td>複数テーブルにまたがらない単純な書込</td></tr></tbody></table><div class="section-title">■ 12. 例外処理詳細設計</div><table><thead><tr><th>Exception</th><th>エラーコード</th><th>HTTPステータス</th><th>発生元</th></tr></thead><tbody><tr><td>ResourceNotFoundException（ModelNotFound変換含む）</td><td>E007</td><td>404</td><td>ルートモデルバインディング、NotificationPolicy拒否の変換</td></tr><tr><td>DisasterStateException</td><td>E006</td><td>409</td><td>SafetyReportService（5.6-2/3、BR-DIS-002 / BR-RPT-004）</td></tr><tr><td>AuthorizationException（Laravel標準→変換）</td><td>E002</td><td>403</td><td>SafetyReportPolicy拒否・<code>role:admin</code>/<code>role:manager</code>Middleware</td></tr><tr><td>ValidationException（Laravel標準→変換）</td><td>E003</td><td>422</td><td>FormRequest、DisasterService内の部署実在性検証（5.2-1）</td></tr><tr><td>AuthenticationException（Laravel標準→変換）</td><td>E010</td><td>401</td><td>auth:sanctum</td></tr></tbody></table><p>フレームワーク標準例外（下3行）は<code>bootstrap/app.php</code>の<code>withExceptions</code>で共通エンベロープへ変換する（Project 02〜03と同一パターン）。</p><div class="section-title">■ 13. バッチ・スケジューラ方針</div><table><thead><tr><th>バッチ</th><th>実行頻度</th><th>内容</th></tr></thead><tbody><tr><td>SendReportReminders</td><td>4時間ごと（Laravel Scheduler、withoutOverlapping）</td><td>BR-NTF-004の未報告者催促（5.9）。間隔は02_要件定義書 9.5節の目安（3〜6時間）から本書で確定</td></tr></tbody></table><p>Reverb・Queueワーカーは本システムには存在しない（10_API設計 9章）。Schedulerコンテナ1つで足りる（11_基本設計書 3.2節）。</p><div class="section-title">■ 14. ログ出力詳細設計</div><table><thead><tr><th>ログ</th><th>内容</th><th>出力先</th></tr></thead><tbody><tr><td>操作ログ（監査、FUNC-019）</td><td>災害の作成・編集・収束切替、部署・従業員の変更操作の実行者・対象・日時</td><td>アプリケーションログ（専用チャンネル<code>audit</code>）</td></tr><tr><td>バッチ実行ログ</td><td>SendReportRemindersの処理件数・対象従業員数・失敗件数</td><td>アプリケーションログ</td></tr><tr><td>エラーログ</td><td>例外・バリデーション失敗</td><td>アプリケーションログ</td></tr></tbody></table><div class="section-title">■ 15. トレーサビリティ</div><table><thead><tr><th>Controller</th><th>対応API</th><th>関連FUNC</th><th>関連REQ</th></tr></thead><tbody><tr><td>Auth\AuthController</td><td>API-001〜004</td><td>FUNC-001〜003</td><td>REQ-001〜003 / 017</td></tr><tr><td>DepartmentController</td><td>API-005〜008</td><td>FUNC-004</td><td>REQ-004</td></tr><tr><td>EmployeeController</td><td>API-009〜012</td><td>FUNC-005</td><td>REQ-005</td></tr><tr><td>DisasterController</td><td>API-013〜017</td><td>FUNC-006〜008</td><td>REQ-006〜008</td></tr><tr><td>SafetyReportController</td><td>API-018〜020</td><td>FUNC-009 / 010</td><td>REQ-009 / 010</td></tr><tr><td>NotificationController</td><td>API-021〜024</td><td>FUNC-011 / 012</td><td>REQ-013</td></tr><tr><td>DashboardController</td><td>API-025 / 026</td><td>FUNC-015〜017</td><td>REQ-014〜016</td></tr><tr><td>NotificationService（fan-out副作用）</td><td>-（副作用）</td><td>FUNC-013</td><td>REQ-011</td></tr><tr><td>SendReportReminders（バッチ）</td><td>-（Scheduler）</td><td>FUNC-014</td><td>REQ-012</td></tr><tr><td>Middleware / Policy</td><td>-（横断）</td><td>FUNC-018</td><td>REQ-003</td></tr><tr><td>auditチャンネル</td><td>-（横断）</td><td>FUNC-019</td><td>REQ-018</td></tr></tbody></table><div class="section-title">■ 16. まとめ</div><p>本書の中心は4点である。①<strong>DisasterService::store</strong>（5.2） — 対象範囲確定・通知fan-out・件数返却を1つのトランザクションに統合した、本システムで唯一のfan-out処理。v1.1でN件の逐次INSERTをbulk insert 1回へ改めた（設計監査で発見。NFR-001の60秒制約に対する具体的な実装対策）。②<strong>SafetyReportService::upsertMine</strong>（5.6） — 「兄弟レコード群が存在しない」という本システム固有の構造的特徴により、PMS/EC_Siteで必須だったAggregate Root Lockingが不要であることを示した。v1.1ではさらに、事前SELECT＋PHP側UNIQUE違反キャッチという方式からatomic upsert（1クエリでDBエンジンに判定を委譲）へ改め、ロック不要という設計判断をより単純な実装で徹底した。③<strong>DashboardService::departmentSummary/companySummary</strong>（5.4） — v1.1で発見した重大な業務リスクを修正: 位置情報のない安否報告を通常勤務地へフォールバック表示すると、実際とは異なる場所で被災しているかのように誤誘導する。map_pinsとunlocated_reportsを明確に分離し、「実データがない箇所を推測で補って表示しない」という原則を具体的な疑似コードとして確定した。④<strong>認可がMiddleware中心で完結する構造</strong>（8章） — Policyクラスは2つのみで、11_基本設計書 13.2節の判断がそのまま実装に反映されている。実装時は必ず本書の疑似コードとBR-ID（02_要件定義書 9章）を突き合わせながら進めること。</p>
+</div>
+<div class="doc-footer">DOC-ID: DSR-12 ・ Disaster Safety Report System ・ Draft</div>
+<div class="no-print"><a class="nav-back-top" href="#top">▲ ページ先頭へ</a></div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+</body>
+</html>
