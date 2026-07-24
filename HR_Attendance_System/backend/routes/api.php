@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ShiftController;
@@ -42,6 +43,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/auth/me', [AuthController::class, 'me']);
     Route::patch('/auth/password', [AuthController::class, 'updatePassword']);
     Route::get('/auth/session', [AuthController::class, 'session']);
+
+    Route::post('/attendance/check-in',  [AttendanceController::class, 'checkIn']);   // API-004
+    Route::post('/attendance/check-out', [AttendanceController::class, 'checkOut']);  // API-005
+// ★ THỨ TỰ QUAN TRỌNG: /attendance/me phải khai TRƯỚC /attendance/{...}/work-hours?
+//   Không — 2 pattern này không đụng nhau. Nhưng nếu sau này có /attendance/{id} trần
+//   thì /attendance/me PHẢI đứng trước, không thì "me" bị hiểu là {id}="me" → lỗi.
+    Route::get('/attendance/me', [AttendanceController::class, 'me']);                            // API-007
+    Route::get('/attendance/{attendanceRecord}/work-hours', [AttendanceController::class, 'workHours']); // API-006
+    Route::get('/attendance', [AttendanceController::class, 'search']);                           // API-008
 });
 
 // Group RIÊNG, gắn thêm 'role:admin' — khác nhóm auth:sanctum trần của chương 04.

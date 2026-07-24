@@ -7,6 +7,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -51,6 +52,22 @@ return Application::configure(basePath: dirname(__DIR__))
                     'success' => false,
                     'error' => ['code' => 'E007', 'message' => '対象データが見つかりません。'],
                 ], 404);
+            }
+        });
+
+        // ⚠️ Bẫy dễ dính nhất chương 06: KHÔNG khai render(AuthorizationException $e, ...) ở đây.
+        // Service ném `throw new \Illuminate\Auth\Access\AuthorizationException()` — nhưng Laravel
+        // tự động "dịch" exception này thành AccessDeniedHttpException (Symfony) ngay bên trong
+        // Handler::prepareException(), TRƯỚC KHI các render() callback ở bootstrap/app.php được xét.
+        // Khai theo đúng kiểu gốc AuthorizationException sẽ KHÔNG BAO GIỜ khớp — response rơi về
+        // message mặc định "This action is unauthorized." của Laravel thay vì E002 của mình.
+        // Luôn bắt AccessDeniedHttpException cho mọi lỗi phân quyền ném từ Service.
+        $exceptions->render(function (AccessDeniedHttpException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'success' => false,
+                    'error' => ['code' => 'E002', 'message' => 'この操作を実行する権限がありません。'],
+                ], 403);
             }
         });
     })->create();
